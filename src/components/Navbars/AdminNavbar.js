@@ -34,8 +34,10 @@ import {
   Container,
   Media,
 } from "reactstrap";
-
+import { useDispatch } from 'react-redux';
+import { logout } from '../../actions/userActions';
 const AdminNavbar = (props) => {
+  const dispatch = useDispatch();
   return (
     <>
       <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
@@ -101,7 +103,7 @@ const AdminNavbar = (props) => {
                 <DropdownItem divider />
                 <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}>
                   <i className="ni ni-user-run" />
-                  <span>Logout</span>
+                  <span onClick={()=>dispatch(logout())}>Logout</span>
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
