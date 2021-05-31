@@ -25,11 +25,11 @@ import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import AuthFooter from "components/Footers/AuthFooter.js";
 
 import routes from "routes.js";
-
+import { useSelector } from 'react-redux';
 const Auth = (props) => {
   const mainContent = React.useRef(null);
   const location = useLocation();
-
+  const session = useSelector((state)=> state.session);
   React.useEffect(() => {
     document.body.classList.add("bg-default");
     return () => {
@@ -39,7 +39,6 @@ const Auth = (props) => {
   React.useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
-    mainContent.current.scrollTop = 0;
   }, [location]);
 
   const getRoutes = (routes) => {
@@ -57,7 +56,9 @@ const Auth = (props) => {
       }
     });
   };
-
+  if(session.authenticated){
+    return <Redirect to="/admin/index" />
+  }
   return (
     <>
       <div className="main-content" ref={mainContent}>

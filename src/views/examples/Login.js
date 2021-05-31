@@ -32,8 +32,10 @@ import {
   Row,
   Col,
 } from "reactstrap";
-
+import { useDispatch } from 'react-redux';
+import { login } from '../../actions/userActions';
 const Login = () => {
+  const dispatch = useDispatch();
   return (
     <>
       <Col lg="5" md="7">
@@ -126,7 +128,7 @@ const Login = () => {
                 </label>
               </div>
               <div className="text-center">
-                <Button className="my-4" color="primary" type="button">
+                <Button className="my-4" color="primary" type="button" onClick={()=>dispatch(login("123"))}>
                   Sign in
                 </Button>
               </div>
