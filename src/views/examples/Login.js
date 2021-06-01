@@ -31,9 +31,28 @@ import {
   InputGroup,
   Row,
   Col,
+  FormFeedback,
+  FormText,
+  Label,
 } from "reactstrap";
 import { useDispatch } from 'react-redux';
 import { login } from '../../actions/userActions';
+import { compose } from "redux";
+
+const email_verification = async(target_email) => {
+  console.log("changed email field");
+  var class_valid = "is-valid form-control";
+  var class_invalid = "is-invalid form-control"
+
+  target_email.className = class_invalid;
+  if(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(target_email.value)){
+    target_email.className = class_valid;
+  }
+  else{
+    target_email.className = class_invalid;
+  }
+}
+
 const Login = () => {
   const dispatch = useDispatch();
   return (
@@ -93,11 +112,13 @@ const Login = () => {
                       <i className="ni ni-email-83" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input
+                  <Input required valid
                     placeholder="Email"
                     type="email"
                     autoComplete="new-email"
+                    onChange = {(e) => email_verification(e.target)}
                   />
+                  <FormFeedback invalid>Invalid Email ID</FormFeedback>
                 </InputGroup>
               </FormGroup>
               <FormGroup>
@@ -107,11 +128,12 @@ const Login = () => {
                       <i className="ni ni-lock-circle-open" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input
+                  <Input required
                     placeholder="Password"
                     type="password"
                     autoComplete="new-password"
                   />
+                  
                 </InputGroup>
               </FormGroup>
               <div className="custom-control custom-control-alternative custom-checkbox">
@@ -128,7 +150,7 @@ const Login = () => {
                 </label>
               </div>
               <div className="text-center">
-                <Button className="my-4" color="primary" type="button" onClick={()=>dispatch(login("123"))}>
+              <Button className="my-4" color="primary" type="button" onClick={()=>dispatch(login("123"))}>
                   Sign in
                 </Button>
               </div>
