@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React , {useState} from "react";
 
 // reactstrap components
 import {
@@ -39,21 +39,26 @@ import { useDispatch } from 'react-redux';
 import { login } from '../../actions/userActions';
 import { compose } from "redux";
 
-const email_verification = async(target_email) => {
-  console.log("changed email field");
-  var class_valid = "is-valid form-control";
-  var class_invalid = "is-invalid form-control"
-
-  target_email.className = class_invalid;
-  if(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(target_email.value)){
-    target_email.className = class_valid;
-  }
-  else{
-    target_email.className = class_invalid;
-  }
-}
-
 const Login = () => {
+  const [email , setEmail] = useState("");
+  const [password , setPassword] = useState("");
+  const [validemail , setValidemail] = useState(false);
+
+  const email_verification = async(target_email) => {
+    var class_valid = "is-valid form-control";
+    var class_invalid = "is-invalid form-control"
+  
+    target_email.className = class_invalid;
+    if(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(target_email.value)){
+      setEmail(target_email.value);
+      setValidemail(true);
+      target_email.className = class_valid;
+    }
+    else{
+      setValidemail(false);
+      target_email.className = class_invalid;
+    }
+  }
   const dispatch = useDispatch();
   return (
     <>
@@ -113,12 +118,12 @@ const Login = () => {
                     </InputGroupText>
                   </InputGroupAddon>
                   <Input required valid
-                    placeholder="Email"
+                    placeholder="IITK Email address"
                     type="email"
                     autoComplete="new-email"
                     onChange = {(e) => email_verification(e.target)}
                   />
-                  <FormFeedback invalid>Invalid Email ID</FormFeedback>
+                  <FormFeedback invalid = "true">Invalid Email ID</FormFeedback>
                 </InputGroup>
               </FormGroup>
               <FormGroup>
@@ -132,6 +137,7 @@ const Login = () => {
                     placeholder="Password"
                     type="password"
                     autoComplete="new-password"
+                    onChange = {(e) => setPassword(e.target.value)}
                   />
                   
                 </InputGroup>
@@ -150,7 +156,7 @@ const Login = () => {
                 </label>
               </div>
               <div className="text-center">
-              <Button className="my-4" color="primary" type="button" onClick={()=>dispatch(login("123"))}>
+              <Button className="my-4" color="primary" type="button" onClick={validemail ? ()=>dispatch(login(email , password)) : undefined}>
                   Sign in
                 </Button>
               </div>
