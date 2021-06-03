@@ -16,6 +16,7 @@
 
 */
 import React from "react";
+import PropTypes from 'prop-types'
 
 // reactstrap components
 import {
@@ -30,13 +31,14 @@ import {
   Row,
   Col,
 } from "reactstrap";
+
 // core components
 import UserHeader from "components/Headers/UserHeader.js";
 
-const Profile = () => {
+const Profile = (props) => {
   return (
     <>
-      <UserHeader />
+      <UserHeader name={props.name} />
       {/* Page content */}
       <Container className="mt--7" fluid>
         <Row>
@@ -50,7 +52,7 @@ const Profile = () => {
                         alt="..."
                         className="rounded-circle"
                         src={
-                          require("../../assets/img/theme/team-4-800x800.jpg")
+                          require("../../assets/img/theme/profile-photo.png")
                             .default
                         }
                       />
@@ -59,72 +61,25 @@ const Profile = () => {
                 </Col>
               </Row>
               <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
-                <div className="d-flex justify-content-between">
-                  <Button
-                    className="mr-4"
-                    color="info"
-                    href="#pablo"
-                    onClick={(e) => e.preventDefault()}
-                    size="sm"
-                  >
-                    Connect
-                  </Button>
-                  <Button
-                    className="float-right"
-                    color="default"
-                    href="#pablo"
-                    onClick={(e) => e.preventDefault()}
-                    size="sm"
-                  >
-                    Message
-                  </Button>
-                </div>
               </CardHeader>
               <CardBody className="pt-0 pt-md-4">
-                <Row>
                   <div className="col">
-                    <div className="card-profile-stats d-flex justify-content-center mt-md-5">
-                      <div>
-                        <span className="heading">22</span>
-                        <span className="description">Friends</span>
-                      </div>
-                      <div>
-                        <span className="heading">10</span>
-                        <span className="description">Photos</span>
-                      </div>
-                      <div>
-                        <span className="heading">89</span>
-                        <span className="description">Comments</span>
-                      </div>
+                    <div className="card-profile-stats d-flex justify-content-center mt-5 md-0">
+                      <div className="text-center">
+                        <h3>
+                          {props.name}
+                          <span className="font-weight-light">, {props.rollNo}</span>
+                        </h3>
+                      </div> 
                     </div>
                   </div>
-                </Row>
                 <div className="text-center">
-                  <h3>
-                    Jessica Jones
-                    <span className="font-weight-light">, 27</span>
-                  </h3>
-                  <div className="h5 font-weight-300">
-                    <i className="ni location_pin mr-2" />
-                    Bucharest, Romania
-                  </div>
-                  <div className="h5 mt-4">
-                    <i className="ni business_briefcase-24 mr-2" />
-                    Solution Manager - Creative Tim Officer
+                  <div className="h5 mt-0">
+                    {props.department}, {props.programme}
                   </div>
                   <div>
-                    <i className="ni education_hat mr-2" />
-                    University of Computer Science
+                    Indian Institute of Technology, Kanpur
                   </div>
-                  <hr className="my-4" />
-                  <p>
-                    Ryan — the name taken by Melbourne-raised, Brooklyn-based
-                    Nick Murphy — writes, performs and records all of his own
-                    music.
-                  </p>
-                  <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                    Show more
-                  </a>
                 </div>
               </CardBody>
             </Card>
@@ -137,14 +92,6 @@ const Profile = () => {
                     <h3 className="mb-0">My account</h3>
                   </Col>
                   <Col className="text-right" xs="4">
-                    <Button
-                      color="primary"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                      size="sm"
-                    >
-                      Settings
-                    </Button>
                   </Col>
                 </Row>
               </CardHeader>
@@ -161,14 +108,15 @@ const Profile = () => {
                             className="form-control-label"
                             htmlFor="input-username"
                           >
-                            Username
+                              Name
                           </label>
                           <Input
                             className="form-control-alternative"
-                            defaultValue="lucky.jesse"
+                            defaultValue={props.name}
                             id="input-username"
-                            placeholder="Username"
+                            placeholder="Name"
                             type="text"
+                            readOnly
                           />
                         </FormGroup>
                       </Col>
@@ -176,34 +124,17 @@ const Profile = () => {
                         <FormGroup>
                           <label
                             className="form-control-label"
-                            htmlFor="input-email"
+                            htmlFor="input-rollno"
                           >
-                            Email address
+                            Roll Number
                           </label>
                           <Input
                             className="form-control-alternative"
-                            id="input-email"
-                            placeholder="jesse@example.com"
-                            type="email"
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col lg="6">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-first-name"
-                          >
-                            First name
-                          </label>
-                          <Input
-                            className="form-control-alternative"
-                            defaultValue="Lucky"
-                            id="input-first-name"
-                            placeholder="First name"
-                            type="text"
+                            defaultValue={props.rollNo}
+                            id="input-rollno"
+                            placeholder="Roll Number"
+                            type="number"
+                            readOnly
                           />
                         </FormGroup>
                       </Col>
@@ -211,25 +142,41 @@ const Profile = () => {
                         <FormGroup>
                           <label
                             className="form-control-label"
-                            htmlFor="input-last-name"
+                            htmlFor="input-department"
                           >
-                            Last name
+                            Department
                           </label>
                           <Input
                             className="form-control-alternative"
-                            defaultValue="Jesse"
-                            id="input-last-name"
-                            placeholder="Last name"
+                            id="input-department"
+                            placeholder="Department"
                             type="text"
+                            readOnly
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col lg="6">
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="input-programme"
+                          >
+                            Programme
+                          </label>
+                          <Input
+                            className="form-control-alternative"
+                            id="input-programme"
+                            placeholder="Programme"
+                            type="text"
+                            readOnly
                           />
                         </FormGroup>
                       </Col>
                     </Row>
                   </div>
                   <hr className="my-4" />
-                  {/* Address */}
                   <h6 className="heading-small text-muted mb-4">
-                    Contact information
+                    Useful Links
                   </h6>
                   <div className="pl-lg-4">
                     <Row>
@@ -237,97 +184,95 @@ const Profile = () => {
                         <FormGroup>
                           <label
                             className="form-control-label"
-                            htmlFor="input-address"
+                            htmlFor="Resume-Link"
                           >
-                            Address
+                            Resume Link
                           </label>
                           <Input
                             className="form-control-alternative"
-                            defaultValue="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
-                            id="input-address"
-                            placeholder="Home Address"
-                            type="text"
+                            defaultValue=""
+                            id="resume-link"
+                            placeholder="Resume-Link"
+                            type="url"
                           />
                         </FormGroup>
                       </Col>
                     </Row>
                     <Row>
-                      <Col lg="4">
+                      <Col md="12">
                         <FormGroup>
                           <label
                             className="form-control-label"
-                            htmlFor="input-city"
+                            htmlFor="Github-Profile-Link"
                           >
-                            City
+                            Github Profile Link
                           </label>
                           <Input
                             className="form-control-alternative"
-                            defaultValue="New York"
-                            id="input-city"
-                            placeholder="City"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col lg="4">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-country"
-                          >
-                            Country
-                          </label>
-                          <Input
-                            className="form-control-alternative"
-                            defaultValue="United States"
-                            id="input-country"
-                            placeholder="Country"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col lg="4">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-country"
-                          >
-                            Postal code
-                          </label>
-                          <Input
-                            className="form-control-alternative"
-                            id="input-postal-code"
-                            placeholder="Postal code"
-                            type="number"
+                            defaultValue=""
+                            id="github-profile-link"
+                            placeholder="Github-Profile-Link"
+                            type="url"
                           />
                         </FormGroup>
                       </Col>
                     </Row>
-                  </div>
-                  <hr className="my-4" />
-                  {/* Description */}
-                  <h6 className="heading-small text-muted mb-4">About me</h6>
-                  <div className="pl-lg-4">
-                    <FormGroup>
-                      <label>About Me</label>
-                      <Input
-                        className="form-control-alternative"
-                        placeholder="A few words about you ..."
-                        rows="4"
-                        defaultValue="A beautiful Dashboard for Bootstrap 4. It is Free and
-                        Open Source."
-                        type="textarea"
-                      />
-                    </FormGroup>
+                    <Row>
+                      <Col md="12">
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="Linkedin-Profile-Link"
+                          >
+                            Linkedin Profile Link
+                          </label>
+                          <Input
+                            className="form-control-alternative"
+                            defaultValue=""
+                            id="linkedin-profile-link"
+                            placeholder="Linkedin-Profile-Link"
+                            type="url"
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
                   </div>
                 </Form>
               </CardBody>
             </Card>
           </Col>
         </Row>
+        <div className="text-center mt-3">
+            <Button
+              color="primary"
+              href="#pablo"
+              onClick={(e) =>{ console.log("save-clicked"); e.preventDefault();}}
+              size="normal"
+              >
+              Save
+            </Button>
+        </div>
+        
       </Container>
+
     </>
   );
 };
+
+//type of props in Profile
+Profile.prototype = {
+  name: PropTypes.string,
+  programme: PropTypes.string,
+  department: PropTypes.string,
+  rollNo : PropTypes.string
+}
+
+Profile.defaultProps = {
+  name: "Name",
+  programme: "B.tech/B.S.",
+  department: "dep",
+  rollNo : "xxxxxx"
+}
+
 
 export default Profile;
