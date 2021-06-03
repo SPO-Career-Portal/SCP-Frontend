@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 // node.js library that concatenates classes (strings)
 import classnames from "classnames";
 // javascipt plugin for creating charts
@@ -23,314 +23,174 @@ import Chart from "chart.js";
 // react plugin used to create charts
 import { Line, Bar } from "react-chartjs-2";
 // reactstrap components
-import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  NavItem,
-  NavLink,
-  Nav,
-  Progress,
-  Table,
-  Container,
-  Row,
-  Col,
-} from "reactstrap";
 
-// core components
-import {
-  chartOptions,
-  parseOptions,
-  chartExample1,
-  chartExample2,
-} from "variables/charts.js";
+import { Button, Card, CardHeader, CardBody, NavItem, NavLink, Nav, Progress, Table, Container, Row, Col, Input, CustomInput, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, FormText } from "reactstrap";
 
 import Header from "components/Headers/Header.js";
+import TableContainer from './TableContainer.js'
 
 const Index = (props) => {
-  const [activeNav, setActiveNav] = useState(1);
-  const [chartExample1Data, setChartExample1Data] = useState("data1");
+  // to store the fetched data
+  const [fetchedData, setFetchedData] = useState([])
+  const [isModal, setIsModal] = useState(false)
 
-  if (window.Chart) {
-    parseOptions(Chart, chartOptions());
+  useEffect(() => {
+    // to set the fetched data
+    fetch("https://mockend.com/h4rSHp/fake-api/posts")
+      .then(response => response.json())
+      .then(data => {
+        setFetchedData(data)
+      })
+      .catch(error => console.log(error))
+  }, [])
+
+  const toggle = () => setIsModal(!isModal);
+
+  const renderRowSubComponent = (fetchedData, cells) => {
+    let index = parseInt(cells[0]['row']['id'])
+    let headingstyle = { fontSize: '20px' }
+    return (
+      <Card style={{ margin: "0 auto", color: 'white', background: 'linear-gradient(87deg, #11cdef, #1171ef)' }}>
+        <CardBody>
+          <strong style={headingstyle}>Job Details</strong>
+          <p>{fetchedData[index]['details']}</p>
+          <strong style={headingstyle}>About the Company</strong>
+          <p>{fetchedData[index]['about']}</p>
+          <Button color='success' onClick={toggle}>Apply</Button>
+        </CardBody>
+      </Card>
+    )
   }
 
-  const toggleNavs = (e, index) => {
-    e.preventDefault();
-    setActiveNav(index);
-    setChartExample1Data("data" + index);
-  };
+  // Column Headers for the table
+  const columns = useMemo(() => [
+    {
+      Header: "Sr.No.",
+      Cell: ({ row }) => {
+        // console.log(row)
+        return <span>{parseInt(row.id) + 1}</span>
+      },
+    },
+    {
+      Header: "Organisation",
+      accessor: "organisation",
+    },
+    {
+      Header: "Profile",
+      accessor: "profile",
+    },
+    {
+      Header: "Position",
+      accessor: "position",
+      disableSortBy: true,
+    },
+    {
+      Header: "Deadline",
+      accessor: "deadline",
+      disableSortBy: true
+    },
+    {
+      Header: "Eligibility",
+      accessor: "eligibility",
+      disableSortBy: true,
+    },
+    {
+      Header: 'Details',
+      id: 'expander', // 'id' is required
+      Cell: ({ row }) => (
+        <Button color="primary" size="sm"{...row.getToggleRowExpandedProps()}>
+          {row.isExpanded ? ' -' : '+'}
+        </Button>
+      )
+    },
+  ], [])
+
   return (
     <>
+      {isModal ? <div>
+        <Modal isOpen={isModal} toggle={toggle}>
+          <ModalHeader toggle={toggle}>Form</ModalHeader>
+          <ModalBody>
+            <Form>
+              <FormGroup>
+                <Label for="exampleEmail">Email</Label>
+                <Input type="email" name="email" id="exampleEmail" placeholder="with a placeholder" />
+              </FormGroup>
+              <FormGroup>
+                <Label for="examplePassword">Password</Label>
+                <Input type="password" name="password" id="examplePassword" placeholder="password placeholder" />
+              </FormGroup>
+              <FormGroup>
+                <Label for="exampleSelect">Select</Label>
+                <Input type="select" name="select" id="exampleSelect">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </Input>
+              </FormGroup>
+              <FormGroup>
+                <Label for="exampleSelectMulti">Select Multiple</Label>
+                <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </Input>
+              </FormGroup>
+              <FormGroup>
+                <Label for="exampleText">Text Area</Label>
+                <Input type="textarea" name="text" id="exampleText" />
+              </FormGroup>
+              <FormGroup>
+                <Label for="exampleFile">File</Label>
+                <Input type="file" name="file" id="exampleFile" />
+                <FormText color="muted">
+                  This is some placeholder block-level help text for the above input. It's a bit lighter and easily wraps to a new line.</FormText>
+              </FormGroup>
+              <FormGroup tag="fieldset">
+                <legend>Radio Buttons</legend>
+                <FormGroup check>
+                  <Label check>
+                    <Input type="radio" name="radio1" />{' '} Option one is this and that—be sure to include why it's great</Label>
+                </FormGroup>
+                <FormGroup check>
+                  <Label check>
+                    <Input type="radio" name="radio1" />{' '} Option two can be something else and selecting it will deselect option one</Label>
+                </FormGroup>
+                <FormGroup check disabled>
+                  <Label check>
+                    <Input type="radio" name="radio1" disabled />{' '} Option three is disabled</Label>
+                </FormGroup>
+              </FormGroup>
+              <FormGroup check>
+                <Label check>
+                  <Input type="checkbox" />{' '} Check me out</Label>
+              </FormGroup>
+            </Form>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={toggle}>Submit</Button>{' '}
+            <Button color="secondary" onClick={toggle}>Cancel</Button>
+          </ModalFooter>
+        </Modal>
+      </div> : <></>}
       <Header />
       {/* Page content */}
-      <Container className="mt--7" fluid>
-        <Row>
-          <Col className="mb-5 mb-xl-0" xl="8">
-            <Card className="bg-gradient-default shadow">
-              <CardHeader className="bg-transparent">
-                <Row className="align-items-center">
-                  <div className="col">
-                    <h6 className="text-uppercase text-light ls-1 mb-1">
-                      Overview
-                    </h6>
-                    <h2 className="text-white mb-0">Sales value</h2>
-                  </div>
-                  <div className="col">
-                    <Nav className="justify-content-end" pills>
-                      <NavItem>
-                        <NavLink
-                          className={classnames("py-2 px-3", {
-                            active: activeNav === 1,
-                          })}
-                          href="#pablo"
-                          onClick={(e) => toggleNavs(e, 1)}
-                        >
-                          <span className="d-none d-md-block">Month</span>
-                          <span className="d-md-none">M</span>
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames("py-2 px-3", {
-                            active: activeNav === 2,
-                          })}
-                          data-toggle="tab"
-                          href="#pablo"
-                          onClick={(e) => toggleNavs(e, 2)}
-                        >
-                          <span className="d-none d-md-block">Week</span>
-                          <span className="d-md-none">W</span>
-                        </NavLink>
-                      </NavItem>
-                    </Nav>
-                  </div>
-                </Row>
-              </CardHeader>
-              <CardBody>
-                {/* Chart */}
-                <div className="chart">
-                  <Line
-                    data={chartExample1[chartExample1Data]}
-                    options={chartExample1.options}
-                    getDatasetAtEvent={(e) => console.log(e)}
-                  />
-                </div>
-              </CardBody>
-            </Card>
-          </Col>
-          <Col xl="4">
-            <Card className="shadow">
-              <CardHeader className="bg-transparent">
-                <Row className="align-items-center">
-                  <div className="col">
-                    <h6 className="text-uppercase text-muted ls-1 mb-1">
-                      Performance
-                    </h6>
-                    <h2 className="mb-0">Total orders</h2>
-                  </div>
-                </Row>
-              </CardHeader>
-              <CardBody>
-                {/* Chart */}
-                <div className="chart">
-                  <Bar
-                    data={chartExample2.data}
-                    options={chartExample2.options}
-                  />
-                </div>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-        <Row className="mt-5">
-          <Col className="mb-5 mb-xl-0" xl="8">
-            <Card className="shadow">
-              <CardHeader className="border-0">
-                <Row className="align-items-center">
-                  <div className="col">
-                    <h3 className="mb-0">Page visits</h3>
-                  </div>
-                  <div className="col text-right">
-                    <Button
-                      color="primary"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                      size="sm"
-                    >
-                      See all
-                    </Button>
-                  </div>
-                </Row>
-              </CardHeader>
-              <Table className="align-items-center table-flush" responsive>
-                <thead className="thead-light">
-                  <tr>
-                    <th scope="col">Page name</th>
-                    <th scope="col">Visitors</th>
-                    <th scope="col">Unique users</th>
-                    <th scope="col">Bounce rate</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">/argon/</th>
-                    <td>4,569</td>
-                    <td>340</td>
-                    <td>
-                      <i className="fas fa-arrow-up text-success mr-3" /> 46,53%
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">/argon/index.html</th>
-                    <td>3,985</td>
-                    <td>319</td>
-                    <td>
-                      <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                      46,53%
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">/argon/charts.html</th>
-                    <td>3,513</td>
-                    <td>294</td>
-                    <td>
-                      <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                      36,49%
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">/argon/tables.html</th>
-                    <td>2,050</td>
-                    <td>147</td>
-                    <td>
-                      <i className="fas fa-arrow-up text-success mr-3" /> 50,87%
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">/argon/profile.html</th>
-                    <td>1,795</td>
-                    <td>190</td>
-                    <td>
-                      <i className="fas fa-arrow-down text-danger mr-3" />{" "}
-                      46,53%
-                    </td>
-                  </tr>
-                </tbody>
-              </Table>
-            </Card>
-          </Col>
-          <Col xl="4">
-            <Card className="shadow">
-              <CardHeader className="border-0">
-                <Row className="align-items-center">
-                  <div className="col">
-                    <h3 className="mb-0">Social traffic</h3>
-                  </div>
-                  <div className="col text-right">
-                    <Button
-                      color="primary"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                      size="sm"
-                    >
-                      See all
-                    </Button>
-                  </div>
-                </Row>
-              </CardHeader>
-              <Table className="align-items-center table-flush" responsive>
-                <thead className="thead-light">
-                  <tr>
-                    <th scope="col">Referral</th>
-                    <th scope="col">Visitors</th>
-                    <th scope="col" />
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">Facebook</th>
-                    <td>1,480</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <span className="mr-2">60%</span>
-                        <div>
-                          <Progress
-                            max="100"
-                            value="60"
-                            barClassName="bg-gradient-danger"
-                          />
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Facebook</th>
-                    <td>5,480</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <span className="mr-2">70%</span>
-                        <div>
-                          <Progress
-                            max="100"
-                            value="70"
-                            barClassName="bg-gradient-success"
-                          />
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Google</th>
-                    <td>4,807</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <span className="mr-2">80%</span>
-                        <div>
-                          <Progress max="100" value="80" />
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Instagram</th>
-                    <td>3,678</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <span className="mr-2">75%</span>
-                        <div>
-                          <Progress
-                            max="100"
-                            value="75"
-                            barClassName="bg-gradient-info"
-                          />
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">twitter</th>
-                    <td>2,645</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <span className="mr-2">30%</span>
-                        <div>
-                          <Progress
-                            max="100"
-                            value="30"
-                            barClassName="bg-gradient-warning"
-                          />
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </Table>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
+      <div style={{
+        padding: '50px', paddingTop: '0px', background: 'linear - gradient(87deg, #11cdef 0, #1171ef 100 %)', backgroundColor: 'rgba(0, 0, 0, 0)', 'background-position-x': '0%',
+        'background-position-y': '0%',
+        'background-repeat': 'repeat',
+        'background-attachment': 'scroll',
+        'background-image': 'linear-gradient(87deg, rgb(17, 205, 239) 0px, rgb(17, 113, 239) 100%)',
+        'background-size': 'auto',
+        'background-origin': 'padding-box',
+        'background-clip': 'border-box',
+      }}>
+        <TableContainer columns={columns} data={fetchedData} renderRowSubComponent={renderRowSubComponent} />
+      </div>
     </>
   );
 };
