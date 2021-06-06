@@ -32,8 +32,6 @@ import {
   Row,
   Col,
   FormFeedback,
-  FormText,
-  Label,
 } from "reactstrap";
 import { useDispatch } from "react-redux";
 import { login } from "../../actions/userActions";
@@ -65,8 +63,11 @@ const Login = () => {
   const onLogin = async (e) => {
     if (e) e.preventDefault();
     try {
-      const data = await LOGIN("users", email, password); //dummy API
-      dispatch(login(data.email, data.password));
+      //dummy API
+      const data = await LOGIN("users", email, password);
+
+      // storing emailID in redux-store
+      dispatch(login(data.email));
     } catch (err) {
       console.log("Error while logging in!");
     }

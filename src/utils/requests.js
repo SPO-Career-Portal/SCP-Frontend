@@ -13,7 +13,7 @@ export const LOGIN = async (url, email, password) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(user),
-  }); 
+  });
 
   const response = await res.json();
   return response;
