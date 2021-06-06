@@ -1,0 +1,99 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "sd@iitk.ac.in",
+      "password": "1234"
+    },
+    {
+      "id": 2,
+      "email": "random008@iitk.ac.in",
+      "password": "4321"
+    },
+    {
+      "id": 3,
+      "email": "iitkiitk@iitk.ac.in",
+      "password": "765"
+    },
+    {
+      "token": "ADSDNHJBSFC",
+      "email": "asas@iitk.ac.in",
+      "password": "1213asas",
+      "id": 4
+    },
+    {
+      "token": "ADSDNHJBSFC",
+      "email": "hola@iitk.ac.in",
+      "password": "huehue",
+      "id": 5
+    },
+    {
+      "token": "ADSDNHJBSFC",
+      "email": "lmao@iitk.ac.in",
+      "password": "lmao",
+      "id": 6
+    },
+    {
+      "token": "ADSDNHJBSFC",
+      "email": "sas@iitk.ac.in",
+      "password": "abcdefg",
+      "id": 7
+    },
+    {
+      "token": "ADSDNHJBSFC",
+      "email": "asa@iitk.ac.in",
+      "password": "1224",
+      "id": 8
+    },
+    {
+      "token": "ADSDNHJBSFC",
+      "email": "sasa@iitk.ac.in",
+      "password": "as",
+      "id": 9
+    },
+    {
+      "token": "ADSDNHJBSFC",
+      "email": "a@iitk.ac.in",
+      "password": "",
+      "id": 10
+    },
+    {
+      "token": "ADSDNHJBSFC",
+      "email": "cs@iitk.ac.in",
+      "password": "",
+      "id": 11
+    },
+    {
+      "token": "ADSDNHJBSFC",
+      "email": "xx@iitk.ac.in",
+      "password": "qsassadadas",
+      "id": 12
+    },
+    {
+      "token": "ADSDNHJBSFC",
+      "email": "asa@iitk.ac.in",
+      "password": "12",
+      "id": 13
+    },
+    {
+      "email": "xxx@iitk.ac.in",
+      "password": "1212",
+      "id": 14
+    },
+    {
+      "email": "xxx@iitk.ac.in",
+      "password": "12121212121",
+      "id": 15
+    },
+    {
+      "email": "sanchits@iitk.ac.in",
+      "password": "20011002",
+      "id": 16
+    },
+    {
+      "email": "asasa@iitk.ac.in",
+      "password": "asas",
+      "id": 17
+    }
+  ]
+}

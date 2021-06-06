@@ -37,7 +37,9 @@ import {
 } from "reactstrap";
 import { useDispatch } from "react-redux";
 import { login } from "../../actions/userActions";
+import { LOGIN } from "../../utils/requests";
 import { compose } from "redux";
+
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -60,6 +62,17 @@ const Login = () => {
       target_email.className = class_invalid;
     }
   };
+
+  const onLogin = async (e) => {
+    if (e) e.preventDefault();
+    try {
+      const data = await LOGIN("users", email, password);
+      dispatch(login(data.email, data.password));
+    } catch (err) {
+      //error
+    }
+  };
+
   const dispatch = useDispatch();
   return (
     <>
@@ -163,11 +176,7 @@ const Login = () => {
                   className="my-4"
                   color="primary"
                   type="button"
-                  onClick={
-                    validemail
-                      ? () => dispatch(login(email, password))
-                      : undefined
-                  }
+                  onClick={validemail ? (e) => onLogin(e) : undefined}
                 >
                   Sign in
                 </Button>

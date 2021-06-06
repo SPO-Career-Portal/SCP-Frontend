@@ -8,9 +8,10 @@ export const login = (email, password) => async () => {
       email: email,
       password: password,
     };
+
     sessionService.saveSession();
     sessionService.saveUser(response);
-    console.log("reponse", response);
+    console.log("response", response);
   } catch (err) {
     // error
   }
