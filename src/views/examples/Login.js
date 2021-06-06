@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React , {useState} from "react";
+import React, { useState } from "react";
 
 // reactstrap components
 import {
@@ -35,30 +35,31 @@ import {
   FormText,
   Label,
 } from "reactstrap";
-import { useDispatch } from 'react-redux';
-import { login } from '../../actions/userActions';
+import { useDispatch } from "react-redux";
+import { login } from "../../actions/userActions";
 import { compose } from "redux";
 
 const Login = () => {
-  const [email , setEmail] = useState("");
-  const [password , setPassword] = useState("");
-  const [validemail , setValidemail] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [validemail, setValidemail] = useState(false);
 
-  const email_verification = async(target_email) => {
+  const email_verification = async (target_email) => {
     var class_valid = "is-valid form-control";
-    var class_invalid = "is-invalid form-control"
-  
+    var class_invalid = "is-invalid form-control";
+
     target_email.className = class_invalid;
-    if(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(target_email.value)){
+    if (
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@iitk.ac.in/.test(target_email.value)
+    ) {
       setEmail(target_email.value);
       setValidemail(true);
       target_email.className = class_valid;
-    }
-    else{
+    } else {
       setValidemail(false);
       target_email.className = class_invalid;
     }
-  }
+  };
   const dispatch = useDispatch();
   return (
     <>
@@ -117,13 +118,15 @@ const Login = () => {
                       <i className="ni ni-email-83" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input required valid
+                  <Input
+                    required
+                    valid
                     placeholder="IITK Email address"
                     type="email"
                     autoComplete="new-email"
-                    onChange = {(e) => email_verification(e.target)}
+                    onChange={(e) => email_verification(e.target)}
                   />
-                  <FormFeedback invalid = "true">Invalid Email ID</FormFeedback>
+                  <FormFeedback invalid="true">Invalid Email ID</FormFeedback>
                 </InputGroup>
               </FormGroup>
               <FormGroup>
@@ -133,13 +136,13 @@ const Login = () => {
                       <i className="ni ni-lock-circle-open" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input required
+                  <Input
+                    required
                     placeholder="Password"
                     type="password"
                     autoComplete="new-password"
-                    onChange = {(e) => setPassword(e.target.value)}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
-                  
                 </InputGroup>
               </FormGroup>
               <div className="custom-control custom-control-alternative custom-checkbox">
@@ -156,7 +159,16 @@ const Login = () => {
                 </label>
               </div>
               <div className="text-center">
-              <Button className="my-4" color="primary" type="button" onClick={validemail ? ()=>dispatch(login(email , password)) : undefined}>
+                <Button
+                  className="my-4"
+                  color="primary"
+                  type="button"
+                  onClick={
+                    validemail
+                      ? () => dispatch(login(email, password))
+                      : undefined
+                  }
+                >
                   Sign in
                 </Button>
               </div>
