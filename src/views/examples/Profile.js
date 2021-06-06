@@ -114,7 +114,7 @@ const Profile = (props) => {
                             className="form-control-alternative"
                             defaultValue={props.name}
                             id="input-username"
-                            placeholder="Name"
+                            placeholder={props.name}
                             type="text"
                             readOnly
                           />
@@ -132,7 +132,7 @@ const Profile = (props) => {
                             className="form-control-alternative"
                             defaultValue={props.rollNo}
                             id="input-rollno"
-                            placeholder="Roll Number"
+                            placeholder={props.rollNo}
                             type="number"
                             readOnly
                           />
@@ -148,8 +148,9 @@ const Profile = (props) => {
                           </label>
                           <Input
                             className="form-control-alternative"
+                            defaultValue={props.department}
                             id="input-department"
-                            placeholder="Department"
+                            placeholder={props.department}
                             type="text"
                             readOnly
                           />
@@ -165,8 +166,9 @@ const Profile = (props) => {
                           </label>
                           <Input
                             className="form-control-alternative"
+                            defaultValue={props.programme}
                             id="input-programme"
-                            placeholder="Programme"
+                            placeholder={props.programme}
                             type="text"
                             readOnly
                           />
@@ -190,9 +192,9 @@ const Profile = (props) => {
                           </label>
                           <Input
                             className="form-control-alternative"
-                            defaultValue=""
+                            defaultValue={props.resumeLink}
                             id="resume-link"
-                            placeholder="Resume-Link"
+                            // placeholder={props.resumeLink}
                             type="url"
                           />
                         </FormGroup>
@@ -209,9 +211,9 @@ const Profile = (props) => {
                           </label>
                           <Input
                             className="form-control-alternative"
-                            defaultValue=""
+                            defaultValue={props.githubLink}
                             id="github-profile-link"
-                            placeholder="Github-Profile-Link"
+                            // placeholder={props.githubLink}
                             type="url"
                           />
                         </FormGroup>
@@ -228,9 +230,9 @@ const Profile = (props) => {
                           </label>
                           <Input
                             className="form-control-alternative"
-                            defaultValue=""
+                            defaultValue={props.linkedinLink}
                             id="linkedin-profile-link"
-                            placeholder="Linkedin-Profile-Link"
+                            // placeholder={props.linkedinLink}
                             type="url"
                           />
                         </FormGroup>
@@ -261,17 +263,23 @@ const Profile = (props) => {
 
 //type of props in Profile
 Profile.prototype = {
+  userID: PropTypes.number,
   name: PropTypes.string,
   programme: PropTypes.string,
   department: PropTypes.string,
-  rollNo : PropTypes.string
+  rollNo : PropTypes.number,
+  resumeLink: PropTypes.string,
+  githubLink : PropTypes.string,
+  linkedinLink  : PropTypes.string
 }
 
 Profile.defaultProps = {
+  userID: 1,
   name: "Name",
   programme: "B.tech/B.S.",
   department: "dep",
-  rollNo : "xxxxxx"
+  rollNo : 190833,
+  // resumeLink : "asdohfao"
 }
 
 
