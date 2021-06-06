@@ -94,6 +94,11 @@
       "email": "asasa@iitk.ac.in",
       "password": "asas",
       "id": 17
+    },
+    {
+      "email": "lastcommit@iitk.ac.in",
+      "password": "1234",
+      "id": 18
     }
   ]
 }

@@ -40,7 +40,6 @@ import { login } from "../../actions/userActions";
 import { LOGIN } from "../../utils/requests";
 import { compose } from "redux";
 
-
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -66,10 +65,10 @@ const Login = () => {
   const onLogin = async (e) => {
     if (e) e.preventDefault();
     try {
-      const data = await LOGIN("users", email, password);
+      const data = await LOGIN("users", email, password); //dummy API
       dispatch(login(data.email, data.password));
     } catch (err) {
-      //error
+      console.log("Error while logging in!");
     }
   };
 
@@ -195,11 +194,7 @@ const Login = () => {
             </a>
           </Col>
           <Col className="text-right" xs="6">
-            <a
-              className="text-light"
-              href="#pablo"
-              onClick={(e) => e.preventDefault()}
-            >
+            <a className="text-light" href="/auth/register">
               <small>Create new account</small>
             </a>
           </Col>

@@ -13,7 +13,7 @@ export const login = (email, password) => async () => {
     sessionService.saveUser(response);
     console.log("response", response);
   } catch (err) {
-    // error
+    console.log("Error while logging in!");
   }
 };
 
@@ -24,6 +24,6 @@ export const logout = () => async () => {
     sessionService.deleteSession();
     sessionService.deleteUser();
   } catch (err) {
-    // error
+    console.log("Error while logging out!");
   }
 };

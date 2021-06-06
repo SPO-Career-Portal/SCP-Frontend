@@ -11,4 +11,7 @@ correct changes as mentioned in src/store.js :
 
     remove:
         "json-server": "^0.16.3",
-from dependencies in package.json
+    from dependencies in package.json
+
+    remove : login.json
+
