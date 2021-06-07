@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useState } from "react";
 
 // reactstrap components
 import {
@@ -31,10 +31,48 @@ import {
   InputGroup,
   Row,
   Col,
+  FormFeedback,
 } from "reactstrap";
-import { useDispatch } from 'react-redux';
-import { login } from '../../actions/userActions';
+import { useDispatch } from "react-redux";
+import { login } from "../../actions/userActions";
+import { LOGIN } from "../../utils/requests";
+import { compose } from "redux";
+
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [validemail, setValidemail] = useState(false);
+
+  const email_verification = async (target_email) => {
+    var class_valid = "is-valid form-control";
+    var class_invalid = "is-invalid form-control";
+
+    target_email.className = class_invalid;
+    if (
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@iitk.ac.in/.test(target_email.value)
+    ) {
+      setEmail(target_email.value);
+      setValidemail(true);
+      target_email.className = class_valid;
+    } else {
+      setValidemail(false);
+      target_email.className = class_invalid;
+    }
+  };
+
+  const onLogin = async (e) => {
+    if (e) e.preventDefault();
+    try {
+      //dummy API
+      const data = await LOGIN("users", email, password);
+
+      // storing emailID in redux-store
+      dispatch(login(data.email));
+    } catch (err) {
+      console.log("Error while logging in!");
+    }
+  };
+
   const dispatch = useDispatch();
   return (
     <>
@@ -94,10 +132,14 @@ const Login = () => {
                     </InputGroupText>
                   </InputGroupAddon>
                   <Input
-                    placeholder="Email"
+                    required
+                    valid
+                    placeholder="IITK Email address"
                     type="email"
                     autoComplete="new-email"
+                    onChange={(e) => email_verification(e.target)}
                   />
+                  <FormFeedback invalid="true">Invalid Email ID</FormFeedback>
                 </InputGroup>
               </FormGroup>
               <FormGroup>
@@ -108,9 +150,11 @@ const Login = () => {
                     </InputGroupText>
                   </InputGroupAddon>
                   <Input
+                    required
                     placeholder="Password"
                     type="password"
                     autoComplete="new-password"
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </InputGroup>
               </FormGroup>
@@ -128,7 +172,12 @@ const Login = () => {
                 </label>
               </div>
               <div className="text-center">
-                <Button className="my-4" color="primary" type="button" onClick={()=>dispatch(login("123"))}>
+                <Button
+                  className="my-4"
+                  color="primary"
+                  type="button"
+                  onClick={validemail ? (e) => onLogin(e) : undefined}
+                >
                   Sign in
                 </Button>
               </div>
@@ -146,11 +195,7 @@ const Login = () => {
             </a>
           </Col>
           <Col className="text-right" xs="6">
-            <a
-              className="text-light"
-              href="#pablo"
-              onClick={(e) => e.preventDefault()}
-            >
+            <a className="text-light" href="/auth/register">
               <small>Create new account</small>
             </a>
           </Col>
