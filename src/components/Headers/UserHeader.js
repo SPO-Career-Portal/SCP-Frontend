@@ -27,10 +27,6 @@ const UserHeader = (props) => {
         className="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
         style={{
           minHeight: "600px",
-          // backgroundImage:
-          //   "url(" +
-          //   require("../../assets/img/theme/profile-cover.jpg").default +
-          //   ")",
           backgroundSize: "cover",
           backgroundPosition: "center top",
         }}
@@ -45,13 +41,6 @@ const UserHeader = (props) => {
               <p className="text-white mt-0 mb-5">
                 This is your profile page. You can modify your information here.
               </p>
-              {/* <Button
-                color="info"
-                href="#pablo"
-                onClick={(e) => e.preventDefault()}
-              >
-                Edit profile
-              </Button> */}
             </Col>
           </Row>
         </Container>

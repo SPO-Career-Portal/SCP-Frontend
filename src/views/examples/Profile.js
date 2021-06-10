@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, {useState} from "react";
 import PropTypes from 'prop-types'
 
 // reactstrap components
@@ -36,6 +36,15 @@ import {
 import UserHeader from "components/Headers/UserHeader.js";
 
 const Profile = (props) => {
+
+  const [resumelink,setResumelink]=useState(props.resumeLink);
+  const [githublink,setGithublink]=useState(props.githubLink);
+  const [linkedinlink,setLinkedinlink]=useState(props.linkedinLink);
+
+  const printdata = (event)=>{
+    console.log({resumelink},{githublink},{linkedinlink});
+    event.preventDefault();
+  }
   return (
     <>
       <UserHeader name={props.name} />
@@ -192,9 +201,9 @@ const Profile = (props) => {
                           </label>
                           <Input
                             className="form-control-alternative"
-                            defaultValue={props.resumeLink}
+                            defaultValue={resumelink}
+                            onChange={event => {setResumelink(event.target.value)}}
                             id="resume-link"
-                            // placeholder={props.resumeLink}
                             type="url"
                           />
                         </FormGroup>
@@ -211,9 +220,9 @@ const Profile = (props) => {
                           </label>
                           <Input
                             className="form-control-alternative"
-                            defaultValue={props.githubLink}
+                            defaultValue={githublink}
+                            onChange={event => {setGithublink(event.target.value)}}
                             id="github-profile-link"
-                            // placeholder={props.githubLink}
                             type="url"
                           />
                         </FormGroup>
@@ -230,9 +239,9 @@ const Profile = (props) => {
                           </label>
                           <Input
                             className="form-control-alternative"
-                            defaultValue={props.linkedinLink}
+                            defaultValue={linkedinlink}
+                            onChange={event => {setLinkedinlink(event.target.value)}}
                             id="linkedin-profile-link"
-                            // placeholder={props.linkedinLink}
                             type="url"
                           />
                         </FormGroup>
@@ -248,7 +257,7 @@ const Profile = (props) => {
             <Button
               color="primary"
               href="#pablo"
-              onClick={(e) =>{ console.log("save-clicked"); e.preventDefault();}}
+              onClick={printdata}
               size="normal"
               >
               Save
@@ -279,7 +288,7 @@ Profile.defaultProps = {
   programme: "B.tech/B.S.",
   department: "dep",
   rollNo : 190833,
-  // resumeLink : "asdohfao"
+  resumeLink : "asdohfao"
 }
 
 
