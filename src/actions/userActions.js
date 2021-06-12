@@ -16,6 +16,20 @@ export const login = user =>
       // error
     }
   };
+  export const register = user => 
+    async ()  => {
+    try{
+      const response={
+        email : user.email,
+        password : user.password
+      };
+      sessionService.saveSession();
+      sessionService.saveUser(response);
+      console.log("response", response);
+    } catch (err) {
+      console.log("Error while logging in!");
+    }
+  };
 
 export const logout = () =>
   async () => {
