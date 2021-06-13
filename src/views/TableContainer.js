@@ -1,19 +1,35 @@
 import React, { Fragment, useState, useEffect } from 'react'
 import { useTable, useSortBy, useExpanded, usePagination } from 'react-table'
 
+
 import "bootstrap/dist/css/bootstrap.min.css"
 // reactstrap component
-import { Button, Table, Row, Col, CustomInput, } from "reactstrap";
+import {
+    Button, Container,
+    Card, CardHeader, CardBody,
+    NavItem, NavLink, Nav, Progress,
+    Table, Row, Col,
+    Input, CustomInput,
+    Modal, ModalHeader, ModalBody, ModalFooter,
+    Form, FormGroup, Label, FormText
+} from "reactstrap";
 
-const TableContainer = ({ columns, data, renderRowSubComponent }) => {
+import { tablestyle } from '../components/Style/css_style'
 
-    const { getTableProps, getTableBodyProps, headerGroups, page, prepareRow, canPreviousPage, canNextPage, pageOptions, pageCount, gotoPage, nextPage, previousPage, setPageSize, state: { pageIndex, pageSize } } = useTable({ columns, data, }, useSortBy, useExpanded, usePagination)
+const TableContainer = ({ columns, data, renderRowSubComponent, }) => {
+    const {
+        getTableProps, getTableBodyProps, headerGroups, page, prepareRow,
+        canPreviousPage, canNextPage, pageOptions, pageCount, gotoPage, nextPage, previousPage, setPageSize,
+        state: { pageIndex, pageSize } } = useTable({ columns, data, }, useSortBy, useExpanded, usePagination)
+
 
     const [fetchedData, setFetchedData] = useState([])
+
 
     const generateSortingIndicator = column => {
         return column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""
     }
+
 
     const onChangeInSelect = event => {
         setPageSize(Number(event.target.value))
@@ -33,9 +49,10 @@ const TableContainer = ({ columns, data, renderRowSubComponent }) => {
             .catch(error => console.log(error))
     }, [])
 
+
     return (
         <Fragment>
-            <Table responsive hover {...getTableProps()} style={{ backgroundColor: 'white' }}>
+            <Table responsive hover {...getTableProps()} style={tablestyle}>
                 <thead style={{ background: '#ccc' }}>
                     {headerGroups.map(headerGroup => (
                         <tr {...headerGroup.getHeaderGroupProps()}>

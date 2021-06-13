@@ -1,4 +1,6 @@
-import Index from "views/Index.js";
+import Index from "views/Dashboard";
+import Placement from 'views/examples/Placement'
+import Internship from 'views/examples/Internship'
 import Profile from "views/examples/Profile.js";
 import Maps from "views/examples/Maps.js";
 import Register from "views/examples/Register.js";
@@ -12,6 +14,20 @@ var routes = [
     name: "Dashboard",
     icon: "ni ni-tv-2 text-primary",
     component: Index,
+    layout: "/admin",
+  },
+  {
+    path: "/placement",
+    name: "Placement",
+    icon: "ni ni-tv-2 text-primary",
+    component: Placement,
+    layout: "/admin",
+  },
+  {
+    path: "/internship",
+    name: "Internship",
+    icon: "ni ni-tv-2 text-primary",
+    component: Internship,
     layout: "/admin",
   },
   {
