@@ -1,10 +1,10 @@
 import { sessionService } from "redux-react-session";
 
-export const login = (email) => async () => {
+export const login = (username) => async () => {
   try {
     //const response = await sessionApi.login({ user }); LOGIN API
     const response = {
-      email: email,
+      username: username,
     };
 
     sessionService.saveSession();
