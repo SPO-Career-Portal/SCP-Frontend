@@ -31,7 +31,7 @@ import {
 const Register=()=> {
   
   const [password, setPassword]= useState('');
-  const [confirmpassword, setConfirmpassword]=useState('');
+  const [confirmPassword, setConfirmPassword]=useState('');
   const [pass, passState]=useState('');
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState('')
@@ -45,7 +45,7 @@ const Register=()=> {
       /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@iitk.ac.in/.test(e.value)
     ){
       setEmail(e.value);
-      setEmailError("  ");
+      setEmailError("valid email");
       e.className=class_valid;
     }
     else{
@@ -56,7 +56,7 @@ const Register=()=> {
   
   const onRegister = async (e)=> {
    
-    if(setEmailError==="valid email"&& password==confirmPassword){
+    if(emailError==="valid email"&& password==confirmPassword){
       if (e) e.preventDefault();
     try{
       const user ={
@@ -73,11 +73,11 @@ const Register=()=> {
     }
        
   };
-  const confirmPassword = async (e) => {
+  const confirmpassword = async (e) => {
     var class_valid = "is-valid form-control";
     var class_invalid = "is-invalid form-control";
 
-    setConfirmpassword(e.value);
+    setConfirmPassword(e.value);
     if(e.value!==password){
       passState('Passwords did not match!');
       e.className=class_invalid;
@@ -137,7 +137,7 @@ const Register=()=> {
                   </InputGroupAddon>
                   <Input required valid
                     class="is-invalid from-control"
-                    onChange={(e) => confirmPassword(e.target)}
+                    onChange={(e) => confirmpassword(e.target)}
                     placeholder="Confirm Your Password"
                     type="password"
                     autoComplete="off"
