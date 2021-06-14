@@ -30,7 +30,9 @@ const Admin = (props) => {
       }
     });
   };
-
+  const getAdmin =(routes) => {
+    return routes.filter((value)=> value.layout==='/admin')
+  }
   const getBrandText = (path) => {
     for (let i = 0; i < routes.length; i++) {
       if (
@@ -49,7 +51,7 @@ const Admin = (props) => {
     <>
       <Sidebar
         {...props}
-        routes={routes}
+        routes={getAdmin(routes)}
         logo={{
           innerLink: "/admin/index",
           imgSrc: require("../assets/img/brand/logo_spo.png").default,
