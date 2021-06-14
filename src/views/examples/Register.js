@@ -12,7 +12,6 @@
 import React, {useState } from "react";
 import { useDispatch } from "react-redux";
 import { register } from "../../actions/userActions";
-import { useHistory } from "react-router";
 
 import {
   Button,
@@ -25,6 +24,7 @@ import {
   InputGroupText,
   InputGroup,
   Col,
+  FormFeedback,
 } from "reactstrap";
 
 
@@ -36,7 +36,6 @@ const Register=()=> {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState('')
   const [isDisabled, setIsdisabled]= useState(true)
-  const history=useHistory();
 
   const validateEmail = async (e) => {
     var class_valid = "is-valid form-control";
@@ -57,31 +56,38 @@ const Register=()=> {
   
   const onRegister = async (e)=> {
    
-    if (e) e.preventDefault();
+    if(setEmailError==="valid email"&& password==confirmPassword){
+      if (e) e.preventDefault();
     try{
       const user ={
         email: email,
         password: password
       };
-      await register(user);
-      //await dispatch(register(user));
-      history.push("../../../");
+
+      await dispatch(register(user.email,user.password));
     }catch (err) {
       console.log("Error while registering");
     }
-    
-  };
-
-  const checkPassword = async (e1,e2)=> {
-    if(e1!==e2){
-      passState('Passwords did not match!');
-    }
-    else{
-      passState(' ');
+    }else{
       setIsdisabled(false);
     }
+       
   };
+  const confirmPassword = async (e) => {
+    var class_valid = "is-valid form-control";
+    var class_invalid = "is-invalid form-control";
 
+    setConfirmpassword(e.value);
+    if(e.value!==password){
+      passState('Passwords did not match!');
+      e.className=class_invalid;
+    }else{
+      passState(' ');
+      setIsdisabled(false);
+      e.className=class_valid;
+    }
+  };
+ 
   const dispatch = useDispatch();
   
   return ( 
@@ -98,23 +104,14 @@ const Register=()=> {
                       <i className="ni ni-email-83" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input
+                  <Input required valid
                     placeholder="IITK Email ID"
                     type="email"
                     autoComplete="off"
                     onChange={(e) => validateEmail(e.target)}
                   />
+                  <FormFeedback invalid>{emailError}</FormFeedback>
                 </InputGroup>
-              </FormGroup>
-              <FormGroup>
-                <div className="text-muted text-center mt-2 mb-4">
-                  <span style={{
-                      fontWeight: 'light',
-                      color: 'red',
-                      alignItems: 'right'
-                      }}>{emailError}
-                  </span>
-                </div>
               </FormGroup>
               <FormGroup>
                 <InputGroup className="input-group-alternative">
@@ -123,7 +120,7 @@ const Register=()=> {
                       <i className="ni ni-lock-circle-open" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input
+                  <Input required valid
                     type="password"                
                     placeholder="Password"
                     onChange ={(e) => setPassword(e.target.value)}
@@ -138,34 +135,24 @@ const Register=()=> {
                       <i className="ni ni-check-bold" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input
-                    
-                    onChange={(e) => setConfirmpassword(e.target.value)}
+                  <Input required valid
+                    class="is-invalid from-control"
+                    onChange={(e) => confirmPassword(e.target)}
                     placeholder="Confirm Your Password"
                     type="password"
                     autoComplete="off"
-                    onKeyUp={()=> checkPassword(password,confirmpassword)}
-                    
                   />
+                  <FormFeedback invalid>{pass}</FormFeedback>
                 </InputGroup>
               </FormGroup>
-              <FormGroup>
-                <div className="text-muted text-center mt-2 mb-4">
-                  <span style={{
-                      fontWeight: 'light',
-                      color: 'red',
-                      alignItems: 'right'
-                      }}>{pass}
-                  </span>
-                </div>
-              </FormGroup>
+              
               <div className="text-center">
                 <Button className="mt-4" 
                         id="submit"
                         disabled={isDisabled}
                         color="primary" 
                         type="submit"
-                        onClick={setEmailError==="valid email"? (e)=> onRegister(e) : undefined}
+                        onClick={ (e) => onRegister(e)}
                 >
                   Register
                 </Button>
