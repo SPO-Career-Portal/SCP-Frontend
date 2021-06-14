@@ -1,4 +1,4 @@
-import { sessionService } from 'redux-react-session';
+import { sessionService } from "redux-react-session";
 
 export const login = (username) => async () => {
   try {

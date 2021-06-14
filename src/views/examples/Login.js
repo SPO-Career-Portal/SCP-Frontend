@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useState } from "react";
 
 // reactstrap components
 import {
@@ -32,59 +32,38 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import { useDispatch } from 'react-redux';
-import { login } from '../../actions/userActions';
+import { useDispatch } from "react-redux";
+import { login } from "../../actions/userActions";
+import { LOGIN } from "../../utils/requests";
+import { compose } from "redux";
+
 const Login = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const onLogin = async (e) => {
+    if (e) e.preventDefault();
+    try {
+      //dummy API(update this for sending credentials to backend)
+      // const data = await LOGIN("users", username, password);
+      const data = { username: username };
+
+      // storing username in redux-store
+      dispatch(login(data.username));
+    } catch (err) {
+      console.log("Error while logging in!");
+    }
+  };
+
   const dispatch = useDispatch();
   return (
     <>
       <Col lg="5" md="7">
         <Card className="bg-secondary shadow border-0">
-          <CardHeader className="bg-transparent pb-5">
-            <div className="text-muted text-center mt-2 mb-3">
-              <small>Sign in with</small>
-            </div>
-            <div className="btn-wrapper text-center">
-              <Button
-                className="btn-neutral btn-icon"
-                color="default"
-                href="#pablo"
-                onClick={(e) => e.preventDefault()}
-              >
-                <span className="btn-inner--icon">
-                  <img
-                    alt="..."
-                    src={
-                      require("../../assets/img/icons/common/github.svg")
-                        .default
-                    }
-                  />
-                </span>
-                <span className="btn-inner--text">Github</span>
-              </Button>
-              <Button
-                className="btn-neutral btn-icon"
-                color="default"
-                href="#pablo"
-                onClick={(e) => e.preventDefault()}
-              >
-                <span className="btn-inner--icon">
-                  <img
-                    alt="..."
-                    src={
-                      require("../../assets/img/icons/common/google.svg")
-                        .default
-                    }
-                  />
-                </span>
-                <span className="btn-inner--text">Google</span>
-              </Button>
-            </div>
-          </CardHeader>
           <CardBody className="px-lg-5 py-lg-5">
-            <div className="text-center text-muted mb-4">
-              <small>Or sign in with credentials</small>
-            </div>
+            <p className="text-lead text-muted text-center">
+              Sign in to start your session!
+            </p>
             <Form role="form">
               <FormGroup className="mb-3">
                 <InputGroup className="input-group-alternative">
@@ -94,9 +73,12 @@ const Login = () => {
                     </InputGroupText>
                   </InputGroupAddon>
                   <Input
-                    placeholder="Email"
-                    type="email"
-                    autoComplete="new-email"
+                    required
+                    valid
+                    placeholder="IITK Username"
+                    type="text"
+                    autoComplete="on"
+                    onChange={(e) => setUsername(e.target.value)}
                   />
                 </InputGroup>
               </FormGroup>
@@ -108,9 +90,11 @@ const Login = () => {
                     </InputGroupText>
                   </InputGroupAddon>
                   <Input
+                    required
                     placeholder="Password"
                     type="password"
                     autoComplete="new-password"
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </InputGroup>
               </FormGroup>
@@ -128,7 +112,12 @@ const Login = () => {
                 </label>
               </div>
               <div className="text-center">
-                <Button className="my-4" color="primary" type="button" onClick={()=>dispatch(login("123"))}>
+                <Button
+                  className="my-4"
+                  color="primary"
+                  type="button"
+                  onClick={(e) => onLogin(e)}
+                >
                   Sign in
                 </Button>
               </div>
@@ -136,22 +125,13 @@ const Login = () => {
           </CardBody>
         </Card>
         <Row className="mt-3">
-          <Col xs="6">
+          <Col xs="12" className="text-right">
             <a
-              className="text-light"
+              className="text-light "
               href="#pablo"
               onClick={(e) => e.preventDefault()}
             >
               <small>Forgot password?</small>
-            </a>
-          </Col>
-          <Col className="text-right" xs="6">
-            <a
-              className="text-light"
-              href="#pablo"
-              onClick={(e) => e.preventDefault()}
-            >
-              <small>Create new account</small>
             </a>
           </Col>
         </Row>
