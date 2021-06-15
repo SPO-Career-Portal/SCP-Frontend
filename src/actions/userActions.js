@@ -1,21 +1,33 @@
-import { sessionService } from 'redux-react-session';
+import { sessionService } from "redux-react-session";
 
-export const login = user =>
-  async () => {
-    try {
-      //const response = await sessionApi.login({ user }); LOGIN API
-      const response = {
-          token : "ADSDNHJBSFC",
-          name : "MRIDUL",
-          lastName : "DUBEY",
-      }
+export const login = (username) => async () => {
+  try {
+    const response = {
+      username: username,
+    };
+
+    sessionService.saveSession();
+    sessionService.saveUser(response);
+    console.log("response", response);
+  } catch (err) {
+    console.log("Error while logging in!");
+  }
+};
+
+export const register = (email,password) => async ()  => {
+    try{
+      const response={
+        email : email,
+        password : password
+      };
+
       sessionService.saveSession();
       sessionService.saveUser(response);
-      console.log("reponse", response);
+      console.log("response", response);
     } catch (err) {
-      // error
+      console.log("Error while registering!");
     }
-  };
+};
 
 export const logout = () =>
   async () => {
@@ -28,3 +40,4 @@ export const logout = () =>
       // error
     }
   };
+  
