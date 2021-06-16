@@ -1,43 +1,60 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import Header from "components/Headers/Header.js";
 import classNames from "classnames";
 import {
-    Button, Card, CardHeader, CardBody, CardFooter, Label, FormGroup, Form, Input, Container, Row, Col,
+    Button, Alert, FormGroup, Form, Input, Row, Col,
 } from "reactstrap";
+import { Component } from "react";
 
+class Apply extends Component {
+    constructor(props) {
+        super(props)
+        this.state = { data: { Name: '', RollNo: '', Mobile: '', Email: '', LinkedIn: '', Github: '' } }
+        this.handleChange = this.handleChange.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
+    }
 
+    handleChange = (e) => {
+        // console.log(e.target)
+        let title = e.target.name
+        let val = e.target.value
+        let prevState = this.state.data
+        prevState[title] = val
+        this.setState({
+            data: prevState
+        })
+    }
 
-const Apply = (props) => {
-    const data = { 'Name': 'Form' };
-    console.log(props)
-    return (
-        <>
-            {/* <h2 className="text-centre">{props[1]['value']}</h2> */}
-            <Form >
-                <h3>Personal Information</h3>
+    handleSubmit = (event) => {
+        event.preventDefault();
+        // Send data (this.state.data) to Server
+        alert("Submitted!!.....Maybe Failed, Hehe!!!")
+    }
+
+    // console.log(props)
+    render() {
+        let organization = this.props['data'][1]['value']
+        // console.log(this.state)
+        return (
+            <Form onSubmit={this.handleSubmit}>
+                <h2 className='text-center'>{organization}</h2>
                 <hr />
+                <h3>Personal Information</h3>
+                <hr style={{ margin: '12px 0' }} />
                 <Row>
                     <Col>
                         <h5>Your Name</h5>
                     </Col>
                 </Row>
                 <Row>
-                    <Col lg="6" >
+                    <Col >
                         <FormGroup className="mt-0 pt-0">
                             <Input
-                                id="First_Name"
+                                required
+                                name="Name"
+                                id="Name"
                                 type="text"
-                                placeholder="First Name"
-                            />
-                        </FormGroup>
-                    </Col>
-                    <Col lg="6" >
-                        <FormGroup className="mt-0 pt-0">
-                            <Input
-                                id="Last_Name"
-                                type="text"
-                                placeholder="Last Name"
+                                placeholder="John Doe"
+                                onChange={this.handleChange}
                             />
                         </FormGroup>
                     </Col>
@@ -47,9 +64,14 @@ const Apply = (props) => {
                         <h5>Roll Number</h5>
                         <FormGroup className="mt-0 pt-0">
                             <Input
+                                required
+                                name="RollNo"
                                 id="Roll_Number"
-                                type="number"
-                                placeholder="Eg. 160056"
+                                type="text"
+                                placeholder="160056"
+                                minLength={6}
+                                maxLength={8}
+                                onChange={this.handleChange}
                             />
                         </FormGroup>
                     </Col>
@@ -57,9 +79,15 @@ const Apply = (props) => {
                         <h5>Phone Number</h5>
                         <FormGroup className="mt-0 pt-0">
                             <Input
+                                required
+                                min="0"
+                                name="Mobile"
                                 id="Phone_Number"
-                                type="number"
-                                placeholder="Eg. +91 9876543210"
+                                type="text"
+                                placeholder="+918080808080"
+                                minLength={10}
+                                maxLength={13}
+                                onChange={this.handleChange}
                             />
                         </FormGroup>
                     </Col>
@@ -69,14 +97,17 @@ const Apply = (props) => {
                         <h5>Email ID</h5>
                         <FormGroup className="mt-0 pt-0">
                             <Input
+                                required
+                                name="Email"
                                 id="Email"
                                 type="email"
-                                placeholder="Eg. name@example.com"
+                                placeholder="name@iitk.ac.in"
+                                pattern=".+@iitk\.ac\.in"
+                                onChange={this.handleChange}
                             />
                         </FormGroup>
                     </Col>
                 </Row>
-                <hr />
                 <h3 className="mt-3">Additional Information</h3>
                 <hr />
                 <Row>
@@ -85,9 +116,11 @@ const Apply = (props) => {
                         <FormGroup>
                             <Input
                                 required
+                                name="LinkedIn"
                                 id="Linkedin"
-                                type="text"
-                                placeholder="Eg. linkedin.com/in/example"
+                                type="url"
+                                placeholder="https://linkedin.com/in/name"
+                                onChange={this.handleChange}
                             />
                         </FormGroup>
                     </Col>
@@ -95,16 +128,26 @@ const Apply = (props) => {
                         <h5>Github Profile</h5>
                         <FormGroup>
                             <Input
+                                required
                                 id="Github"
-                                type="text"
-                                placeholder="Eg. github.com/example"
+                                type="url"
+                                placeholder="https://github.com/name"
+                                // pattern='https:\/\/github\.com\/[^\/]+\/'
+                                onChange={this.handleChange}
                             />
                         </FormGroup>
                     </Col>
                 </Row>
+                <hr style={{ margin: '12px 0' }} />
+                <Row className='text-right'>
+                    <Col>
+                        <Button type='submit' color="success">Submit</Button>
+                        <Button outline color="secondary" onClick={this.props.toggle}>Cancel</Button>
+                    </Col>
+                </Row>
             </Form>
-        </>
-    )
+        )
+    }
 }
 
 export default Apply;

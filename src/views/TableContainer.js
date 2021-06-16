@@ -14,31 +14,28 @@ import {
     Form, FormGroup, Label, FormText
 } from "reactstrap";
 
-import { tablestyle } from '../components/Style/css_style'
+import Apply from '../components/Modal/ApplyForm'
 
-const TableContainer = ({ columns, data, renderRowSubComponent, }) => {
+import { tablestyle, applybtnshadow, headingstyle, expandbgstyle } from '../components/Style/css_style'
+
+const TableContainer = ({ columns, data, }) => {
     const {
         getTableProps, getTableBodyProps, headerGroups, page, prepareRow,
         canPreviousPage, canNextPage, pageOptions, pageCount, gotoPage, nextPage, previousPage, setPageSize,
         state: { pageIndex, pageSize } } = useTable({ columns, data, }, useSortBy, useExpanded, usePagination)
 
-
     const [fetchedData, setFetchedData] = useState([])
+    const [isModal, setIsModal] = useState(false)
 
-
+    // For sorting columns
     const generateSortingIndicator = column => {
         return column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""
     }
 
-
+    // Pagination - Go to page number
     const onChangeInSelect = event => {
         setPageSize(Number(event.target.value))
     }
-
-    // const onChangeInInput = event => {
-    //     const page = event.target.value ? Number(event.target.value) - 1 : 0
-    //     gotoPage(page)
-    // }
 
     useEffect(() => {
         fetch("https://mockend.com/h4rSHp/fake-api/comments")
@@ -49,9 +46,37 @@ const TableContainer = ({ columns, data, renderRowSubComponent, }) => {
             .catch(error => console.log(error))
     }, [])
 
+    // Card on expanding rows
+    const renderRowSubComponent = (fetchedData, cells) => {
+        // Cells contains value of each coulmn of the Row
+        let index = parseInt(cells[0]['row']['id'])
+        return (
+            <>
+                <Card style={expandbgstyle}>
+                    <CardBody>
+                        <strong style={headingstyle}>Job Details</strong>
+                        <p>{fetchedData[index]['details']}</p>
+                        <strong style={headingstyle}>About the Company</strong>
+                        <p>{fetchedData[index]['about']}</p>
+                        <Button style={applybtnshadow} color='success' onClick={toggle}>Apply</Button>
+                    </CardBody>
+                </Card >
+                <Modal isOpen={isModal} toggle={toggle}>
+                    <ModalBody>
+                        <Apply data={cells} toggle={toggle} />
+                    </ModalBody>
+                </Modal>
+            </>
+        )
+    }
 
+    // toggle organization form modal visibility
+    const toggle = (props) => {
+        setIsModal(!isModal)
+    }
     return (
         <Fragment>
+            {/* Modal for Organization specific form by click on Apply*/}
             <Table responsive hover {...getTableProps()} style={tablestyle}>
                 <thead style={{ background: '#ccc' }}>
                     {headerGroups.map(headerGroup => (

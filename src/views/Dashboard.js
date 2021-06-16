@@ -22,15 +22,12 @@ import { Button, Card, CardHeader, CardBody, NavItem, NavLink, Nav, Progress, Ta
 
 import Header from "../components/Headers/Header"
 import TableContainer from './TableContainer.js'
-import { applybtnshadow, headingstyle, expandbgstyle, maingradient } from '../components/Style/css_style'
-import Apply from '../components/Modal/ApplyForm'
+
+import { maingradient } from '../components/Style/css_style'
 
 const Index = (props) => {
   // to store the fetched data
   const [fetchedData, setFetchedData] = useState([])
-  const [isModal, setIsModal] = useState(false)
-
-  let ind = [];
 
   useEffect(() => {
     // to set the fetched data
@@ -41,24 +38,6 @@ const Index = (props) => {
       })
       .catch(error => console.log(error))
   }, [])
-
-  // Expanded Row
-  const renderRowSubComponent = (fetchedData, cells) => {
-    let index = parseInt(cells[0]['row']['id'])
-    ind = cells
-
-    return (
-      <Card style={expandbgstyle}>
-        <CardBody>
-          <strong style={headingstyle}>Job Details</strong>
-          <p>{fetchedData[index]['details']}</p>
-          <strong style={headingstyle}>About the Company</strong>
-          <p>{fetchedData[index]['about']}</p>
-          <Button style={applybtnshadow} color='success' onClick={toggle}>Apply</Button>
-        </CardBody>
-      </Card >
-    )
-  }
 
 
   // Column Headers for the table
@@ -99,26 +78,11 @@ const Index = (props) => {
   ], [])
 
 
-  // toggle modal visibility
-  const toggle = (props) => {
-    setIsModal(!isModal)
-  }
-
-
   return (
     <>
       {/* <Header /> */}
-      <Modal isOpen={isModal} toggle={toggle}>
-        <ModalBody>
-          <Apply index={ind} />
-        </ModalBody>
-        <ModalFooter>
-          <Button color="success" onClick={toggle}>Submit</Button>{' '}
-          <Button outline color="secondary" onClick={toggle}>Cancel</Button>
-        </ModalFooter>
-      </Modal>
       <div style={maingradient}>
-        <TableContainer columns={columns} data={fetchedData} renderRowSubComponent={renderRowSubComponent} />
+        <TableContainer columns={columns} data={fetchedData} />
       </div>
     </>
   );
