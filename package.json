@@ -65,7 +65,8 @@
     "reactstrap": "8.9.0",
     "redux": "^4.1.0",
     "redux-react-session": "^2.6.1",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "validator": "^13.6.0"
   },
   "devDependencies": {
     "gulp": "4.0.2",
