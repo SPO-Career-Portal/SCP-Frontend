@@ -1,9 +1,9 @@
 const base_url = "http://localhost:5000/";
 
 // Login
-export const LOGIN = async (url, username, password) => {
+export const LOGIN = async (url, email, password) => {
   const user = {
-    username: username,
+    email: email,
     password: password,
   };
 
