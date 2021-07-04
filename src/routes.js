@@ -1,4 +1,6 @@
-import Index from "views/Index.js";
+import Index from "views/Dashboard";
+import Placement from 'views/examples/Placement'
+import Internship from 'views/examples/Internship'
 import Profile from "views/examples/Profile.js";
 import Maps from "views/examples/Maps.js";
 import Register from "views/examples/Register.js";
@@ -15,31 +17,17 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/icons",
-    name: "Icons",
-    icon: "ni ni-planet text-blue",
-    component: Icons,
+    path: "/placement",
+    name: "Placement",
+    icon: "ni ni-tv-2 text-primary",
+    component: Placement,
     layout: "/admin",
   },
   {
-    path: "/maps",
-    name: "Maps",
-    icon: "ni ni-pin-3 text-orange",
-    component: Maps,
-    layout: "/admin",
-  },
-  {
-    path: "/user-profile",
-    name: "User Profile",
-    icon: "ni ni-single-02 text-yellow",
-    component: Profile,
-    layout: "/admin",
-  },
-  {
-    path: "/tables",
-    name: "Tables",
-    icon: "ni ni-bullet-list-67 text-red",
-    component: Tables,
+    path: "/internship",
+    name: "Internship",
+    icon: "ni ni-tv-2 text-primary",
+    component: Internship,
     layout: "/admin",
   },
   {
@@ -56,5 +44,13 @@ var routes = [
     component: Register,
     layout: "/auth",
   },
+  {
+    path: "/user-profile",
+    name: "User Profile",
+    icon: "ni ni-single-02 text-yellow",
+    component: Profile,
+    layout: "/admin",
+  },
+
 ];
 export default routes;
