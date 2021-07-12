@@ -18,17 +18,18 @@
 import React, { useEffect, useState, useMemo } from "react";
 
 // reactstrap components
-import { Button, Card, CardHeader, CardBody, NavItem, NavLink, Nav, Progress, Table, Container, Row, Col, Input, CustomInput, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, FormText } from "reactstrap";
+import { Button, } from "reactstrap";
 
 // import Header from "../components/Headers/Header"
-import TableContainer from '../TableContainer'
+import TableContainer from './TableContainer/PlacementTable'
 import { applybtnshadow, headingstyle, expandbgstyle, maingradient } from '../../components/Style/css_style'
 import Apply from '../../components/Modal/ApplyForm'
+import { ReactComponent as ShowIcon } from '../../assets/img/icons/common/add_white_24dp.svg'
+import { ReactComponent as HideIcon } from '../../assets/img/icons/common/remove_white_24dp.svg'
 
 const Placement = (props) => {
     // to store the fetched data
     const [fetchedData, setFetchedData] = useState([])
-    const [isModal, setIsModal] = useState(false)
 
 
     useEffect(() => {
@@ -40,24 +41,6 @@ const Placement = (props) => {
             })
             .catch(error => console.log(error))
     }, [])
-
-
-    // Expandable Row
-    const renderRowSubComponent = (fetchedData, cells) => {
-        let index = parseInt(cells[0]['row']['id'])
-
-        return (
-            <Card style={expandbgstyle}>
-                <CardBody>
-                    <strong style={headingstyle}>Job Details</strong>
-                    <p>{fetchedData[index]['details']}</p>
-                    <strong style={headingstyle}>About the Company</strong>
-                    <p>{fetchedData[index]['about']}</p>
-                    <Button style={applybtnshadow} color='success' onClick={toggle}>Apply</Button>
-                </CardBody>
-            </Card>
-        )
-    }
 
 
     // Column Headers for the table
@@ -88,35 +71,32 @@ const Placement = (props) => {
         },
         {
             Header: 'Details',
-            id: 'expander', // 'id' is required
+            id: 'expander', // 'id' is required for expanding on clicking
             Cell: ({ row }) => (
-                <Button color="primary" size="sm"{...row.getToggleRowExpandedProps()}>
-                    {row.isExpanded ? ' -' : '+'}
+                <Button color="primary" size="sm"{...row.getToggleRowExpandedProps()} style={{ padding: '2px' }}>
+                    {row.isExpanded ? <HideIcon /> : <ShowIcon />}
                 </Button>
-            )
+            ),
+            disableSortBy: true
+        },
+        {
+            Header: 'Download',
+            disableSortBy: true
+        },
+        {
+            Header: 'Delete',
+            disableSortBy: true
         },
     ], [])
-
-
-    // toggle modal visibility
-    const toggle = () => setIsModal(!isModal);
 
 
     return (
         <>
             {/* <Header /> */}
-            <Modal isOpen={isModal} toggle={toggle}>
-                <ModalBody>
-                    <Apply />
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="success" onClick={toggle}>Submit</Button>{' '}
-                    <Button outline color="secondary" onClick={toggle}>Cancel</Button>
-                </ModalFooter>
-            </Modal>
             <div style={maingradient}>
                 <div>
-                    <TableContainer columns={columns} data={fetchedData} renderRowSubComponent={renderRowSubComponent} />
+                    {/* Table Containing Placement Data */}
+                    <TableContainer columns={columns} data={fetchedData} />
                 </div>
             </div>
         </>
