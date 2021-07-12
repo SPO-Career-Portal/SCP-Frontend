@@ -15,8 +15,8 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, {useState} from "react";
-import PropTypes from 'prop-types'
+import React , {useEffect, useState} from "react";
+import PropTypes from 'prop-types';
 
 // reactstrap components
 import {
@@ -34,20 +34,50 @@ import {
 
 // core components
 import UserHeader from "components/Headers/UserHeader.js";
+import axios from 'axios';
 
-const Profile = (props) => {
+const Profile = () => {
 
-  const [resumelink,setResumelink]=useState(props.resumeLink);
-  const [githublink,setGithublink]=useState(props.githubLink);
-  const [linkedinlink,setLinkedinlink]=useState(props.linkedinLink);
+  const [profiledata,setProfileData]=useState([]);
 
-  const printdata = (event)=>{
-    console.log({resumelink},{githublink},{linkedinlink});
-    event.preventDefault();
+  const fetchProfile = async() => {
+    const profileDetails= await axios.get('http://127.0.0.1:8000/user/profile/')
+    setProfileData(profileDetails.data)
+    setMasterResumelink(profiledata.mastercv)
+    setResume1link(profiledata.resume1)
+    setResume2link(profiledata.resume1)
+    setGithublink(profiledata.github)
+    setLinkedinlink(profiledata.linkedin)
+
+    
   }
+  const updateProfile = () => {
+    axios.post('http://127.0.0.1:8000/user/edit/',{
+        mastercv: masterresumelink,
+        resume1: resume1link,
+        resume2: resume2link,
+        github: githublink,
+        linkedin: linkedinlink,
+
+    })
+    
+    
+  }
+
+  useEffect(()=>{
+    fetchProfile()
+  },[])
+
+  const [masterresumelink,setMasterResumelink]=useState(profiledata.mastercv);
+  const [resume1link,setResume1link]=useState(profiledata.resume1);
+  const [resume2link,setResume2link]=useState(profiledata.resume2);
+  const [githublink,setGithublink]=useState(profiledata.github);
+  const [linkedinlink,setLinkedinlink]=useState(profiledata.linkedin);
+
+
   return (
     <>
-      <UserHeader name={props.name} />
+      <UserHeader name={profiledata.name} />
       {/* Page content */}
       <Container className="mt--7" fluid>
         <Row>
@@ -76,15 +106,15 @@ const Profile = (props) => {
                     <div className="card-profile-stats d-flex justify-content-center mt-5 md-0">
                       <div className="text-center">
                         <h3>
-                          {props.name}
-                          <span className="font-weight-light">, {props.rollNo}</span>
+                          {profiledata.name}
+                          <span className="font-weight-light">, {profiledata.roll}</span>
                         </h3>
                       </div> 
                     </div>
                   </div>
                 <div className="text-center">
                   <div className="h5 mt-0">
-                    {props.department}, {props.programme}
+                    {profiledata.department}, {profiledata.program}
                   </div>
                   <div>
                     Indian Institute of Technology, Kanpur
@@ -121,9 +151,9 @@ const Profile = (props) => {
                           </label>
                           <Input
                             className="form-control-alternative"
-                            defaultValue={props.name}
+                            defaultValue={profiledata.name}
                             id="input-username"
-                            placeholder={props.name}
+                            placeholder={profiledata.name}
                             type="text"
                             readOnly
                           />
@@ -139,9 +169,9 @@ const Profile = (props) => {
                           </label>
                           <Input
                             className="form-control-alternative"
-                            defaultValue={props.rollNo}
+                            defaultValue={profiledata.roll}
                             id="input-rollno"
-                            placeholder={props.rollNo}
+                            placeholder={profiledata.roll}
                             type="number"
                             readOnly
                           />
@@ -157,9 +187,9 @@ const Profile = (props) => {
                           </label>
                           <Input
                             className="form-control-alternative"
-                            defaultValue={props.department}
+                            defaultValue={profiledata.department}
                             id="input-department"
-                            placeholder={props.department}
+                            placeholder={profiledata.department}
                             type="text"
                             readOnly
                           />
@@ -175,9 +205,9 @@ const Profile = (props) => {
                           </label>
                           <Input
                             className="form-control-alternative"
-                            defaultValue={props.programme}
+                            defaultValue={profiledata.program}
                             id="input-programme"
-                            placeholder={props.programme}
+                            placeholder={profiledata.program}
                             type="text"
                             readOnly
                           />
@@ -195,15 +225,53 @@ const Profile = (props) => {
                         <FormGroup>
                           <label
                             className="form-control-label"
-                            htmlFor="Resume-Link"
+                            htmlFor="MasterResume-Link"
                           >
-                            Resume Link
+                            Master Resume Link
                           </label>
                           <Input
                             className="form-control-alternative"
-                            defaultValue={resumelink}
-                            onChange={event => {setResumelink(event.target.value)}}
-                            id="resume-link"
+                            defaultValue={profiledata.mastercv}
+                            onChange={event => {setMasterResumelink(event.target.value)}}
+                            id="master_resume-link"
+                            type="url"
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col md="12">
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="Resume1-Link"
+                          >
+                            Resume-1 Link
+                          </label>
+                          <Input
+                            className="form-control-alternative"
+                            defaultValue={profiledata.resume1}
+                            onChange={event => {setResume1link(event.target.value)}}
+                            id="resume1-link"
+                            type="url"
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col md="12">
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="Resume2-Link"
+                          >
+                            Resume-2 Link
+                          </label>
+                          <Input
+                            className="form-control-alternative"
+                            defaultValue={profiledata.resume2}
+                            onChange={event => {setResume2link(event.target.value)}}
+                            id="resume2-link"
                             type="url"
                           />
                         </FormGroup>
@@ -220,7 +288,7 @@ const Profile = (props) => {
                           </label>
                           <Input
                             className="form-control-alternative"
-                            defaultValue={githublink}
+                            defaultValue={profiledata.github}
                             onChange={event => {setGithublink(event.target.value)}}
                             id="github-profile-link"
                             type="url"
@@ -239,7 +307,7 @@ const Profile = (props) => {
                           </label>
                           <Input
                             className="form-control-alternative"
-                            defaultValue={linkedinlink}
+                            defaultValue={profiledata.linkedin}
                             onChange={event => {setLinkedinlink(event.target.value)}}
                             id="linkedin-profile-link"
                             type="url"
@@ -257,7 +325,7 @@ const Profile = (props) => {
             <Button
               color="primary"
               href="#pablo"
-              onClick={printdata}
+              onClick={updateProfile}
               size="normal"
               >
               Save
@@ -271,25 +339,32 @@ const Profile = (props) => {
 };
 
 //type of props in Profile
-Profile.prototype = {
-  userID: PropTypes.number,
-  name: PropTypes.string,
-  programme: PropTypes.string,
-  department: PropTypes.string,
-  rollNo : PropTypes.number,
-  resumeLink: PropTypes.string,
-  githubLink : PropTypes.string,
-  linkedinLink  : PropTypes.string
-}
+// Profile.prototype = {
+//   userID: PropTypes.number,
+//   name: PropTypes.string,
+//   programme: PropTypes.string,
+//   department: PropTypes.string,
+//   rollNo : PropTypes.number,
+//   masterresumeLink: PropTypes.string,
+//   resume1link: PropTypes.string,
+//   resume2link: PropTypes.string,
+//   githubLink : PropTypes.string,
+//   linkedinLink  : PropTypes.string
+// }
 
-Profile.defaultProps = {
-  userID: 1,
-  name: "Name",
-  programme: "B.tech/B.S.",
-  department: "dep",
-  rollNo : 190833,
-  resumeLink : "asdohfao"
-}
+// Profile.defaultProps = {
+//   userID: 1,
+//   name: "Name",
+//   programme: "B.tech/B.S.",
+//   department: "dep",
+//   rollNo : 190733,
+//   masterresumeLink : "asdohfao",
+//   resume1link: "abcd",
+//   resume2link: "efgh",
+//   linkedinLink  : "yoyo"
+
+
+// }
 
 
 export default Profile;
