@@ -18,11 +18,15 @@
 import React, { useEffect, useState, useMemo } from "react";
 
 // reactstrap components
-import { Button, Card, CardHeader, CardBody, NavItem, NavLink, Nav, Progress, Table, Container, Row, Col, Input, CustomInput, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, FormText } from "reactstrap";
+import { Button, } from "reactstrap";
 
-import Header from "../components/Headers/Header"
-import TableContainer from './TableContainer.js'
+// import Header from "../components/Headers/Header"
+import TableContainer from './examples/TableContainer/DashboardTable.js'
+// Show/Hide (+/-)Icon
+import { ReactComponent as ShowIcon } from '../assets/img/icons/common/add_white_24dp.svg'
+import { ReactComponent as HideIcon } from '../assets/img/icons/common/remove_white_24dp.svg'
 
+// Styling for background
 import { maingradient } from '../components/Style/css_style'
 
 const Index = (props) => {
@@ -68,10 +72,10 @@ const Index = (props) => {
     },
     {
       Header: 'Details',
-      id: 'expander', // 'id' is required
+      id: 'expander', // 'id' is required for expanding on clicking
       Cell: ({ row }) => (
-        <Button color="primary" size="sm"{...row.getToggleRowExpandedProps()}>
-          {row.isExpanded ? ' -' : '+'}
+        <Button color="primary" size="sm"{...row.getToggleRowExpandedProps()} style={{ padding: '2px' }}>
+          {row.isExpanded ? <HideIcon /> : <ShowIcon />}
         </Button>
       )
     },

@@ -18,10 +18,10 @@
 import React, { useEffect, useState, useMemo } from "react";
 
 // reactstrap components
-import { Button, Card, CardHeader, CardBody, NavItem, NavLink, Nav, Progress, Table, Container, Row, Col, Input, CustomInput, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, FormText } from "reactstrap";
+import { Button, Card, CardBody, } from "reactstrap";
 
 // import Header from "../components/Headers/Header"
-import TableContainer from '../TableContainer'
+import TableContainer from './TableContainer/InternshipTable'
 import { applybtnshadow, headingstyle, expandbgstyle, maingradient } from '../../components/Style/css_style'
 import Apply from '../../components/Modal/ApplyForm'
 
@@ -95,6 +95,14 @@ const Internship = (props) => {
                 </Button>
             )
         },
+        {
+            Header: 'Download',
+            disableSortBy: true,
+        },
+        {
+            Header: 'Delete',
+            disableSortBy: true,
+        }
     ], [])
 
 
@@ -105,15 +113,6 @@ const Internship = (props) => {
     return (
         <>
             {/* <Header /> */}
-            <Modal isOpen={isModal} toggle={toggle}>
-                <ModalBody>
-                    <Apply />
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="success" onClick={toggle}>Submit</Button>{' '}
-                    <Button outline color="secondary" onClick={toggle}>Cancel</Button>
-                </ModalFooter>
-            </Modal>
             <div style={maingradient}>
                 <div>
                     <TableContainer columns={columns} data={fetchedData} renderRowSubComponent={renderRowSubComponent} />
