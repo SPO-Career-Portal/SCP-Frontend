@@ -1,19 +1,13 @@
 /*!
-
 =========================================================
 * Argon Dashboard React - v1.2.0
 =========================================================
-
 * Product Page: https://www.creative-tim.com/product/argon-dashboard-react
 * Copyright 2021 Creative Tim (https://www.creative-tim.com)
 * Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
 * Coded by Creative Tim
-
 =========================================================
-
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
 */
 import React , {useEffect, useState} from "react";
 import PropTypes from 'prop-types';
@@ -35,10 +29,12 @@ import {
 // core components
 import UserHeader from "components/Headers/UserHeader.js";
 import axios from 'axios';
+import Loader from "react-loader-spinner";
 
 const Profile = () => {
 
   const [profiledata,setProfileData]=useState([]);
+  const [isLoading,setIsLoading]=useState(true);
 
   const fetchProfile = async() => {
     const profileDetails= await axios.get('http://127.0.0.1:8000/user/profile/')
@@ -48,6 +44,7 @@ const Profile = () => {
     setResume2link(profiledata.resume1)
     setGithublink(profiledata.github)
     setLinkedinlink(profiledata.linkedin)
+    setIsLoading(false)
 
     
   }
@@ -76,6 +73,8 @@ const Profile = () => {
 
 
   return (
+    isLoading?
+    <center><Loader type="ThreeDots" color="#332e8e" height="100" width="100" /></center>:
     <>
       <UserHeader name={profiledata.name} />
       {/* Page content */}
