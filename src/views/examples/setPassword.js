@@ -11,7 +11,7 @@
 */
 import React, {useState } from "react";
 import { useDispatch } from "react-redux";
-import { register } from "../../actions/userActions";
+import { setPass } from "../../actions/userActions";
 
 import {
   Button,
@@ -37,7 +37,7 @@ const SetPass=()=> {
 
   const onSubmit = async (e)=> {
 
-    if(password==confirmPassword){
+    if(password===confirmPassword){
       if (e) e.preventDefault();
     try{
       const user ={
@@ -107,7 +107,7 @@ const SetPass=()=> {
                     type="password"
                     autoComplete="off"
                   />
-                  <FormFeedback invalid>{pass}</FormFeedback>
+                  <FormFeedback invalid >{pass}</FormFeedback>
                 </InputGroup>
               </FormGroup>
 

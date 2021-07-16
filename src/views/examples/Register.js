@@ -12,7 +12,7 @@
 import React, {useState } from "react";
 import { useDispatch } from "react-redux";
 import { register } from "../../actions/userActions";
-import { useHistory } from "react-router-dom";
+import { useHistory} from "react-router-dom";
 
 import {
   Button,
@@ -36,19 +36,22 @@ const Register=()=> {
 
 
   const onSubmit = async (e)=> {
-
+    const id=1234;
+    history.push("/auth/setPass/access/:id")
     try{
       const user ={
         roll: roll,
       };
 
      const result= await dispatch(register(user.roll));
-     if (result=="202_ACCEPTED"){
-      // history.push("/setPassword")
+     /*if (result=="202_ACCEPTED"){
+      //history.push("/auth/setPass")
+      
      }
-     else{
+    else{
       alert("Something went wrong");
-     }
+    }*/
+    history.push("/auth/setPass/access/:id") //doing this as of now
     }catch (err) {
       console.log("Error while registering");
     }
@@ -88,6 +91,7 @@ const Register=()=> {
                         color="primary"
                         type="submit"
                         onClick={ (e) => onSubmit(e)}
+                        
                 >
                   Submit
                 </Button>
