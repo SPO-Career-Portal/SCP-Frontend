@@ -12,7 +12,6 @@
 import React, {useState } from "react";
 import { useDispatch } from "react-redux";
 import { register } from "../../actions/userActions";
-import { useHistory } from "react-router-dom";
 
 import {
   Button,
@@ -25,38 +24,50 @@ import {
   InputGroupText,
   InputGroup,
   Col,
+  FormFeedback,
 } from "reactstrap";
 
 
+const SetPass=()=> {
 
-const Register=()=> {
-
-  const [roll, setRoll] = useState("");
-  const history = useHistory();
-
+  const [password, setPassword]= useState('');
+  const [confirmPassword, setConfirmPassword]=useState('');
+  const [pass, passState]=useState('');
+  const [isDisabled, setIsdisabled]= useState(true)
 
   const onSubmit = async (e)=> {
 
+    if(password==confirmPassword){
+      if (e) e.preventDefault();
     try{
       const user ={
-        roll: roll,
+        password: password
       };
 
-     const result= await dispatch(register(user.roll));
-     if (result=="202_ACCEPTED"){
-      // history.push("/setPassword")
-     }
-     else{
-      alert("Something went wrong");
-     }
+      await dispatch(setPass(user.password));
+
     }catch (err) {
       console.log("Error while registering");
     }
+    }else{
+      setIsdisabled(false);
+    }
 
-    };
+  };
+  const confirmpassword = async (e) => {
+    var class_valid = "is-valid form-control";
+    var class_invalid = "is-invalid form-control";
 
-
-
+    setConfirmPassword(e.value);
+    if(e.value!==password){
+      passState('Passwords did not match!');
+      e.className=class_invalid;
+    }else{
+      passState(' ');
+      setIsdisabled(false);
+      e.className=class_valid;
+    }
+  };
 
   const dispatch = useDispatch();
 
@@ -68,23 +79,42 @@ const Register=()=> {
 
             <Form role="form" >
               <FormGroup>
-                <InputGroup className="input-group-alternative mb-3">
+                <InputGroup className="input-group-alternative">
                   <InputGroupAddon addonType="prepend">
                     <InputGroupText>
-                      <i className="ni ni-circle-08" />
+                      <i className="ni ni-lock-circle-open" />
                     </InputGroupText>
                   </InputGroupAddon>
                   <Input required valid
-                    placeholder="IITK Roll no."
-                    type="roll"
+                    type="password"
+                    placeholder="Password"
+                    onChange ={(e) => setPassword(e.target.value)}
                     autoComplete="off"
-                    onChange ={(e) => setRoll(e.target.value)}
                   />
                 </InputGroup>
               </FormGroup>
+              <FormGroup>
+                <InputGroup className="input-group-alternative-2" id="ConfirmPassword">
+                  <InputGroupAddon addonType="prepend">
+                    <InputGroupText>
+                      <i className="ni ni-check-bold" />
+                    </InputGroupText>
+                  </InputGroupAddon>
+                  <Input required valid
+                    class="is-invalid from-control"
+                    onChange={(e) => confirmpassword(e.target)}
+                    placeholder="Confirm Your Password"
+                    type="password"
+                    autoComplete="off"
+                  />
+                  <FormFeedback invalid>{pass}</FormFeedback>
+                </InputGroup>
+              </FormGroup>
+
               <div className="text-center">
                 <Button className="mt-4"
                         id="submit"
+                        disabled={isDisabled}
                         color="primary"
                         type="submit"
                         onClick={ (e) => onSubmit(e)}
@@ -100,4 +130,4 @@ const Register=()=> {
   );
 };
 
-export default Register;
+export default SetPass;
