@@ -46,7 +46,7 @@ var routes = [
     layout: "/auth",
   },
   {
-    path :"/setPass/access/:id",
+    path :"/user/register/verify/:code",
     name :"SetPass",
     icon: "ni ni-circle-08 text-pink",
     component: SetPass,

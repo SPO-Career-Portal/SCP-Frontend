@@ -12,7 +12,6 @@
 import React, {useState } from "react";
 import { useDispatch } from "react-redux";
 import { register } from "../../actions/userActions";
-import { useHistory} from "react-router-dom";
 
 import {
   Button,
@@ -32,26 +31,23 @@ import {
 const Register=()=> {
 
   const [roll, setRoll] = useState("");
-  const history = useHistory();
+
 
 
   const onSubmit = async (e)=> {
-    const id=1234;
-    history.push("/auth/setPass/access/:id")
     try{
       const user ={
         roll: roll,
       };
 
      const result= await dispatch(register(user.roll));
-     /*if (result=="202_ACCEPTED"){
-      //history.push("/auth/setPass")
-      
+     
+     if (result=="202_ACCEPTED"){
+      alert("check yor mail for link to set password");
      }
     else{
       alert("Something went wrong");
-    }*/
-    history.push("/auth/setPass/access/:id") //doing this as of now
+    }
     }catch (err) {
       console.log("Error while registering");
     }

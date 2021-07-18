@@ -32,6 +32,7 @@ export const login = (username) => async () => {
 export const register = (roll) => async ()  => {
     try{
       const roll_no=roll;
+      
       return sendRequest("/user/register", "POST", {
         roll_no,
       });
@@ -48,7 +49,7 @@ export const setPass = (password) => async ()  => {
     });
     if(result=="200_OK"){
       sessionService.saveSession();
-      sessionService.saveUser(pass);
+      sessionService.saveUser(result);
     }
     else{
       alert("Error while registering");
