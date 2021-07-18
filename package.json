@@ -3,10 +3,7 @@
   "version": "1.2.0",
   "description": "React version of Argon Dashboard by Creative Tim",
   "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/creativetimofficial/argon-dashboard-react.git"
-  },
+  "repository": "git+https://github.com/creativetimofficial/argon-dashboard-react.git",
   "keywords": [
     "react",
     "reactjs",
@@ -51,8 +48,8 @@
     "classnames": "2.2.6",
     "immutable": "^4.0.0-rc.12",
     "moment": "2.29.1",
-    "multiselect-react-dropdown": "^2.0.1",
-    "node-sass": "4.14.1",
+    "multiselect-react-dropdown": "^2.0.4",
+    "node-sass": "^4.14.1",
     "node-sass-package-importer": "5.3.2",
     "nouislider": "14.6.3",
     "react": "17.0.1",
@@ -60,6 +57,7 @@
     "react-copy-to-clipboard": "5.0.3",
     "react-datetime": "3.0.4",
     "react-dom": "17.0.1",
+    "react-loader-spinner": "^4.0.0",
     "react-redux": "^7.2.4",
     "react-router-dom": "5.2.0",
     "react-scripts": "4.0.1",
