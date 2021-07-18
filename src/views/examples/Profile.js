@@ -329,7 +329,6 @@ const Profile = () => {
         <div className="text-center mt-3">
             <Button
               color="primary"
-              href="#pablo"
               onClick={onUpdateProfile}
               size="normal"
               >
