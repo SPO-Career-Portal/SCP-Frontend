@@ -35,6 +35,7 @@ const Register=()=> {
 
 
   const onSubmit = async (e)=> {
+    
     try{
       const user ={
         roll: roll,
@@ -45,6 +46,9 @@ const Register=()=> {
      if (result=="202_ACCEPTED"){
       alert("check yor mail for link to set password");
      }
+    else if(result=="403_FORBIDDEN"|| result=="400_BAD_REQUEST"){
+      alert("roll no. already in use");
+    }
     else{
       alert("Something went wrong");
     }
