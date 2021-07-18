@@ -47,11 +47,9 @@ const Profile = () => {
     setGithublink(profiledata.github)
     setLinkedinlink(profiledata.linkedin)
     setIsLoading(false)
-    
-
-    
+     
   }
-  console.log(isLoading);
+
   const onUpdateProfile = () => {
     axios.post(BASE_URL+'user/edit/',{
         mastercv: masterresumelink,
