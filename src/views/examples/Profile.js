@@ -31,13 +31,15 @@ import UserHeader from "components/Headers/UserHeader.js";
 import axios from 'axios';
 import Loader from "react-loader-spinner";
 
+const BASE_URL = "http://127.0.0.1:8000/"
+
 const Profile = () => {
 
   const [profiledata,setProfileData]=useState([]);
   const [isLoading,setIsLoading]=useState(true);
 
   const fetchProfile = async() => {
-    const profileDetails= await axios.get('http://127.0.0.1:8000/user/profile/')
+    const profileDetails= await axios.get(BASE_URL+'user/profile/')
     setProfileData(profileDetails.data)
     setMasterResumelink(profiledata.mastercv)
     setResume1link(profiledata.resume1)
@@ -45,11 +47,13 @@ const Profile = () => {
     setGithublink(profiledata.github)
     setLinkedinlink(profiledata.linkedin)
     setIsLoading(false)
+    
 
     
   }
-  const updateProfile = () => {
-    axios.post('http://127.0.0.1:8000/user/edit/',{
+  console.log(isLoading);
+  const onUpdateProfile = () => {
+    axios.post(BASE_URL+'user/edit/',{
         mastercv: masterresumelink,
         resume1: resume1link,
         resume2: resume2link,
@@ -57,6 +61,7 @@ const Profile = () => {
         linkedin: linkedinlink,
 
     })
+    fetchProfile();
     
     
   }
@@ -73,8 +78,11 @@ const Profile = () => {
 
 
   return (
-    isLoading?
-    <center><Loader type="ThreeDots" color="#332e8e" height="100" width="100" /></center>:
+   <>
+    {isLoading?
+    <>
+     <center><Loader type="ThreeDots" color="#332e8e" height="100" width="100" /></center>
+    </>:
     <>
       <UserHeader name={profiledata.name} />
       {/* Page content */}
@@ -324,7 +332,7 @@ const Profile = () => {
             <Button
               color="primary"
               href="#pablo"
-              onClick={updateProfile}
+              onClick={onUpdateProfile}
               size="normal"
               >
               Save
@@ -334,36 +342,13 @@ const Profile = () => {
       </Container>
 
     </>
+    }
+   </>
+ 
   );
 };
 
-//type of props in Profile
-// Profile.prototype = {
-//   userID: PropTypes.number,
-//   name: PropTypes.string,
-//   programme: PropTypes.string,
-//   department: PropTypes.string,
-//   rollNo : PropTypes.number,
-//   masterresumeLink: PropTypes.string,
-//   resume1link: PropTypes.string,
-//   resume2link: PropTypes.string,
-//   githubLink : PropTypes.string,
-//   linkedinLink  : PropTypes.string
-// }
 
-// Profile.defaultProps = {
-//   userID: 1,
-//   name: "Name",
-//   programme: "B.tech/B.S.",
-//   department: "dep",
-//   rollNo : 190733,
-//   masterresumeLink : "asdohfao",
-//   resume1link: "abcd",
-//   resume2link: "efgh",
-//   linkedinLink  : "yoyo"
-
-
-// }
 
 
 export default Profile;
