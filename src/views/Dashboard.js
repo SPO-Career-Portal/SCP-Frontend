@@ -61,11 +61,6 @@ const Index = (props) => {
       accessor: "profile",
     },
     {
-      Header: "Eligibility",
-      accessor: "eligibility",
-      disableSortBy: true,
-    },
-    {
       Header: "Deadline",
       accessor: "deadline",
       disableSortBy: true

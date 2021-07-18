@@ -5,8 +5,9 @@ import Profile from "views/examples/Profile.js";
 import Maps from "views/examples/Maps.js";
 import Register from "views/examples/Register.js";
 import Login from "views/examples/Login.js";
-import Tables from "views/examples/Tables.js";
-import Icons from "views/examples/Icons.js";
+
+import AdminInternship from 'views/AdminComponent/Internship'
+import AdminPlacement from 'views/AdminComponent/Placement'
 
 var routes = [
   {
@@ -28,6 +29,20 @@ var routes = [
     name: "Internship",
     icon: "ni ni-tv-2 text-primary",
     component: Internship,
+    layout: "/admin",
+  },
+  {
+    path: "/admin/placement",
+    name: "Admin Placement",
+    icon: "ni ni-tv-2 text-primary",
+    component: AdminPlacement,
+    layout: "/admin",
+  },
+  {
+    path: "/admin/internship",
+    name: "Admin Internship",
+    icon: "ni ni-tv-2 text-primary",
+    component: AdminInternship,
     layout: "/admin",
   },
   {

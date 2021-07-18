@@ -18,22 +18,21 @@
 import React, { useEffect, useState, useMemo } from "react";
 
 // reactstrap components
-import { Button, Card, CardBody, } from "reactstrap";
+import { Button, } from "reactstrap";
 
 // import Header from "../components/Headers/Header"
-import TableContainer from './TableContainer/InternshipTable'
+import TableContainer from './AdminTableContainer/InternshipTable'
 import { maingradient } from '../../components/Style/css_style'
 
-import { ReactComponent as ShowIcon } from '../../assets/img/icons/common/add_white_24dp.svg'
-import { ReactComponent as HideIcon } from '../../assets/img/icons/common/remove_white_24dp.svg'
+import { ReactComponent as ShowIcon } from '../../assets/img/icons/common/add_white_18dp.svg'
+import { ReactComponent as HideIcon } from '../../assets/img/icons/common/remove_white_18dp.svg'
 
 const Internship = (props) => {
-
     // to store the fetched data
     const [fetchedData, setFetchedData] = useState([])
 
     useEffect(() => {
-        // to set the fetched data of the user
+        // to set the fetched data
         fetch("https://mockend.com/h4rSHp/fake-api/posts")
             .then(response => response.json())
             .then(data => {
@@ -46,10 +45,14 @@ const Internship = (props) => {
     // Column Headers for the table
     const columns = useMemo(() => [
         {
+            // Header is the Heading
+            // Accessor is the object Name in the data
             Header: "Sr.No.",
             Cell: ({ row }) => {
                 return <span>{parseInt(row.id) + 1}</span>
             },
+            disableSortBy: true,
+            disableFilters: true,
         },
         {
             Header: "Organisation",
@@ -58,6 +61,16 @@ const Internship = (props) => {
         {
             Header: "Profile",
             accessor: "profile",
+        },
+        {
+            Header: "Programmes",
+            accessor: "programmes",
+            disableSortBy: true,
+        },
+        {
+            Header: "Department",
+            accessor: "department",
+            disableSortBy: true,
         },
         {
             Header: "Deadline",
@@ -73,8 +86,15 @@ const Internship = (props) => {
                 </Button>
             )
         },
+        {
+            Header: 'Download',
+            disableSortBy: true,
+        },
+        {
+            Header: 'Delete',
+            disableSortBy: true,
+        }
     ], [])
-
 
     return (
         <>
