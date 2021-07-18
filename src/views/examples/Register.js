@@ -46,7 +46,7 @@ const Register=()=> {
      if (result=="202_ACCEPTED"){
       alert("check yor mail for link to set password");
      }
-    else if(result=="403_FORBIDDEN"|| result=="400_BAD_REQUEST"){
+    else if(result=="403_FORBIDDEN"){
       alert("roll no. already in use");
     }
     else{
