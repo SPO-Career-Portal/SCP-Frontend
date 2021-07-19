@@ -18,22 +18,22 @@
 import React, { useEffect, useState, useMemo } from "react";
 
 // reactstrap components
-import { Button, Card, CardBody, } from "reactstrap";
+import { Button, } from "reactstrap";
 
 // import Header from "../components/Headers/Header"
-import TableContainer from './TableContainer/InternshipTable'
+import TableContainer from './AdminTableContainer/PlacementTable'
 import { maingradient } from '../../components/Style/css_style'
 
 import { ReactComponent as ShowIcon } from '../../assets/img/icons/common/add_white_24dp.svg'
 import { ReactComponent as HideIcon } from '../../assets/img/icons/common/remove_white_24dp.svg'
 
-const Internship = (props) => {
-
+const Placement = (props) => {
     // to store the fetched data
     const [fetchedData, setFetchedData] = useState([])
 
+
     useEffect(() => {
-        // to set the fetched data of the user
+        // to set the fetched data
         fetch("https://mockend.com/h4rSHp/fake-api/posts")
             .then(response => response.json())
             .then(data => {
@@ -46,6 +46,8 @@ const Internship = (props) => {
     // Column Headers for the table
     const columns = useMemo(() => [
         {
+            // Header is the Heading
+            // accessor is the object name in the data
             Header: "Sr.No.",
             Cell: ({ row }) => {
                 return <span>{parseInt(row.id) + 1}</span>
@@ -60,18 +62,37 @@ const Internship = (props) => {
             accessor: "profile",
         },
         {
+            Header: "Programmes",
+            accessor: "programmes",
+            disableSortBy: true,
+        },
+        {
+            Header: "Department",
+            accessor: "department",
+            disableSortBy: true,
+        },
+        {
             Header: "Deadline",
             accessor: "deadline",
             disableSortBy: true
         },
         {
             Header: 'Details',
-            id: 'expander', // 'id' is required
+            id: 'expander', // 'id' is required for expanding on clicking
             Cell: ({ row }) => (
                 <Button color="primary" size="sm"{...row.getToggleRowExpandedProps()} style={{ padding: '3px' }}>
                     {row.isExpanded ? <HideIcon /> : <ShowIcon />}
                 </Button>
-            )
+            ),
+            disableSortBy: true
+        },
+        {
+            Header: 'Download',
+            disableSortBy: true
+        },
+        {
+            Header: 'Delete',
+            disableSortBy: true
         },
     ], [])
 
@@ -81,6 +102,7 @@ const Internship = (props) => {
             {/* <Header /> */}
             <div style={maingradient}>
                 <div>
+                    {/* Table Containing Placement Data */}
                     <TableContainer columns={columns} data={fetchedData} />
                 </div>
             </div>
@@ -88,4 +110,4 @@ const Internship = (props) => {
     );
 };
 
-export default Internship;
+export default Placement;
