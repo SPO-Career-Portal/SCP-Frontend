@@ -6,8 +6,8 @@ import Register from "views/examples/Register.js";
 import SetPass from "views/examples/setPassword";
 import Login from "views/examples/Login.js";
 
-// import AdminInternship from 'views/AdminComponent/Internship'
-// import AdminPlacement from 'views/AdminComponent/Placement'
+import AdminInternship from 'views/AdminComponent/Internship'
+import AdminPlacement from 'views/AdminComponent/Placement'
 
 var routes = [
   {
@@ -15,36 +15,36 @@ var routes = [
     name: "Dashboard",
     icon: "ni ni-tv-2 text-primary",
     component: Index,
-    layout: "/admin",
+    layout: "/user",
   },
   {
     path: "/placement",
     name: "Placement",
     icon: "ni ni-tv-2 text-primary",
     component: Placement,
-    layout: "/admin",
+    layout: "/user",
   },
   {
     path: "/internship",
     name: "Internship",
     icon: "ni ni-tv-2 text-primary",
     component: Internship,
+    layout: "/user",
+  },
+  {
+    path: "/placement",
+    name: "Admin Placement",
+    icon: "ni ni-tv-2 text-primary",
+    component: AdminPlacement,
     layout: "/admin",
   },
-  // {
-  //   path: "/admin/placement",
-  //   name: "Admin Placement",
-  //   icon: "ni ni-tv-2 text-primary",
-  //   component: AdminPlacement,
-  //   layout: "/admin",
-  // },
-  // {
-  //   path: "/admin/internship",
-  //   name: "Admin Internship",
-  //   icon: "ni ni-tv-2 text-primary",
-  //   component: AdminInternship,
-  //   layout: "/admin",
-  // },
+  {
+    path: "/internship",
+    name: "Admin Internship",
+    icon: "ni ni-tv-2 text-primary",
+    component: AdminInternship,
+    layout: "/admin",
+  },
   {
     path: "/login",
     name: "Login",
@@ -67,11 +67,11 @@ var routes = [
     layout: "/auth",
   },
   {
-    path: "/user-profile",
+    path: "/profile",
     name: "User Profile",
     icon: "ni ni-single-02 text-yellow",
     component: Profile,
-    layout: "/admin",
+    layout: "/user",
   },
 
 ];
