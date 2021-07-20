@@ -22,15 +22,14 @@ import { Button, } from "reactstrap";
 
 // import Header from "../components/Headers/Header"
 import TableContainer from './TableContainer/PlacementTable'
-import { applybtnshadow, headingstyle, expandbgstyle, maingradient } from '../../components/Style/css_style'
-import Apply from '../../components/Modal/ApplyForm'
+import { maingradient } from '../../components/Style/css_style'
+
 import { ReactComponent as ShowIcon } from '../../assets/img/icons/common/add_white_24dp.svg'
 import { ReactComponent as HideIcon } from '../../assets/img/icons/common/remove_white_24dp.svg'
 
 const Placement = (props) => {
     // to store the fetched data
     const [fetchedData, setFetchedData] = useState([])
-
 
     useEffect(() => {
         // to set the fetched data
@@ -60,11 +59,6 @@ const Placement = (props) => {
             accessor: "profile",
         },
         {
-            Header: "Eligibility",
-            accessor: "eligibility",
-            disableSortBy: true,
-        },
-        {
             Header: "Deadline",
             accessor: "deadline",
             disableSortBy: true
@@ -73,18 +67,10 @@ const Placement = (props) => {
             Header: 'Details',
             id: 'expander', // 'id' is required for expanding on clicking
             Cell: ({ row }) => (
-                <Button color="primary" size="sm"{...row.getToggleRowExpandedProps()} style={{ padding: '2px' }}>
+                <Button color="primary" size="sm"{...row.getToggleRowExpandedProps()} style={{ padding: '3px' }}>
                     {row.isExpanded ? <HideIcon /> : <ShowIcon />}
                 </Button>
             ),
-            disableSortBy: true
-        },
-        {
-            Header: 'Download',
-            disableSortBy: true
-        },
-        {
-            Header: 'Delete',
             disableSortBy: true
         },
     ], [])

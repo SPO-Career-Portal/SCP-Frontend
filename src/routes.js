@@ -2,12 +2,12 @@ import Index from "views/Dashboard";
 import Placement from 'views/examples/Placement'
 import Internship from 'views/examples/Internship'
 import Profile from "views/examples/Profile.js";
-import Maps from "views/examples/Maps.js";
 import Register from "views/examples/Register.js";
 import SetPass from "views/examples/setPassword";
 import Login from "views/examples/Login.js";
-import Tables from "views/examples/Tables.js";
-import Icons from "views/examples/Icons.js";
+
+import AdminInternship from 'views/AdminComponent/Internship'
+import AdminPlacement from 'views/AdminComponent/Placement'
 
 var routes = [
   {
@@ -15,20 +15,34 @@ var routes = [
     name: "Dashboard",
     icon: "ni ni-tv-2 text-primary",
     component: Index,
-    layout: "/admin",
+    layout: "/user",
   },
   {
     path: "/placement",
     name: "Placement",
     icon: "ni ni-tv-2 text-primary",
     component: Placement,
-    layout: "/admin",
+    layout: "/user",
   },
   {
     path: "/internship",
     name: "Internship",
     icon: "ni ni-tv-2 text-primary",
     component: Internship,
+    layout: "/user",
+  },
+  {
+    path: "/placement",
+    name: "Admin Placement",
+    icon: "ni ni-tv-2 text-primary",
+    component: AdminPlacement,
+    layout: "/admin",
+  },
+  {
+    path: "/internship",
+    name: "Admin Internship",
+    icon: "ni ni-tv-2 text-primary",
+    component: AdminInternship,
     layout: "/admin",
   },
   {
@@ -46,18 +60,18 @@ var routes = [
     layout: "/auth",
   },
   {
-    path :"/user/register/verify/:code",
-    name :"SetPass",
+    path: "/user/register/verify/:code",
+    name: "SetPass",
     icon: "ni ni-circle-08 text-pink",
     component: SetPass,
     layout: "/auth",
   },
   {
-    path: "/user-profile",
+    path: "/profile",
     name: "User Profile",
     icon: "ni ni-single-02 text-yellow",
     component: Profile,
-    layout: "/admin",
+    layout: "/user",
   },
 
 ];
