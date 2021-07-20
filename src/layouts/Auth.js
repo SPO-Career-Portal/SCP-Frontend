@@ -29,7 +29,7 @@ import { useSelector } from 'react-redux';
 const Auth = (props) => {
   const mainContent = React.useRef(null);
   const location = useLocation();
-  const session = useSelector((state)=> state.session);
+  const session = useSelector((state) => state.session);
   React.useEffect(() => {
     document.body.classList.add("bg-default");
     return () => {
@@ -56,8 +56,10 @@ const Auth = (props) => {
       }
     });
   };
-  if(session.authenticated){
-    return <Redirect to="/admin/index" />
+  if (session.authenticated) {
+    // Change as per requirement 
+    // For now to check, if username is "Admin" in login then we can access Admin Dashboard
+    return <Redirect to={session.user.username === "Admin" ? "/admin/placement" : "/user/index"} />
   }
   return (
     <>
@@ -68,7 +70,7 @@ const Auth = (props) => {
             <div className="header-body text-center mb-7">
               <Row className="justify-content-center">
                 <Col lg="5" md="6">
-                 
+
                   <h1 className="text-white">STUDENT CAREER PORTAL</h1>
                 </Col>
               </Row>
