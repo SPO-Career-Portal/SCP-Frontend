@@ -13,7 +13,8 @@ const Admin = (props) => {
   const session = useSelector((state) => state.session);
   // Check whether user is admin or not and update 'isAdmin' value
   // You can check Admin placement and Internship Dashboard with setting isAdmin to true
-  const [isAdmin, setISAdmin] = useState(false)
+  // For now to check, if username is "Admin" in login then we can access Admin Dashboard
+  const [isAdmin, setISAdmin] = useState(session.user.username === "Admin" ? true : false)
   React.useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
