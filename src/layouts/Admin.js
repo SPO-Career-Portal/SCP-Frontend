@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation, Route, Switch, Redirect } from "react-router-dom";
 import { Container } from "reactstrap";
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
@@ -10,14 +10,17 @@ import routes from "routes.js";
 const Admin = (props) => {
   const mainContent = React.useRef(null);
   const location = useLocation();
-  const session = useSelector((state)=> state.session);
+  const session = useSelector((state) => state.session);
+  // Check whether user is admin or not and update 'isAdmin' value
+  // You can check Admin placement and Internship Dashboard with setting isAdmin to true
+  const [isAdmin, setISAdmin] = useState(false)
   React.useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }, [location]);
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
-      if (prop.layout === "/admin") {
+      if (isAdmin ? prop.layout === '/admin' : prop.layout === "/user") {
         return (
           <Route
             path={prop.layout + prop.path}
@@ -30,8 +33,8 @@ const Admin = (props) => {
       }
     });
   };
-  const getAdmin =(routes) => {
-    return routes.filter((value)=> value.layout==='/admin')
+  const getAdmin = (routes) => {
+    return routes.filter((value) => isAdmin ? value.layout === '/admin' : value.layout === '/user')
   }
   const getBrandText = (path) => {
     for (let i = 0; i < routes.length; i++) {
@@ -44,7 +47,7 @@ const Admin = (props) => {
     }
     return "Brand";
   };
-  if(!session.authenticated){
+  if (!session.authenticated) {
     return <Redirect to="/auth/login" />
   }
   return (
@@ -53,7 +56,7 @@ const Admin = (props) => {
         {...props}
         routes={getAdmin(routes)}
         logo={{
-          innerLink: "/admin/index",
+          innerLink: isAdmin ? "/admin/placement" : "/user/index",
           imgSrc: require("../assets/img/brand/logo_spo.png").default,
           imgAlt: "...",
         }}
@@ -65,7 +68,7 @@ const Admin = (props) => {
         />
         <Switch>
           {getRoutes(routes)}
-          <Redirect from="*" to="/admin/index" />
+          <Redirect from="*" to={isAdmin ? "/admin/placement" : "/user/index"} />
         </Switch>
         <Container fluid>
           <AdminFooter />
