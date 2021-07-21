@@ -1,5 +1,6 @@
 import { sessionService } from "redux-react-session";
 import axios from "axios";
+import { post } from "jquery";
 
 const base_url = "http://localhost:8000"
 
@@ -71,3 +72,4 @@ export const logout = () =>
       // error
     }
   };
+

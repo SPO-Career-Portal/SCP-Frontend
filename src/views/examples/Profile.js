@@ -30,6 +30,8 @@ import {
 import UserHeader from "components/Headers/UserHeader.js";
 import axios from 'axios';
 import Loader from "react-loader-spinner";
+import { Link } from "react-router-dom";
+import { useHistory } from "react-router";
 
 const BASE_URL = "http://127.0.0.1:8000/"
 
@@ -68,11 +70,18 @@ const Profile = () => {
     fetchProfile()
   },[])
 
+  
   const [masterresumelink,setMasterResumelink]=useState(profiledata.mastercv);
   const [resume1link,setResume1link]=useState(profiledata.resume1);
   const [resume2link,setResume2link]=useState(profiledata.resume2);
   const [githublink,setGithublink]=useState(profiledata.github);
   const [linkedinlink,setLinkedinlink]=useState(profiledata.linkedin);
+
+  const handleRoute=()=>{
+   history.push("/user/resetPassEmail")
+   };
+
+  const history=useHistory();
 
 
   return (
@@ -332,7 +341,14 @@ const Profile = () => {
               onClick={onUpdateProfile}
               size="normal"
               >
-              Save
+              Save 
+            </Button>
+            <Button
+              color="primary"
+              onClick= {handleRoute}
+              size="normal"
+              >
+              Change Password
             </Button>
         </div>
         
