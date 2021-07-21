@@ -40,7 +40,7 @@ const ResetPassword=()=> {
    const onSubmit = async()=> {
 
     try {
-       await axios.post(BASE_URL+"/resetpass/code=<str:token>/",{
+       await axios.post(BASE_URL+"/user/resetpass/code=<str:token>/",{
         new_password1: newPassword,
         new_password2: confirmNewPassword,
         old_password: oldPassword,
