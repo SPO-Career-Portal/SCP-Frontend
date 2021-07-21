@@ -26,7 +26,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="" render={(props) => <AdminLayout {...props} />} />
+        <Route path={session.authenticated ? "" : "/user"} render={(props) => <AdminLayout {...props} />} />
         <Route path="/auth" render={(props) => <AuthLayout {...props} />} />
         <Redirect from="" to="/auth/login" />
       </Switch>
