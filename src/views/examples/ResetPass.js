@@ -25,6 +25,7 @@ import {
   FormFeedback,
 } from "reactstrap";
 import axios from "axios";
+import { useLocation } from "react-router";
 
 const BASE_URL="http://127.0.0.1:8000"
 
@@ -36,11 +37,12 @@ const ResetPassword=()=> {
   const [confirmNewPassword, setConfirmNewPassword]=useState('');
   const [checkPasswords, setcheckPasswords]=useState('');
   const [isDisabled, setIsdisabled]= useState(true)
+  const location =  useLocation();
 
    const onSubmit = async()=> {
 
     try {
-       await axios.post(BASE_URL+"/user/resetpass/code=<str:token>/",{
+       await axios.post(BASE_URL+location.pathname,{
         new_password1: newPassword,
         new_password2: confirmNewPassword,
         old_password: oldPassword,

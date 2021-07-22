@@ -48,7 +48,17 @@ const Admin = (props) => {
     }
     return "Brand";
   };
-  if (!session.authenticated) {
+  
+  const checkRedirect =() =>{
+    if(props.location.pathname.slice(0,20)=="/user/resetpass/code"){
+      return false 
+    }
+    else {
+      return true
+    }
+  };
+  
+  if (!session.authenticated && checkRedirect()) {
     return <Redirect to="/auth/login" />
   }
   return (
@@ -69,7 +79,7 @@ const Admin = (props) => {
         />
         <Switch>
           {getRoutes(routes)}
-          <Redirect from="*" to={isAdmin ? "/admin/placement" : "/user/index"} />
+          <Redirect from="*" to={!isAdmin && checkRedirect()?  "/user/index" : "/admin/placement"} />
         </Switch>
         <Container fluid>
           <AdminFooter />
