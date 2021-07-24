@@ -36,22 +36,33 @@ import { useDispatch } from "react-redux";
 import { login } from "../../actions/userActions";
 import { LOGIN } from "../../utils/requests";
 import { compose } from "redux";
+import axios from "axios";
+
+const base_url = "http://127.0.0.1:8000/"
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [state, setState]= useState("");
 
   const onLogin = async (e) => {
-    if (e) e.preventDefault();
+    
     try {
       //dummy API(update this for sending credentials to backend)
-      // const data = await LOGIN("users", username, password);
-      const data = { username: username };
+       axios.defaults.withCredentials = true;
+       const res = await axios.post("/user/auth/login/",{
+          username:username,
+          password: password,
+       });
+       if (res.data.code==401) {setState("Incorrect Username or Password!")  
+       }
+       else if(res.data.code==200){
+         dispatch(login(username))
+       }
+      
 
-      // storing username in redux-store
-      dispatch(login(data.username));
     } catch (err) {
-      console.log("Error while logging in!");
+      setState("Something went Wrong!")
     }
   };
 
@@ -98,6 +109,7 @@ const Login = () => {
                   />
                 </InputGroup>
               </FormGroup>
+              <div className="text-center" style={{color : "Red"}}>{state}</div>
               <div className="custom-control custom-control-alternative custom-checkbox">
                 <input
                   className="custom-control-input"

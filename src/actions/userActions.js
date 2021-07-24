@@ -1,6 +1,5 @@
 import { sessionService } from "redux-react-session";
 import axios from "axios";
-import { post } from "jquery";
 
 const base_url = "http://localhost:8000"
 
@@ -64,8 +63,8 @@ export const setPass = (password) => async ()  => {
 export const logout = () =>
   async () => {
     try {
-      //await sessionApi.logout(); LOGOUTAPI
-      console.log("OUT");
+      axios.defaults.withCredentials = true;
+      await axios.post(base_url+"/user/auth/logout/")
       sessionService.deleteSession();
       sessionService.deleteUser();
     } catch (err) {

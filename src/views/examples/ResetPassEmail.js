@@ -40,8 +40,8 @@ const ResetPasswordEmail=()=> {
       await axios.post(BASE_URL+"/user/resetpassemail/",{
       roll : roll,
     })
-    .then(function(response){alert(response.data)})
-    .catch(function(error){alert("Please enter valid Roll Number")});
+    .then((response)=>{alert(response.data)})
+    .catch((err)=>{alert("Please enter valid Roll Number")});
   }
     catch{
       alert("Something went wrong");

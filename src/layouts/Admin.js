@@ -50,7 +50,8 @@ const Admin = (props) => {
   };
   
   const checkRedirect =() =>{
-    if(props.location.pathname.slice(0,20)=="/user/resetpass/code"){
+    const locationPathname = props.location.pathname.slice(0,20);
+    if(locationPathname.localeCompare("/user/resetpass/code")==0){
       return false 
     }
     else {
