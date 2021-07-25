@@ -64,16 +64,19 @@ export const setPass = (password) => async () => {
   }
 };
 
-export const logout = () => async () => {
-  try {
-    //await sessionApi.logout(); LOGOUTAPI
-    console.log("OUT");
-    sessionService.deleteSession();
-    sessionService.deleteUser();
-  } catch (err) {
-    // error
-  }
-};
+
+export const logout = () =>
+  async () => {
+    try {
+      axios.defaults.withCredentials = true;
+      await axios.post(base_url+"/user/auth/logout/")
+      sessionService.deleteSession();
+      sessionService.deleteUser();
+    } catch (err) {
+      // error
+    }
+  };
+
 
 // store eligible internships in redux
 export const storeInternshipData = (object) => ({
@@ -116,3 +119,4 @@ export const fetchPlacements = (url) => (dispatch) => {
     })
     .catch((error) => console.log(error));
 };
+

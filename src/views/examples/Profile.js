@@ -30,6 +30,7 @@ import {
 import UserHeader from "components/Headers/UserHeader.js";
 import axios from 'axios';
 import Loader from "react-loader-spinner";
+import { Link } from "react-router-dom";
 
 const BASE_URL = "http://127.0.0.1:8000/"
 
@@ -39,7 +40,8 @@ const Profile = () => {
   const [isLoading,setIsLoading]=useState(true);
 
   const fetchProfile = async() => {
-    const profileDetails= await axios.get(BASE_URL+'user/profile/')
+    axios.defaults.withCredentials = true;
+    const profileDetails= await axios.get('/user/profile/')
     setProfileData(profileDetails.data)
     setMasterResumelink(profiledata.mastercv)
     setResume1link(profiledata.resume1)
@@ -51,7 +53,8 @@ const Profile = () => {
   }
 
   const onUpdateProfile = () => {
-    axios.post(BASE_URL+'user/edit/',{
+    axios.defaults.withCredentials = true;
+    axios.post('/user/edit/',{
         mastercv: masterresumelink,
         resume1: resume1link,
         resume2: resume2link,
@@ -68,11 +71,13 @@ const Profile = () => {
     fetchProfile()
   },[])
 
+  
   const [masterresumelink,setMasterResumelink]=useState(profiledata.mastercv);
   const [resume1link,setResume1link]=useState(profiledata.resume1);
   const [resume2link,setResume2link]=useState(profiledata.resume2);
   const [githublink,setGithublink]=useState(profiledata.github);
   const [linkedinlink,setLinkedinlink]=useState(profiledata.linkedin);
+
 
 
   return (
@@ -332,8 +337,16 @@ const Profile = () => {
               onClick={onUpdateProfile}
               size="normal"
               >
-              Save
+              Save 
             </Button>
+            <Link to ="/user/resetPassEmail">
+              <Button
+              color="primary"
+              size="normal"
+              >
+              Change Password
+              </Button>
+            </Link>     
         </div>
         
       </Container>
