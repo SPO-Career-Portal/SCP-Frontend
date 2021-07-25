@@ -47,8 +47,8 @@ const ResetPassword=()=> {
         new_password2: confirmNewPassword,
         old_password: oldPassword,
       })
-      .then(function(response){alert(response.data)})
-      .catch(function(err){alert(err)});
+      .then((response)=>{alert(response.data)})
+      .catch((err)=>{alert(err)});
     }
     catch{
       alert("Something went wrong");

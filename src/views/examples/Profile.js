@@ -53,7 +53,8 @@ const Profile = () => {
   }
 
   const onUpdateProfile = () => {
-    axios.post(BASE_URL+'user/edit/',{
+    axios.defaults.withCredentials = true;
+    axios.post('/user/edit/',{
         mastercv: masterresumelink,
         resume1: resume1link,
         resume2: resume2link,
