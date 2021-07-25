@@ -9,7 +9,7 @@
 =========================================================
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-import React, {useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setPass } from "../../actions/userActions";
 
@@ -27,45 +27,40 @@ import {
   FormFeedback,
 } from "reactstrap";
 
+const SetPass = () => {
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [pass, passState] = useState("");
+  const [isDisabled, setIsdisabled] = useState(true);
 
-const SetPass=()=> {
-
-  const [password, setPassword]= useState('');
-  const [confirmPassword, setConfirmPassword]=useState('');
-  const [pass, passState]=useState('');
-  const [isDisabled, setIsdisabled]= useState(true)
-
-  const onSubmit = async (e)=> {
-
-    if(password===confirmPassword){
+  const onSubmit = async (e) => {
+    if (password === confirmPassword) {
       if (e) e.preventDefault();
-    try{
-      const user ={
-        password: password
-      };
+      try {
+        const user = {
+          password: password,
+        };
 
-      await dispatch(setPass(user.password));
-
-    }catch (err) {
-      console.log("Error while registering");
+        await dispatch(setPass(user.password));
+      } catch (err) {
+        console.log("Error while registering");
+      }
+    } else {
+      setIsdisabled(true);
     }
-    }else{
-      setIsdisabled(false);
-    }
-
   };
   const confirmpassword = async (e) => {
     var class_valid = "is-valid form-control";
     var class_invalid = "is-invalid form-control";
 
     setConfirmPassword(e.value);
-    if(e.value!==password){
-      passState('Passwords did not match!');
-      e.className=class_invalid;
-    }else{
-      passState(' ');
+    if (e.value !== password) {
+      passState("Passwords did not match!");
+      e.className = class_invalid;
+    } else {
+      passState(" ");
       setIsdisabled(false);
-      e.className=class_valid;
+      e.className = class_valid;
     }
   };
 
@@ -76,8 +71,7 @@ const SetPass=()=> {
       <Col lg="6" md="8">
         <Card className="bg-secondary shadow border-0">
           <CardBody className="px-lg-5 py-lg-5">
-
-            <Form role="form" >
+            <Form role="form">
               <FormGroup>
                 <InputGroup className="input-group-alternative">
                   <InputGroupAddon addonType="prepend">
@@ -85,39 +79,47 @@ const SetPass=()=> {
                       <i className="ni ni-lock-circle-open" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input required valid
+                  <Input
+                    required
+                    valid
                     type="password"
                     placeholder="Password"
-                    onChange ={(e) => setPassword(e.target.value)}
+                    onChange={(e) => setPassword(e.target.value)}
                     autoComplete="off"
                   />
                 </InputGroup>
               </FormGroup>
               <FormGroup>
-                <InputGroup className="input-group-alternative-2" id="ConfirmPassword">
+                <InputGroup
+                  className="input-group-alternative-2"
+                  id="ConfirmPassword"
+                >
                   <InputGroupAddon addonType="prepend">
                     <InputGroupText>
                       <i className="ni ni-check-bold" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input required valid
+                  <Input
+                    required
+                    valid
                     class="is-invalid from-control"
                     onChange={(e) => confirmpassword(e.target)}
                     placeholder="Confirm Your Password"
                     type="password"
                     autoComplete="off"
                   />
-                  <FormFeedback invalid >{pass}</FormFeedback>
+                  <FormFeedback invalid>{pass}</FormFeedback>
                 </InputGroup>
               </FormGroup>
 
               <div className="text-center">
-                <Button className="mt-4"
-                        id="submit"
-                        disabled={isDisabled}
-                        color="primary"
-                        type="submit"
-                        onClick={ (e) => onSubmit(e)}
+                <Button
+                  className="mt-4"
+                  id="submit"
+                  disabled={isDisabled}
+                  color="primary"
+                  type="submit"
+                  onClick={(e) => onSubmit(e)}
                 >
                   Submit
                 </Button>

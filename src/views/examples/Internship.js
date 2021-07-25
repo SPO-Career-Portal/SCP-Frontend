@@ -1,91 +1,88 @@
-/*!
-
-=========================================================
-* Argon Dashboard React - v1.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 
 // reactstrap components
-import { Button, Card, CardBody, } from "reactstrap";
+import { Button } from "reactstrap";
 
 // import Header from "../components/Headers/Header"
-import TableContainer from './TableContainer/InternshipTable'
-import { maingradient } from '../../components/Style/css_style'
+import TableContainer from "./TableContainer/InternshipTable";
+import { maingradient } from "../../components/Style/css_style";
 
-import { ReactComponent as ShowIcon } from '../../assets/img/icons/common/add_white_24dp.svg'
-import { ReactComponent as HideIcon } from '../../assets/img/icons/common/remove_white_24dp.svg'
+import { ReactComponent as ShowIcon } from "../../assets/img/icons/common/add_white_24dp.svg";
+import { ReactComponent as HideIcon } from "../../assets/img/icons/common/remove_white_24dp.svg";
+
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { fetchInternships } from "../../actions/userActions";
 
 const Internship = (props) => {
+  const dispatch = useDispatch();
 
-    // to store the fetched data
-    const [fetchedData, setFetchedData] = useState([])
+  // fetch eligible Internships
+  useEffect(() => {
+    dispatch(fetchInternships());
+  }, []);
 
-    useEffect(() => {
-        // to set the fetched data of the user
-        fetch("https://mockend.com/h4rSHp/fake-api/posts")
-            .then(response => response.json())
-            .then(data => {
-                setFetchedData(data)
-            })
-            .catch(error => console.log(error))
-    }, [])
+  const eligibleInternship = useSelector(
+    (state) => state.changeUserState.eligibleInternship
+  );
 
-
-    // Column Headers for the table
-    const columns = useMemo(() => [
-        {
-            Header: "Sr.No.",
-            Cell: ({ row }) => {
-                return <span>{parseInt(row.id) + 1}</span>
-            },
+  // Column Headers for the table
+  const columns = useMemo(
+    () => [
+      {
+        Header: "Sr.No.",
+        Cell: ({ row }) => {
+          return <span>{parseInt(row.id) + 1}</span>;
         },
-        {
-            Header: "Organisation",
-            accessor: "organisation",
-        },
-        {
-            Header: "Profile",
-            accessor: "profile",
-        },
-        {
-            Header: "Deadline",
-            accessor: "deadline",
-            disableSortBy: true
-        },
-        {
-            Header: 'Details',
-            id: 'expander', // 'id' is required
-            Cell: ({ row }) => (
-                <Button color="primary" size="sm"{...row.getToggleRowExpandedProps()} style={{ padding: '3px' }}>
-                    {row.isExpanded ? <HideIcon /> : <ShowIcon />}
-                </Button>
-            )
-        },
-    ], [])
+      },
+      {
+        Header: "Internship Name",
+        accessor: "intern_name",
+      },
+      {
+        Header: "Organisation",
+        accessor: "company",
+      },
+      {
+        Header: "Profile",
+        accessor: "role",
+      },
+      {
+        Header: "Deadline",
+        accessor: "deadline",
+        disableSortBy: true,
+      },
+      {
+        Header: "Details",
+        id: "expander", // 'id' is required
+        Cell: ({ row }) => (
+          <Button
+            color="primary"
+            size="sm"
+            {...row.getToggleRowExpandedProps()}
+            style={{ padding: "3px" }}
+          >
+            {row.isExpanded ? <HideIcon /> : <ShowIcon />}
+          </Button>
+        ),
+      },
+    ],
+    []
+  );
 
-
-    return (
-        <>
-            {/* <Header /> */}
-            <div style={maingradient}>
-                <div>
-                    <TableContainer columns={columns} data={fetchedData} />
-                </div>
-            </div>
-        </>
-    );
+  return (
+    <>
+      {/* <Header /> */}
+      <div style={maingradient}>
+        <div>
+          <TableContainer
+            columns={columns}
+            data={eligibleInternship == undefined ? [] : eligibleInternship}
+          />
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default Internship;
