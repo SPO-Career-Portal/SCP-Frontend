@@ -24,7 +24,6 @@ const TableContainer = ({ columns, data, }) => {
         canPreviousPage, canNextPage, pageOptions, pageCount, gotoPage, nextPage, previousPage, setPageSize,
         state: { pageIndex, pageSize } } = useTable({ columns, data, }, useSortBy, useExpanded, usePagination)
 
-    const [fetchedData, setFetchedData] = useState([])
     const [isModal, setIsModal] = useState(false)
     const [isAddModal, setIsAddModal] = useState(false)
 
@@ -38,15 +37,6 @@ const TableContainer = ({ columns, data, }) => {
         setPageSize(Number(event.target.value))
     }
 
-    useEffect(() => {
-        fetch("https://mockend.com/h4rSHp/fake-api/comments")
-            .then(response => response.json())
-            .then(data => {
-                setFetchedData(data)
-            })
-            .catch(error => console.log(error))
-    }, [])
-
     // Card on expanding rows
     const renderRowSubComponent = (fetchedData, cells) => {
         // Cells contains value of each coulmn of the Row
@@ -56,9 +46,9 @@ const TableContainer = ({ columns, data, }) => {
                 <Card style={expandbgstyle}>
                     <CardBody>
                         <strong style={headingstyle}>Job Details</strong>
-                        <p>{fetchedData[index]['details']}</p>
+                        <p>{fetchedData[index]['role']}</p>
                         <strong style={headingstyle}>About the Company</strong>
-                        <p>{fetchedData[index]['about']}</p>
+                        <p>{fetchedData[index]['description']}</p>
                         <Button style={applybtnshadow} color='success' onClick={toggle}>Apply</Button>
                     </CardBody>
                 </Card >
@@ -115,7 +105,7 @@ const TableContainer = ({ columns, data, }) => {
                                 </tr>
                                 {row.isExpanded && (
                                     <tr>
-                                        <td colSpan='8'>{renderRowSubComponent(fetchedData, row.cells)}</td>
+                                        <td colSpan='8'>{renderRowSubComponent(data, row.cells)}</td>
                                     </tr>
                                 )}
                             </Fragment>
