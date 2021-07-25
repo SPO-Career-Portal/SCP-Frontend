@@ -1,20 +1,3 @@
-/*!
-
-=========================================================
-* Argon Dashboard React - v1.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React, { useState } from "react";
 
 // reactstrap components
@@ -34,24 +17,34 @@ import {
 } from "reactstrap";
 import { useDispatch } from "react-redux";
 import { login } from "../../actions/userActions";
-import { LOGIN } from "../../utils/requests";
 import { compose } from "redux";
+import axios from "axios";
+
+const base_url = "http://127.0.0.1:8000/"
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [state, setState]= useState("");
 
   const onLogin = async (e) => {
-    if (e) e.preventDefault();
+    
     try {
       //dummy API(update this for sending credentials to backend)
-      // const data = await LOGIN("users", username, password);
-      const data = { username: username };
+       axios.defaults.withCredentials = true;
+       const res = await axios.post("/user/auth/login/",{
+          username:username,
+          password: password,
+       });
+       if (res.data.code==401) {setState("Incorrect Username or Password!")  
+       }
+       else if(res.data.code==200){
+         dispatch(login(username))
+       }
+      
 
-      // storing username in redux-store
-      dispatch(login(data.username));
     } catch (err) {
-      console.log("Error while logging in!");
+      setState("Something went Wrong!")
     }
   };
 
@@ -98,6 +91,7 @@ const Login = () => {
                   />
                 </InputGroup>
               </FormGroup>
+              <div className="text-center" style={{color : "Red"}}>{state}</div>
               <div className="custom-control custom-control-alternative custom-checkbox">
                 <input
                   className="custom-control-input"
