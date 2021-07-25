@@ -1,35 +1,75 @@
-import React, { Fragment, useState, useEffect } from 'react'
+import React, { Fragment, useState, useEffect} from 'react'
 import { useTable, useSortBy, useExpanded, usePagination } from 'react-table'
-
+import axios from 'axios'
+import {CSVLink} from 'react-csv'
 
 import "bootstrap/dist/css/bootstrap.min.css"
 // reactstrap component
 import {
-    Button,
-    Card, CardBody,
+    Button, Container,
+    Card, CardHeader, CardBody,
+    NavItem, NavLink, Nav, Progress,
     Table, Row, Col,
-    CustomInput,
-    Modal, ModalBody,
+    Input, CustomInput,
+    Modal, ModalHeader, ModalBody, ModalFooter,
+    Form, FormGroup, Label, FormText
 } from "reactstrap";
 
-import Apply from '../../../components/Modal/ApplyForm'
-import Add from '../../../components/Modal/AddForm'
+import AddPlacement from '../../../components/Modal/AddPlacementForm'
 
 import { ReactComponent as DownloadIcon } from '../../../assets/img/icons/common/save_alt_white_24dp.svg'
 import { ReactComponent as DeleteIcon } from '../../../assets/img/icons/common/delete_white_24dp.svg'
 
 import { tablestyle, applybtnshadow, headingstyle, expandbgstyle } from '../../../components/Style/css_style'
 
-const TableContainer = ({ columns, data, }) => {
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+const base_url = 'http://127.0.0.1:8000'
+
+const TableContainer = ({ columns, data, changeData }) => {
+
+    const [fetchedData, setFetchedData] = useState([])
+    const [changed, setChanged] = useState(true)
+    const [csvLink, setCsvLink] = useState(React.createRef())
+    const [expand, setExpand] = useState(true)
+
+    useEffect(async() => 
+        {
+            if (changed===true){
+                await axios.get(base_url+"/admin/placements/").then((response) => {
+                    setFetchedData(response.data);
+                    changeData(response.data);
+                    setCsvLink(React.createRef())
+                })
+                .catch(error => console.log(error))
+                setChanged(false)
+                setExpand(true)
+            }
+    },[changed])
+
     const {
         getTableProps, getTableBodyProps, headerGroups, page, prepareRow,
         canPreviousPage, canNextPage, pageOptions, pageCount, gotoPage, nextPage, previousPage, setPageSize,
         state: { pageIndex, pageSize } } = useTable({ columns, data, }, useSortBy, useExpanded, usePagination)
 
-    const [fetchedData, setFetchedData] = useState([])
-    const [isModal, setIsModal] = useState(false)
+    const [csvData, setCsvData] = useState([])
+    const [name, setName] = useState("")
     const [isAddModal, setIsAddModal] = useState(false)
-    const [isDeleteModal, setIsDeleteModal] = useState({ status: false, company: null })
+    const [isDeleteModal, setIsDeleteModal] = useState({ status: false, company: null, index: null })
+
 
     // For sorting columns
     const generateSortingIndicator = column => {
@@ -41,16 +81,6 @@ const TableContainer = ({ columns, data, }) => {
         setPageSize(Number(event.target.value))
     }
 
-    useEffect(() => {
-        // data for companies 'About' and Job Details
-        fetch("https://mockend.com/h4rSHp/fake-api/comments")
-            .then(response => response.json())
-            .then(data => {
-                setFetchedData(data)
-            })
-            .catch(error => console.log(error))
-    }, [])
-
     // Card on expanding rows
     const renderRowSubComponent = (fetchedData, cells) => {
         // Cells contains value of each coulmn of the Row
@@ -58,26 +88,41 @@ const TableContainer = ({ columns, data, }) => {
         return (
             <>
                 <Card style={expandbgstyle}>
-                    <CardBody>
+                    <CardBody style={expandbgstyle}>
                         <strong style={headingstyle}>Job Details</strong>
-                        <p>{fetchedData[index]['details']}</p>
-                        <strong style={headingstyle}>About the Company</strong>
-                        <p>{fetchedData[index]['about']}</p>
-                        <Button style={applybtnshadow} color='success' onClick={toggle}>Apply</Button>
+                        <p>{fetchedData[index]['description']}</p>
+                        <strong style={headingstyle}>Eligible Batches</strong>
+                        <br/>
+                        {fetchedData[index]['eligible_batches'].map((i)=> {return(<p style={{display: "inline"}}>{i+" , "}</p>)})}
+                        <br/>
+                        <br/>
+                        <strong style={headingstyle}>Eligible Branches</strong>
+                        <br/>
+                        {fetchedData[index]['eligible_branches'].map((i)=> {return(<p style={{display: "inline"}}>{i+" , "}</p>)})}
+                        <br/>
+                        <br/>
+                        <strong style={headingstyle}>Eligible Programmes</strong>
+                        <br/>
+                        {fetchedData[index]['eligible_programmes'].map((i)=> {return(<p style={{display: "inline"}}>{i+" , "}</p>)})}
                     </CardBody>
                 </Card >
-                <Modal isOpen={isModal} toggle={toggle}>
-                    <ModalBody>
-                        <Apply data={cells} toggle={toggle} />
-                    </ModalBody>
-                </Modal>
             </>
         )
     }
 
-    // toggle organization form modal visibility
-    const toggle = () => {
-        setIsModal(!isModal)
+    // After clicking on Download Icon
+    const handleDownload = async(event, cells) => {
+    
+        event.preventDefault()
+
+        let index = parseInt(cells[0]['row']['id']);
+        await axios.get(base_url+'/admin/downloadPlacement/'+fetchedData[index]['key']+'/')
+          .then(res => {
+                setCsvData(res.data);
+                setName(fetchedData[index]['placement_name']);
+          })
+          .catch(error => console.log(error))
+          csvLink.current.link.click();
     }
 
     // Add Offer Modal
@@ -85,15 +130,26 @@ const TableContainer = ({ columns, data, }) => {
         setIsAddModal(!isAddModal)
     }
 
-    // After clicking on Download Icon
-    const handleDownload = () => {
-        alert("Downloaded")
-    }
-
     // to handle delete modal confirmation 
-    const handleDeleteConfirm = () => {
-        // send the data to server to delete the data
-        alert("Confirmed")
+    const handleDeleteConfirm = async(event, index) => {
+
+        event.preventDefault()
+
+        let csrf_token = getCookie('csrftoken')
+        setExpand(false)
+
+        await axios.delete(base_url+'/admin/deletePlacement/', 
+                    {headers: 
+                        {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRFToken': csrf_token
+                        },
+                    data: 
+                        { 'key': fetchedData[index]['key'] }
+                    })
+        .then(res => {})
+        .catch(error => console.log(error))
+        setChanged(true)
         // to remove Confirmation Modal after Confirming
         handleDeleteModal()
     }
@@ -101,15 +157,13 @@ const TableContainer = ({ columns, data, }) => {
     // Modal to delete a row
     const handleDeleteModal = (props) => {
         if (isDeleteModal['status'] == true)
-            setIsDeleteModal({ status: false, company: null })
+            setIsDeleteModal({ status: false, company: null, index: null })
         else
-            setIsDeleteModal({ status: !isDeleteModal['status'], company: props['cells'][1]['value'] })
+            setIsDeleteModal({ status: !isDeleteModal['status'], company: props['cells'][1]['value'], index: parseInt(props['cells'][0]['row']['id']) })
     }
-
 
     return (
         <Fragment>
-            {/*  */}
             <Modal isOpen={isDeleteModal['status']} toggle={handleDeleteModal}>
                 <ModalBody>
                     <hr />
@@ -118,16 +172,16 @@ const TableContainer = ({ columns, data, }) => {
                     </h5>
                     <hr />
                     <div className='text-right mr-2'>
-                        <Button color='success' onClick={handleDeleteConfirm}>Confirm</Button>
-                        <Button outline onClick={handleDeleteModal}>Cancel</Button>
+                        <Button color='success' onClick={ (e) => handleDeleteConfirm(e, isDeleteModal['index'])}>Confirm</Button>
+                        <Button onClick={handleDeleteModal}>Cancel</Button>
                     </div>
                     <hr />
                 </ModalBody>
             </Modal>
-            {/* Modal for Organization specific form by click on Add Offer*/}
+            {/* Modal for Organization specific form by click on Apply*/}
             <Modal isOpen={isAddModal} toggle={handleModal}>
                 <ModalBody>
-                    <Add toggle={handleModal} />
+                    <AddPlacement toggle={handleModal} reload={setChanged}/>
                 </ModalBody>
             </Modal>
             <Table responsive hover {...getTableProps()} style={tablestyle}>
@@ -154,37 +208,43 @@ const TableContainer = ({ columns, data, }) => {
                 <tbody {...getTableBodyProps()}>
                     {page.map(row => {
                         prepareRow(row)
-                        var len = row.cells.length
                         return (
                             <Fragment key={row.getRowProps().key}>
                                 <tr>
                                     {row.cells.map((cell, index) => {
                                         return <>
                                             {
-                                                // Starting cells of a row
-                                                (index < len - 2) ?
+                                                // Starting 0-6 cells of a row
+                                                (index < 6) ?
                                                     <td key={index} style={{ textAlign: 'center' }} {...cell.getCellProps()}>
                                                         {cell.render("Cell")}
                                                     </td> : <></>
                                             }
                                             {
-                                                //  Second Last cell of a row (Download Button)
-                                                (index == len - 2)
+                                                //  7th cell of a row (Download Button)
+                                                (index == 6)
                                                     ?
                                                     <td key={index} className='text-center'>
-                                                        <Button color="success" size="sm" style={{ padding: '3px' }} onClick={handleDownload}>
+                                                        <Button color="success" size="sm" style={{ padding: '3px' }} onClick={ (e)=> {handleDownload(e, row.cells)}}>
                                                             <DownloadIcon />
-                                                        </Button>
+                                                        </Button>       
+                                                        <CSVLink
+                                                            data={csvData}
+                                                            filename={name+'.csv'}
+                                                            className='hidden'
+                                                            ref={csvLink}
+                                                            target='_blank'
+                                                        />                                          
                                                     </td>
                                                     :
                                                     <></>
                                             }
                                             {
-                                                // Last cell of a row (Delete Button)
-                                                (index == len - 1)
+                                                // 8th cell of a row (Delete Button)
+                                                (index == 7)
                                                     ?
                                                     <td key={index} className='text-center'>
-                                                        <Button color="danger" size="sm" style={{ padding: '3px' }} onClick={() => { handleDeleteModal(row) }}>
+                                                        <Button color="danger" size="sm" style={{ padding: '3px' }} onClick={() => {handleDeleteModal(row) }}>
                                                             <DeleteIcon />
                                                         </Button>
                                                     </td>
@@ -195,7 +255,7 @@ const TableContainer = ({ columns, data, }) => {
                                     })}
                                     {/* Expansion row */}
                                 </tr>
-                                {row.isExpanded && (
+                                {row.isExpanded && expand && (
                                     <tr>
                                         <td colSpan='8'>{renderRowSubComponent(fetchedData, row.cells)}</td>
                                     </tr>
@@ -252,6 +312,7 @@ const TableContainer = ({ columns, data, }) => {
             </Row>
         </Fragment>
     )
+    
 }
 
-export default TableContainer
+export default TableContainer;

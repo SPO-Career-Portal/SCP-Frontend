@@ -15,8 +15,6 @@ import {
 } from "reactstrap";
 
 import Apply from '../../../components/Modal/ApplyForm'
-import Add from '../../../components/Modal/AddForm'
-
 
 import { tablestyle, applybtnshadow, headingstyle, expandbgstyle } from '../../../components/Style/css_style'
 
@@ -123,11 +121,6 @@ const TableContainer = ({ columns, data, }) => {
                 </ModalBody>
             </Modal>
             {/* Modal for Organization specific form by click on Apply*/}
-            <Modal isOpen={isAddModal} toggle={handleModal}>
-                <ModalBody>
-                    <Add toggle={handleModal} />
-                </ModalBody>
-            </Modal>
             <Table responsive hover {...getTableProps()} style={tablestyle}>
                 <thead style={{ background: '#ccc' }}>
                     {headerGroups.map(headerGroup => (

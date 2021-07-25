@@ -13,7 +13,6 @@ import {
 } from "reactstrap";
 
 import Apply from '../../../components/Modal/ApplyForm'
-import Add from '../../../components/Modal/AddForm'
 
 
 import { tablestyle, applybtnshadow, headingstyle, expandbgstyle } from '../../../components/Style/css_style'

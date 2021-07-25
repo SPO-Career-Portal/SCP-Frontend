@@ -16,6 +16,7 @@
 
 */
 import React, { useEffect, useState, useMemo } from "react";
+import axios from 'axios'
 
 // reactstrap components
 import { Button, } from "reactstrap";
@@ -27,17 +28,23 @@ import { maingradient } from '../../components/Style/css_style'
 import { ReactComponent as ShowIcon } from '../../assets/img/icons/common/add_white_24dp.svg'
 import { ReactComponent as HideIcon } from '../../assets/img/icons/common/remove_white_24dp.svg'
 
+const base_url = 'http://127.0.0.1:8000'
+
 const Placement = (props) => {
     // to store the fetched data
     const [fetchedData, setFetchedData] = useState([])
 
-
-    useEffect(() => {
-        // to set the fetched data
-        fetch("https://mockend.com/h4rSHp/fake-api/posts")
-            .then(response => response.json())
-            .then(data => {
-                setFetchedData(data)
+    useEffect(async() => 
+        {
+            axios.defaults.withCredentials = true;
+            await axios.post(base_url+'/admin/login/', {
+                    username:  "airy_nap",
+                    password: "joy",
+            })
+            .then(res => {})
+            .catch(error => console.log(error))
+            await axios.get(base_url+"/admin/placements/").then((response) => {
+              setFetchedData(response.data)
             })
             .catch(error => console.log(error))
     }, [])
@@ -46,41 +53,32 @@ const Placement = (props) => {
     // Column Headers for the table
     const columns = useMemo(() => [
         {
-            // Header is the Heading
-            // accessor is the object name in the data
             Header: "Sr.No.",
             Cell: ({ row }) => {
                 return <span>{parseInt(row.id) + 1}</span>
             },
         },
         {
+            Header: "Name",
+            accessor: "placement_name",
+        },
+        {
             Header: "Organisation",
-            accessor: "organisation",
+            accessor: "company",
         },
         {
             Header: "Profile",
-            accessor: "profile",
-        },
-        {
-            Header: "Programmes",
-            accessor: "programmes",
-            disableSortBy: true,
-        },
-        {
-            Header: "Department",
-            accessor: "department",
-            disableSortBy: true,
+            accessor: "role",
         },
         {
             Header: "Deadline",
             accessor: "deadline",
-            disableSortBy: true
         },
         {
             Header: 'Details',
             id: 'expander', // 'id' is required for expanding on clicking
             Cell: ({ row }) => (
-                <Button color="primary" size="sm"{...row.getToggleRowExpandedProps()} style={{ padding: '3px' }}>
+                <Button color="primary" size="sm"{...row.getToggleRowExpandedProps()} style={{ padding: '2px' }}>
                     {row.isExpanded ? <HideIcon /> : <ShowIcon />}
                 </Button>
             ),
@@ -103,7 +101,7 @@ const Placement = (props) => {
             <div style={maingradient}>
                 <div>
                     {/* Table Containing Placement Data */}
-                    <TableContainer columns={columns} data={fetchedData} />
+                    <TableContainer columns={columns} data={fetchedData} changeData={setFetchedData}/>
                 </div>
             </div>
         </>

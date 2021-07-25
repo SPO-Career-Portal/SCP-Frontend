@@ -26,15 +26,15 @@ const Login = () => {
     <>
       <footer className="py-5">
         <Container>
-          <Row className="align-items-center justify-content-xl-center">
+          <Row className="align-items-center justify-content-xl-center mx-3">
               <div className="copyright text-center text-xl-left text-muted">
                 © {new Date().getFullYear()}{" "}
                 <a
                   className="font-weight-bold ml-1"
-                  href="https://www.creative-tim.com?ref=adr-auth-footer"
+                  href="https://spo.iitk.ac.in/"
                   target="_blank"
                 >
-                  Creative Tim
+                  Students' Placement Office
                 </a>
               </div>
           </Row>
