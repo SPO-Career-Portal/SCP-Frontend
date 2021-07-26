@@ -88,7 +88,7 @@ const TableContainer = ({ columns, data, changeData }) => {
         return (
             <>
                 <Card style={expandbgstyle}>
-                    <CardBody style={expandbgstyle}>
+                    <CardBody>
                         <strong style={headingstyle}>Job Details</strong>
                         <p>{fetchedData[index]['description']}</p>
                         <strong style={headingstyle}>Eligible Batches</strong>

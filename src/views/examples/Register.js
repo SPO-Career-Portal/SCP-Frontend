@@ -11,7 +11,7 @@
 */
 import React, {useState } from "react";
 import { useDispatch } from "react-redux";
-import { register } from "../../actions/userActions";
+import axios from 'axios';
 
 import {
   Button,
@@ -31,37 +31,33 @@ import {
 const Register=()=> {
 
   const [roll, setRoll] = useState("");
-
+  const base_url = 'http://127.0.0.1:8000/';
 
 
   const onSubmit = async (e)=> {
-    
-    try{
-      const user ={
-        roll: roll,
-      };
 
-     const result= await dispatch(register(user.roll));
-     
-     if (result=="202_ACCEPTED"){
-      alert("check yor mail for link to set password");
-     }
-    else if(result=="403_FORBIDDEN"){
-      alert("roll no. already in use");
-    }
-    else{
-      alert("Something went wrong");
-    }
-    }catch (err) {
-      console.log("Error while registering");
-    }
+    e.preventDefault()
 
-    };
+    await axios.post(base_url+'user/register/', 
+    {
+      'roll': roll,
+    })
+    .then((res)=> {
+      if(res.status == 202)
+        alert('Please check your mail for a link to set the password')
+    })
+    .catch ((err)  =>{
+      if (err.response.status == 400)
+        alert("Invalid Roll number");
+      else
+      if (err.response.status == 403)
+        alert("Roll number already registered");
+      else
+        alert("Something went wrong");     
+    })
 
+  };
 
-
-
-  const dispatch = useDispatch();
 
   return (
     <>

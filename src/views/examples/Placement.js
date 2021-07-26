@@ -38,12 +38,12 @@ const Placement = (props) => {
         },
       },
       {
-        Header: "Organisation",
-        accessor: "company",
-      },
-      {
         Header: "Placement Name",
         accessor: "placement_name",
+      },
+      {
+        Header: "Organisation",
+        accessor: "company",
       },
       {
         Header: "Profile",

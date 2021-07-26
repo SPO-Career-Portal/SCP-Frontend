@@ -33,17 +33,6 @@ const Index = (props) => {
   // to store the fetched data
   const [fetchedData, setFetchedData] = useState([])
 
-  useEffect(() => {
-    // to set the fetched data
-    fetch("https://mockend.com/h4rSHp/fake-api/posts")
-      .then(response => response.json())
-      .then(data => {
-        setFetchedData(data)
-      })
-      .catch(error => console.log(error))
-    // setFetchedData(x);
-  }, [])
-
 
   // Column Headers for the table
   const columns = useMemo(() => [

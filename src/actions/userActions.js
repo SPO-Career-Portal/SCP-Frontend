@@ -1,10 +1,11 @@
 import { sessionService } from "redux-react-session";
+import { useSelector } from "react-redux";
 import axios from "axios";
 
 // URLs
-const base_url = "http://localhost:5000";
-const EligibleInternships_url = "/interns";
-const EligiblePlacements_url = "/placements";
+const base_url = "http://127.0.0.1:8000/";
+const EligibleInternships_url = "user/interns/";
+const EligiblePlacements_url = "user/placements/";
 
 const sendRequest = async (url, method, body, headers = {}) => {
   const response = await axios({
@@ -17,10 +18,11 @@ const sendRequest = async (url, method, body, headers = {}) => {
   return response.data;
 };
 
-export const login = (username) => async () => {
+export const login = (username, admin) => async () => {
   try {
     const response = {
       username: username,
+      admin: admin,
     };
 
     sessionService.saveSession();
@@ -31,50 +33,48 @@ export const login = (username) => async () => {
   }
 };
 
-export const register = (roll) => async () => {
-  try {
-    const roll_no = roll;
-
-    return sendRequest("/user/register", "POST", {
-      roll_no,
-    });
-  } catch (err) {
-    console.log("Error while registering!");
-  }
-};
-
 export const setPass = (password) => async () => {
-  try {
-    const pass = password;
-    const result = sendRequest(
-      "/user/register/verify/code=<str:token>/",
-      "POST",
+
+  const queryParams = new URLSearchParams(window.location.search);
+  const code = queryParams.get('code');
+
+  await axios.post(base_url+"user/register/verify/code="+code+"/",
       {
-        pass,
+        'password': password,
       }
-    );
-    if (result == "200_OK") {
-      sessionService.saveSession();
-      sessionService.saveUser(result);
-    } else {
-      alert("Error while registering");
-    }
-  } catch (err) {
-    console.log("Error while registering!");
-  }
+  )
+  .then((res) => {
+      alert("Password set successfully");
+  })
+  .catch((err) => {
+      console.log(err);
+      alert("Link expired");
+  })
 };
 
 
-export const logout = () =>
+export const logout = (admin) =>
   async () => {
-    try {
       axios.defaults.withCredentials = true;
-      await axios.post(base_url+"/user/auth/logout/")
-      sessionService.deleteSession();
-      sessionService.deleteUser();
-    } catch (err) {
-      // error
-    }
+      if(admin){
+        await axios.post(base_url+"admin/logout/", {})
+        .then((response)=>{
+          sessionService.deleteSession();
+          sessionService.deleteUser();
+        })
+        .catch((err) => {console.log(err)})
+      }
+      else
+      {
+        await axios.post(base_url+"user/auth/logout/", {})
+        .then((response)=>{
+          sessionService.deleteSession();
+          sessionService.deleteUser();
+        })
+        .catch((err) => {console.log(err)})
+      }
+      // sessionService.deleteSession();
+      //   sessionService.deleteUser();
   };
 
 
@@ -91,10 +91,10 @@ export const UserInternshipData = (object) => (dispatch) => {
 
 // fetch internship data
 export const fetchInternships = (url) => (dispatch) => {
-  fetch(base_url + EligibleInternships_url) // update url
-    .then((response) => response.json())
-    .then((data) => {
-      dispatch(UserInternshipData(data));
+  axios.defaults.withCredentials = true;
+  axios.get(base_url + EligibleInternships_url) // update url
+    .then((response) => {
+      dispatch(UserInternshipData(response.data));
     })
     .catch((error) => console.log(error));
 };
@@ -112,10 +112,10 @@ export const UserPlacementData = (object) => (dispatch) => {
 
 // fetch placements data
 export const fetchPlacements = (url) => (dispatch) => {
-  fetch(base_url + EligiblePlacements_url) // update url
-    .then((response) => response.json())
-    .then((data) => {
-      dispatch(UserPlacementData(data));
+  axios.defaults.withCredentials = true;
+  axios.get(base_url + EligiblePlacements_url) // update url
+    .then((response) => {
+      dispatch(UserPlacementData(response.data));
     })
     .catch((error) => console.log(error));
 };

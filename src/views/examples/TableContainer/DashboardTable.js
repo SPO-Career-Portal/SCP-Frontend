@@ -39,15 +39,6 @@ const TableContainer = ({ columns, data, }) => {
         setPageSize(Number(event.target.value))
     }
 
-    useEffect(() => {
-        fetch("https://mockend.com/h4rSHp/fake-api/comments")
-            .then(response => response.json())
-            .then(data => {
-                setFetchedData(data)
-            })
-            .catch(error => console.log(error))
-    }, [])
-
     // Card on expanding rows
     const renderRowSubComponent = (fetchedData, cells) => {
         // Cells contains value of each coulmn of the Row

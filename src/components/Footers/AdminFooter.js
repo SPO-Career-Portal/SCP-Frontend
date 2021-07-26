@@ -23,7 +23,7 @@ import { Container, Row, Col, Nav, NavItem, NavLink } from "reactstrap";
 
 const Footer = () => {
   return (
-    <footer className="footer">
+    <footer className="footer py-4" style={{height: "65px"}}>
       <Row className="align-items-center justify-content-xl-between mx-3">
         <Col xl="6">
           <div className="copyright text-center text-xl-left text-muted">

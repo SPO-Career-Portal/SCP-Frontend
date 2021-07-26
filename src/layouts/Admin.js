@@ -14,14 +14,13 @@ const Admin = (props) => {
   // Check whether user is admin or not and update 'isAdmin' value
   // You can check Admin placement and Internship Dashboard with setting isAdmin to true
   // For now to check, if username is "Admin" in login then we can access Admin Dashboard
-  const [isAdmin, setISAdmin] = useState(session.user.username === "Admin" ? true : false)
   React.useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }, [location]);
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
-      if (isAdmin ? prop.layout === '/admin' : prop.layout === "/user") {
+      if (session.user.admin ? prop.layout === '/admin' : prop.layout === "/user") {
         return (
           <Route
             path={prop.layout + prop.path}
@@ -35,7 +34,7 @@ const Admin = (props) => {
     });
   };
   const getAdmin = (routes) => {
-    return routes.filter((value) => isAdmin ? value.layout === '/admin' : value.layout === '/user')
+    return routes.filter((value) => session.user.admin ? value.layout === '/admin' : value.layout === '/user')
   }
   const getBrandText = (path) => {
     for (let i = 0; i < routes.length; i++) {
@@ -51,7 +50,7 @@ const Admin = (props) => {
   
   const checkRedirect =() =>{
     const locationPathname = props.location.pathname.slice(0,20);
-    if(locationPathname.localeCompare("/user/resetpass/code")==0){
+    if(locationPathname.localeCompare("/user/resetpass/")==0){
       return false 
     }
     else {
@@ -68,7 +67,7 @@ const Admin = (props) => {
         {...props}
         routes={getAdmin(routes)}
         logo={{
-          innerLink: isAdmin ? "/admin/placement" : "/user/index",
+          innerLink: session.user.admin ? "/admin/placement" : "/user/index",
           imgSrc: require("../assets/img/brand/logo_spo.png").default,
           imgAlt: "...",
         }}
@@ -80,7 +79,7 @@ const Admin = (props) => {
         />
         <Switch>
           {getRoutes(routes)}
-          <Redirect from="*" to={!isAdmin && checkRedirect()?  "/user/index" : "/admin/placement"} />
+          <Redirect from="*" to={!session.user.admin && checkRedirect()?  "/user/index" : "/admin/placement"} />
         </Switch>
         <AdminFooter />
       </div>

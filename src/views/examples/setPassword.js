@@ -39,18 +39,19 @@ const SetPass=()=> {
 
     if(password===confirmPassword){
       if (e) e.preventDefault();
-    try{
-      const user ={
-        password: password
-      };
+      try{
+        const user ={
+          password: password
+        };
 
-      await dispatch(setPass(user.password));
+        await dispatch(setPass(user.password));
 
-    }catch (err) {
-      console.log("Error while registering");
+      }catch (err) {
+        console.log("Error while registering");
+      }
     }
-    }else{
-      setIsdisabled(false);
+    else{
+      setIsdisabled(true);
     }
 
   };

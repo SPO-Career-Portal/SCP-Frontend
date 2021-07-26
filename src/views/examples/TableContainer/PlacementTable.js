@@ -45,8 +45,6 @@ const TableContainer = ({ columns, data, }) => {
                 <Card style={expandbgstyle}>
                     <CardBody>
                         <strong style={headingstyle}>Job Details</strong>
-                        <p>{fetchedData[index]['role']}</p>
-                        <strong style={headingstyle}>About the Company</strong>
                         <p>{fetchedData[index]['description']}</p>
                         <Button style={applybtnshadow} color='success' onClick={toggle}>Apply</Button>
                     </CardBody>
@@ -54,7 +52,7 @@ const TableContainer = ({ columns, data, }) => {
                 {/* Apply Form Modal */}
                 <Modal isOpen={isModal} toggle={toggle}>
                     <ModalBody>
-                        <Apply data={cells} toggle={toggle} />
+                        <Apply data={cells} toggle={toggle} offer={'placement'} Key={fetchedData[index]['key']}/>
                     </ModalBody>
                 </Modal>
             </>

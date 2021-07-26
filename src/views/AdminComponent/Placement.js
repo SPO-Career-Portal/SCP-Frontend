@@ -37,12 +37,6 @@ const Placement = (props) => {
     useEffect(async() => 
         {
             axios.defaults.withCredentials = true;
-            await axios.post(base_url+'/admin/login/', {
-                    username:  "airy_nap",
-                    password: "joy",
-            })
-            .then(res => {})
-            .catch(error => console.log(error))
             await axios.get(base_url+"/admin/placements/").then((response) => {
               setFetchedData(response.data)
             })

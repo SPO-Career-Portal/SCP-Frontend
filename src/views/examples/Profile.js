@@ -41,7 +41,7 @@ const Profile = () => {
 
   const fetchProfile = async() => {
     axios.defaults.withCredentials = true;
-    const profileDetails= await axios.get('/user/profile/')
+    const profileDetails= await axios.get(BASE_URL+'user/profile/')
     setProfileData(profileDetails.data)
     setMasterResumelink(profiledata.mastercv)
     setResume1link(profiledata.resume1)
@@ -52,9 +52,9 @@ const Profile = () => {
      
   }
 
-  const onUpdateProfile = () => {
+  const onUpdateProfile = async () => {
     axios.defaults.withCredentials = true;
-    axios.post('/user/edit/',{
+    await axios.post(BASE_URL+'user/edit/',{
         mastercv: masterresumelink,
         resume1: resume1link,
         resume2: resume2link,
@@ -62,6 +62,8 @@ const Profile = () => {
         linkedin: linkedinlink,
 
     })
+    .then((res) => console.log(res))
+    .catch((err)=> console.log(err))
     fetchProfile();
     
     
@@ -70,7 +72,15 @@ const Profile = () => {
   useEffect(()=>{
     fetchProfile()
   },[])
-
+  
+  const resetPass =async(e)=> {
+    e.preventDefault()
+    await axios.post(BASE_URL+"user/resetpassemail/",{
+      roll : profiledata.roll,
+    })
+    .then((response)=>{alert("Link sent to your email ID")})
+    .catch((err)=>{alert("No user logged in!!")});
+  };
   
   const [masterresumelink,setMasterResumelink]=useState(profiledata.mastercv);
   const [resume1link,setResume1link]=useState(profiledata.resume1);
@@ -339,14 +349,13 @@ const Profile = () => {
               >
               Save 
             </Button>
-            <Link to ="/user/resetPassEmail">
-              <Button
+            <Button
               color="primary"
+              onClick={(e)=>resetPass(e)}
               size="normal"
-              >
+            >
               Change Password
-              </Button>
-            </Link>     
+            </Button>     
         </div>
         
       </Container>

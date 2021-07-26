@@ -62,7 +62,7 @@ var routes = [
     layout: "/auth",
   },
   {
-    path: "/user/register/verify/:code",
+    path: "/user/register/verify/",
     name: "SetPass",
     icon: "ni ni-circle-08 text-pink",
     component: SetPass,
@@ -76,21 +76,12 @@ var routes = [
     layout: "/user",
   },
   {
-    path: "/resetPassEmail",
-    name: "Reset Password Email",
-    icon: "ni ni-circle-08 text-pink",
-    component: ResetPasswordEmail,
-    layout: "/user",
-    invisible: true,
-  },
-  {
-    path:"/resetpass/code=:code/",
+    path:"/resetpass/",
     name: "Reset Password",
     icon: "ni ni-settings-gear-65 text-blue",
     component: ResetPassword,
     layout: "/user",
     invisible: true,
-
   }
 
 ];

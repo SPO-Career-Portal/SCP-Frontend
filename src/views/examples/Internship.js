@@ -38,12 +38,12 @@ const Internship = (props) => {
         },
       },
       {
-        Header: "Organisation",
-        accessor: "company",
-      },
-      {
         Header: "Internship Name",
         accessor: "intern_name",
+      },
+      {
+        Header: "Organisation",
+        accessor: "company",
       },
       {
         Header: "Profile",
