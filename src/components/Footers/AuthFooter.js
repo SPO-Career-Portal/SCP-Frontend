@@ -26,15 +26,23 @@ const Login = () => {
     <>
       <footer className="py-5">
         <Container>
-          <Row className="align-items-center justify-content-xl-center mx-3">
-              <div className="copyright text-center text-xl-left text-muted">
-                © {new Date().getFullYear()}{" "}
-                <a
+          <Row className="align-items-center justify-content-xl-center">
+              <div className="align-items-center justify-content-xl-center text-muted">
+              Developed by
+              <a
                   className="font-weight-bold ml-1"
-                  href="https://spo.iitk.ac.in/"
+                  href="https://pclub.in"
                   target="_blank"
                 >
-                  Students' Placement Office
+                   Programming Club, IIT Kanpur
+                </a>
+              </div>
+              <div>"      "</div>
+              <div className="copyright text-center text-xl-left text-muted" >
+                Bootstrapped with <a
+                  className="font-weight-bold ml-1" 
+                  href="https://www.creative-tim.com?ref=adr-auth-footer"
+                  target="_blank">Creative Tim
                 </a>
               </div>
           </Row>
