@@ -1,20 +1,3 @@
-/*!
-
-=========================================================
-* Argon Dashboard React - v1.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React, { useState } from "react";
 
 // reactstrap components
@@ -35,12 +18,15 @@ import {
 } from "reactstrap";
 import { useDispatch } from "react-redux";
 import { login } from "../../actions/userActions";
-import { LOGIN } from "../../utils/requests";
 import { compose } from "redux";
+import axios from "axios";
+
+const base_url = "http://127.0.0.1:8000/"
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+<<<<<<< HEAD
   const [validemail, setValidemail] = useState(false);
 
   const email_verification = async (target_email) => {
@@ -59,17 +45,36 @@ const Login = () => {
       target_email.className = class_invalid;
     }
   };
+=======
+  const [state, setState]= useState("");
+>>>>>>> b89a2e6791798a0df7361803a89c2285704f4e3f
 
   const onLogin = async (e) => {
-    if (e) e.preventDefault();
+    
     try {
+<<<<<<< HEAD
       //dummy API
       const data = await LOGIN("users", email, password);
 
       // storing emailID in redux-store
       dispatch(login(data.email));
+=======
+      //dummy API(update this for sending credentials to backend)
+       axios.defaults.withCredentials = true;
+       const res = await axios.post("/user/auth/login/",{
+          username:username,
+          password: password,
+       });
+       if (res.data.code==401) {setState("Incorrect Username or Password!")  
+       }
+       else if(res.data.code==200){
+         dispatch(login(username))
+       }
+      
+
+>>>>>>> b89a2e6791798a0df7361803a89c2285704f4e3f
     } catch (err) {
-      console.log("Error while logging in!");
+      setState("Something went Wrong!")
     }
   };
 
@@ -158,6 +163,7 @@ const Login = () => {
                   />
                 </InputGroup>
               </FormGroup>
+              <div className="text-center" style={{color : "Red"}}>{state}</div>
               <div className="custom-control custom-control-alternative custom-checkbox">
                 <input
                   className="custom-control-input"

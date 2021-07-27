@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation, Route, Switch, Redirect } from "react-router-dom";
 import { Container } from "reactstrap";
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
@@ -10,14 +10,18 @@ import routes from "routes.js";
 const Admin = (props) => {
   const mainContent = React.useRef(null);
   const location = useLocation();
-  const session = useSelector((state)=> state.session);
+  const session = useSelector((state) => state.session);
+  // Check whether user is admin or not and update 'isAdmin' value
+  // You can check Admin placement and Internship Dashboard with setting isAdmin to true
+  // For now to check, if username is "Admin" in login then we can access Admin Dashboard
+  const [isAdmin, setISAdmin] = useState(session.user.username === "Admin" ? true : false)
   React.useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }, [location]);
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
-      if (prop.layout === "/admin") {
+      if (isAdmin ? prop.layout === '/admin' : prop.layout === "/user") {
         return (
           <Route
             path={prop.layout + prop.path}
@@ -30,7 +34,13 @@ const Admin = (props) => {
       }
     });
   };
+<<<<<<< HEAD
 
+=======
+  const getAdmin = (routes) => {
+    return routes.filter((value) => isAdmin ? value.layout === '/admin' : value.layout === '/user')
+  }
+>>>>>>> b89a2e6791798a0df7361803a89c2285704f4e3f
   const getBrandText = (path) => {
     for (let i = 0; i < routes.length; i++) {
       if (
@@ -42,7 +52,18 @@ const Admin = (props) => {
     }
     return "Brand";
   };
-  if(!session.authenticated){
+  
+  const checkRedirect =() =>{
+    const locationPathname = props.location.pathname.slice(0,20);
+    if(locationPathname.localeCompare("/user/resetpass/code")==0){
+      return false 
+    }
+    else {
+      return true
+    }
+  };
+  
+  if (!session.authenticated && checkRedirect()) {
     return <Redirect to="/auth/login" />
   }
   return (
@@ -51,8 +72,13 @@ const Admin = (props) => {
         {...props}
         routes={routes}
         logo={{
+<<<<<<< HEAD
           innerLink: "/admin/index",
           imgSrc: require("../assets/img/brand/argon-react.png").default,
+=======
+          innerLink: isAdmin ? "/admin/placement" : "/user/index",
+          imgSrc: require("../assets/img/brand/logo_spo.png").default,
+>>>>>>> b89a2e6791798a0df7361803a89c2285704f4e3f
           imgAlt: "...",
         }}
       />
@@ -63,7 +89,7 @@ const Admin = (props) => {
         />
         <Switch>
           {getRoutes(routes)}
-          <Redirect from="*" to="/admin/index" />
+          <Redirect from="*" to={!isAdmin && checkRedirect()?  "/user/index" : "/admin/placement"} />
         </Switch>
         <Container fluid>
           <AdminFooter />

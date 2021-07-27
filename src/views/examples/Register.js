@@ -33,7 +33,47 @@ import {
   Col,
 } from "reactstrap";
 
+<<<<<<< HEAD
 const Register = () => {
+=======
+
+
+const Register=()=> {
+
+  const [roll, setRoll] = useState("");
+
+
+
+  const onSubmit = async (e)=> {
+    
+    try{
+      const user ={
+        roll: roll,
+      };
+
+     const result= await dispatch(register(user.roll));
+     
+     if (result=="202_ACCEPTED"){
+      alert("check yor mail for link to set password");
+     }
+    else if(result=="403_FORBIDDEN"){
+      alert("roll no. already in use");
+    }
+    else{
+      alert("Something went wrong");
+    }
+    }catch (err) {
+      console.log("Error while registering");
+    }
+
+    };
+
+
+
+
+  const dispatch = useDispatch();
+
+>>>>>>> b89a2e6791798a0df7361803a89c2285704f4e3f
   return (
     <>
       <Col lg="6" md="8">
@@ -80,14 +120,20 @@ const Register = () => {
             </div>
           </CardHeader>
           <CardBody className="px-lg-5 py-lg-5">
+<<<<<<< HEAD
             <div className="text-center text-muted mb-4">
               <small>Or sign up with credentials</small>
             </div>
             <Form role="form">
+=======
+
+            <Form role="form" >
+>>>>>>> b89a2e6791798a0df7361803a89c2285704f4e3f
               <FormGroup>
                 <InputGroup className="input-group-alternative mb-3">
                   <InputGroupAddon addonType="prepend">
                     <InputGroupText>
+<<<<<<< HEAD
                       <i className="ni ni-hat-3" />
                     </InputGroupText>
                   </InputGroupAddon>
@@ -153,6 +199,28 @@ const Register = () => {
               <div className="text-center">
                 <Button className="mt-4" color="primary" type="button">
                   Create account
+=======
+                      <i className="ni ni-circle-08" />
+                    </InputGroupText>
+                  </InputGroupAddon>
+                  <Input required valid
+                    placeholder="IITK Roll no."
+                    type="roll"
+                    autoComplete="off"
+                    onChange ={(e) => setRoll(e.target.value)}
+                  />
+                </InputGroup>
+              </FormGroup>
+              <div className="text-center">
+                <Button className="mt-4"
+                        id="submit"
+                        color="primary"
+                        type="submit"
+                        onClick={ (e) => onSubmit(e)}
+                        
+                >
+                  Submit
+>>>>>>> b89a2e6791798a0df7361803a89c2285704f4e3f
                 </Button>
               </div>
             </Form>

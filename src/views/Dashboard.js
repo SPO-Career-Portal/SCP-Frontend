@@ -41,6 +41,7 @@ const Index = (props) => {
         setFetchedData(data)
       })
       .catch(error => console.log(error))
+    // setFetchedData(x);
   }, [])
 
 
@@ -59,11 +60,6 @@ const Index = (props) => {
     {
       Header: "Profile",
       accessor: "profile",
-    },
-    {
-      Header: "Eligibility",
-      accessor: "eligibility",
-      disableSortBy: true,
     },
     {
       Header: "Deadline",
