@@ -6,8 +6,6 @@ import Register from "views/examples/Register.js";
 import SetPass from "views/examples/setPassword";
 import Login from "views/examples/Login.js";
 import ResetPassword from "views/examples/ResetPass";
-import ResetPasswordEmail from "views/examples/ResetPassEmail";
-
 import AdminInternship from 'views/AdminComponent/Internship'
 import AdminPlacement from 'views/AdminComponent/Placement'
 

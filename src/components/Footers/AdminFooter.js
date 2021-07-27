@@ -23,16 +23,16 @@ import { Container, Row, Col, Nav, NavItem, NavLink } from "reactstrap";
 
 const Footer = () => {
   return (
-    <footer className="footer py-4" style={{height: "65px"}}>
+    <footer className="footer py-4" style={{ height: "65px" }}>
       <Row className="align-items-center justify-content-xl-between mx-3 text-muted">
         <Col xl="6">
           Developed by
           <a
-              className="font-weight-bold ml-1"
-              href="https://pclub.in"
-              target="_blank"
+            className="font-weight-bold ml-1"
+            href="https://pclub.in"
+            target="_blank"
           >
-                Programming Club, IIT Kanpur
+            Programming Club, IIT Kanpur
           </a>
         </Col>
       </Row>

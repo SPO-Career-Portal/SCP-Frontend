@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import {
   Button,
   Card,
-  CardHeader,
   CardBody,
   FormGroup,
   Form,
@@ -17,49 +16,50 @@ import {
 } from "reactstrap";
 import { useDispatch } from "react-redux";
 import { login } from "../../actions/userActions";
-import { compose } from "redux";
 import axios from "axios";
 
-const base_url = "http://127.0.0.1:8000/"
+const base_url = "http://127.0.0.1:8000/";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [admin, setAdmin] = useState(false);
-  const [state, setState]= useState("");
+  const [state, setState] = useState("");
 
   const onLogin = async (e) => {
-    
-      //dummy API(update this for sending credentials to backend)
-      axios.defaults.withCredentials = true;
-      if(admin){
-        await axios.post(base_url+"admin/login/",{
+    //dummy API(update this for sending credentials to backend)
+    axios.defaults.withCredentials = true;
+    if (admin) {
+      await axios
+        .post(base_url + "admin/login/", {
           username: username,
           password: password,
-        }).then((res) => {
-            if(res.status === 200){
-              dispatch(login(username,admin))
-            }
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            dispatch(login(username, admin));
+          }
         })
         .catch((err) => {
           console.log(err);
-          setState("Incorrect username or password")
-        })
-      }
-      else{
-        await axios.post(base_url+"user/auth/login/",{
+          setState("Incorrect username or password");
+        });
+    } else {
+      await axios
+        .post(base_url + "user/auth/login/", {
           username: username,
           password: password,
-        }).then((res) => {
-            if(res.status === 200){
-              dispatch(login(username,admin))
-            }
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            dispatch(login(username, admin));
+          }
         })
         .catch((err) => {
           console.log(err);
-          setState("Incorrect username or password")
-        })
-      }
+          setState("Incorrect username or password");
+        });
+    }
   };
 
   const dispatch = useDispatch();
@@ -105,7 +105,9 @@ const Login = () => {
                   />
                 </InputGroup>
               </FormGroup>
-              <div className="text-center" style={{color : "red"}}>{state}</div>
+              <div className="text-center" style={{ color: "red" }}>
+                {state}
+              </div>
               <div className="custom-control custom-control-alternative custom-checkbox">
                 <input
                   className="custom-control-input"
@@ -117,7 +119,9 @@ const Login = () => {
                   className="custom-control-label"
                   htmlFor=" customCheckLogin"
                 >
-                  <span className="text-light" style={{color: "white"}}>Admin Login</span>
+                  <span className="text-light" style={{ color: "white" }}>
+                    Admin Login
+                  </span>
                 </label>
               </div>
               <div className="text-center">

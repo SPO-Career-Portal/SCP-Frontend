@@ -9,9 +9,8 @@
 =========================================================
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-import React, {useState } from "react";
-import { useDispatch } from "react-redux";
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
 
 import {
   Button,
@@ -26,46 +25,35 @@ import {
   Col,
 } from "reactstrap";
 
-
-
-const Register=()=> {
-
+const Register = () => {
   const [roll, setRoll] = useState("");
-  const base_url = 'http://127.0.0.1:8000/';
+  const base_url = "http://127.0.0.1:8000/";
 
+  const onSubmit = async (e) => {
+    e.preventDefault();
 
-  const onSubmit = async (e)=> {
-
-    e.preventDefault()
-
-    await axios.post(base_url+'user/register/', 
-    {
-      'roll': roll,
-    })
-    .then((res)=> {
-      if(res.status == 202)
-        alert('Please check your mail for a link to set the password')
-    })
-    .catch ((err)  =>{
-      if (err.response.status == 400)
-        alert("Invalid Roll number");
-      else
-      if (err.response.status == 403)
-        alert("Roll number already registered");
-      else
-        alert("Something went wrong");     
-    })
-
+    await axios
+      .post(base_url + "user/register/", {
+        roll: roll,
+      })
+      .then((res) => {
+        if (res.status == 202)
+          alert("Please check your mail for a link to set the password");
+      })
+      .catch((err) => {
+        if (err.response.status == 400) alert("Invalid Roll number");
+        else if (err.response.status == 403)
+          alert("Roll number already registered");
+        else alert("Something went wrong");
+      });
   };
-
 
   return (
     <>
       <Col lg="6" md="8">
         <Card className="bg-secondary shadow border-0">
           <CardBody className="px-lg-5 py-lg-5">
-
-            <Form role="form" >
+            <Form role="form">
               <FormGroup>
                 <InputGroup className="input-group-alternative mb-3">
                   <InputGroupAddon addonType="prepend">
@@ -73,21 +61,23 @@ const Register=()=> {
                       <i className="ni ni-circle-08" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input required valid
+                  <Input
+                    required
+                    valid
                     placeholder="IITK Roll no."
                     type="roll"
                     autoComplete="off"
-                    onChange ={(e) => setRoll(e.target.value)}
+                    onChange={(e) => setRoll(e.target.value)}
                   />
                 </InputGroup>
               </FormGroup>
               <div className="text-center">
-                <Button className="mt-4"
-                        id="submit"
-                        color="primary"
-                        type="submit"
-                        onClick={ (e) => onSubmit(e)}
-                        
+                <Button
+                  className="mt-4"
+                  id="submit"
+                  color="primary"
+                  type="submit"
+                  onClick={(e) => onSubmit(e)}
                 >
                   Submit
                 </Button>

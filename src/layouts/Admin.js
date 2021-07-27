@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { useLocation, Route, Switch, Redirect } from "react-router-dom";
-import { Container } from "reactstrap";
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import AdminFooter from "components/Footers/AdminFooter.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 import routes from "routes.js";
 
 const Admin = (props) => {
@@ -20,7 +19,9 @@ const Admin = (props) => {
   }, [location]);
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
-      if (session.user.admin ? prop.layout === '/admin' : prop.layout === "/user") {
+      if (
+        session.user.admin ? prop.layout === "/admin" : prop.layout === "/user"
+      ) {
         return (
           <Route
             path={prop.layout + prop.path}
@@ -34,8 +35,10 @@ const Admin = (props) => {
     });
   };
   const getAdmin = (routes) => {
-    return routes.filter((value) => session.user.admin ? value.layout === '/admin' : value.layout === '/user')
-  }
+    return routes.filter((value) =>
+      session.user.admin ? value.layout === "/admin" : value.layout === "/user"
+    );
+  };
   const getBrandText = (path) => {
     for (let i = 0; i < routes.length; i++) {
       if (
@@ -47,19 +50,18 @@ const Admin = (props) => {
     }
     return "Brand";
   };
-  
-  const checkRedirect =() =>{
-    const locationPathname = props.location.pathname.slice(0,20);
-    if(locationPathname.localeCompare("/user/resetpass/")==0){
-      return false 
-    }
-    else {
-      return true
+
+  const checkRedirect = () => {
+    const locationPathname = props.location.pathname.slice(0, 20);
+    if (locationPathname.localeCompare("/user/resetpass/") == 0) {
+      return false;
+    } else {
+      return true;
     }
   };
-  
+
   if (!session.authenticated && checkRedirect()) {
-    return <Redirect to="/auth/login" />
+    return <Redirect to="/auth/login" />;
   }
   return (
     <>
@@ -79,7 +81,14 @@ const Admin = (props) => {
         />
         <Switch>
           {getRoutes(routes)}
-          <Redirect from="*" to={!session.user.admin && checkRedirect()?  "/user/index" : "/admin/placement"} />
+          <Redirect
+            from="*"
+            to={
+              !session.user.admin && checkRedirect()
+                ? "/user/index"
+                : "/admin/placement"
+            }
+          />
         </Switch>
         <AdminFooter />
       </div>

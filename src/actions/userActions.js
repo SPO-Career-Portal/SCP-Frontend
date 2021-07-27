@@ -1,22 +1,10 @@
 import { sessionService } from "redux-react-session";
-import { useSelector } from "react-redux";
 import axios from "axios";
 
 // URLs
 const base_url = "http://127.0.0.1:8000/";
 const EligibleInternships_url = "user/interns/";
 const EligiblePlacements_url = "user/placements/";
-
-const sendRequest = async (url, method, body, headers = {}) => {
-  const response = await axios({
-    method,
-    url: base_url + url,
-    data: body,
-    headers,
-  });
-  console.log(response);
-  return response.data;
-};
 
 export const login = (username, admin) => async () => {
   try {
@@ -34,49 +22,48 @@ export const login = (username, admin) => async () => {
 };
 
 export const setPass = (password) => async () => {
-
   const queryParams = new URLSearchParams(window.location.search);
-  const code = queryParams.get('code');
+  const code = queryParams.get("code");
 
-  await axios.post(base_url+"user/register/verify/code="+code+"/",
-      {
-        'password': password,
-      }
-  )
-  .then((res) => {
-      alert("Password set successfully");
-  })
-  .catch((err) => {
+  await axios
+    .post(base_url + "user/register/verify/code=" + code + "/", {
+      password: password,
+    })
+    .then((res) => {
+      alert("Password set successfully\nProceed to login");
+    })
+    .catch((err) => {
       console.log(err);
       alert("Link expired");
-  })
+    });
 };
 
-
-export const logout = (admin) =>
-  async () => {
-      axios.defaults.withCredentials = true;
-      if(admin){
-        await axios.post(base_url+"admin/logout/", {})
-        .then((response)=>{
-          sessionService.deleteSession();
-          sessionService.deleteUser();
-        })
-        .catch((err) => {console.log(err)})
-      }
-      else
-      {
-        await axios.post(base_url+"user/auth/logout/", {})
-        .then((response)=>{
-          sessionService.deleteSession();
-          sessionService.deleteUser();
-        })
-        .catch((err) => {console.log(err)})
-      }
-      // sessionService.deleteSession();
-      //   sessionService.deleteUser();
-  };
-
+export const logout = (admin) => async () => {
+  axios.defaults.withCredentials = true;
+  if (admin) {
+    await axios
+      .post(base_url + "admin/logout/", {})
+      .then((response) => {
+        sessionService.deleteSession();
+        sessionService.deleteUser();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } else {
+    await axios
+      .post(base_url + "user/auth/logout/", {})
+      .then((response) => {
+        sessionService.deleteSession();
+        sessionService.deleteUser();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+  // sessionService.deleteSession();
+  //   sessionService.deleteUser();
+};
 
 // store eligible internships in redux
 export const storeInternshipData = (object) => ({
@@ -92,7 +79,8 @@ export const UserInternshipData = (object) => (dispatch) => {
 // fetch internship data
 export const fetchInternships = (url) => (dispatch) => {
   axios.defaults.withCredentials = true;
-  axios.get(base_url + EligibleInternships_url) // update url
+  axios
+    .get(base_url + EligibleInternships_url) // update url
     .then((response) => {
       dispatch(UserInternshipData(response.data));
     })
@@ -113,10 +101,10 @@ export const UserPlacementData = (object) => (dispatch) => {
 // fetch placements data
 export const fetchPlacements = (url) => (dispatch) => {
   axios.defaults.withCredentials = true;
-  axios.get(base_url + EligiblePlacements_url) // update url
+  axios
+    .get(base_url + EligiblePlacements_url) // update url
     .then((response) => {
       dispatch(UserPlacementData(response.data));
     })
     .catch((error) => console.log(error));
 };
-
