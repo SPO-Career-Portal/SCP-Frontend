@@ -25,7 +25,7 @@ import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import AuthFooter from "components/Footers/AuthFooter.js";
 
 import routes from "routes.js";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 const Auth = (props) => {
   const mainContent = React.useRef(null);
   const location = useLocation();
@@ -57,9 +57,15 @@ const Auth = (props) => {
     });
   };
   if (session.authenticated) {
-    // Change as per requirement 
+    // Change as per requirement
     // For now to check, if username is "Admin" in login then we can access Admin Dashboard
-    return <Redirect to={session.user.username === "Admin" ? "/admin/placement" : "/user/index"} />
+    return (
+      <Redirect
+        to={
+          session.user.username === "Admin" ? "/admin/placement" : "/user/index"
+        }
+      />
+    );
   }
   return (
     <>
@@ -70,7 +76,6 @@ const Auth = (props) => {
             <div className="header-body text-center mb-7">
               <Row className="justify-content-center">
                 <Col lg="5" md="6">
-
                   <h1 className="text-white">STUDENT CAREER PORTAL</h1>
                 </Col>
               </Row>

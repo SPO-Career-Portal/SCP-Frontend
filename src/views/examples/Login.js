@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import {
   Button,
   Card,
-  CardHeader,
   CardBody,
   FormGroup,
   Form,
@@ -17,34 +16,49 @@ import {
 } from "reactstrap";
 import { useDispatch } from "react-redux";
 import { login } from "../../actions/userActions";
-import { compose } from "redux";
 import axios from "axios";
 
-const base_url = "http://127.0.0.1:8000/"
+const base_url = "http://127.0.0.1:8000/";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [state, setState]= useState("");
+  const [admin, setAdmin] = useState(false);
+  const [state, setState] = useState("");
 
   const onLogin = async (e) => {
-    
-    try {
-      //dummy API(update this for sending credentials to backend)
-       axios.defaults.withCredentials = true;
-       const res = await axios.post("/user/auth/login/",{
-          username:username,
+    //dummy API(update this for sending credentials to backend)
+    axios.defaults.withCredentials = true;
+    if (admin) {
+      await axios
+        .post(base_url + "admin/login/", {
+          username: username,
           password: password,
-       });
-       if (res.data.code==401) {setState("Incorrect Username or Password!")  
-       }
-       else if(res.data.code==200){
-         dispatch(login(username))
-       }
-      
-
-    } catch (err) {
-      setState("Something went Wrong!")
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            dispatch(login(username, admin));
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          setState("Incorrect username or password");
+        });
+    } else {
+      await axios
+        .post(base_url + "user/auth/login/", {
+          username: username,
+          password: password,
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            dispatch(login(username, admin));
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          setState("Incorrect username or password");
+        });
     }
   };
 
@@ -91,18 +105,23 @@ const Login = () => {
                   />
                 </InputGroup>
               </FormGroup>
-              <div className="text-center" style={{color : "Red"}}>{state}</div>
+              <div className="text-center" style={{ color: "red" }}>
+                {state}
+              </div>
               <div className="custom-control custom-control-alternative custom-checkbox">
                 <input
                   className="custom-control-input"
                   id=" customCheckLogin"
                   type="checkbox"
+                  onChange={(e) => setAdmin(!admin)}
                 />
                 <label
                   className="custom-control-label"
                   htmlFor=" customCheckLogin"
                 >
-                  <span className="text-muted">Remember me</span>
+                  <span className="text-light" style={{ color: "white" }}>
+                    Admin Login
+                  </span>
                 </label>
               </div>
               <div className="text-center">
