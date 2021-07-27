@@ -50,7 +50,12 @@ const ResetPassword=()=> {
         old_password: oldPassword,
     })
     .then((response)=>{alert("Password reset successful!!");})
-    .catch((err)=>{alert(err.response.data.message)});
+    .catch((err)=>{
+      if(err.response.data.message)
+        alert(err.response.data.message)
+      else
+        alert("Something went wrong\nPlease try again later!!")
+    });
 
   };
   const confirmnewpassword = async (e) => {

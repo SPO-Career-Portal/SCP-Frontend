@@ -24,19 +24,16 @@ import { Container, Row, Col, Nav, NavItem, NavLink } from "reactstrap";
 const Footer = () => {
   return (
     <footer className="footer py-4" style={{height: "65px"}}>
-      <Row className="align-items-center justify-content-xl-between mx-3">
+      <Row className="align-items-center justify-content-xl-between mx-3 text-muted">
         <Col xl="6">
-          <div className="copyright text-center text-xl-left text-muted">
-            © {new Date().getFullYear()}{" "}
-            <a
+          Developed by
+          <a
               className="font-weight-bold ml-1"
-              href="https://spo.iitk.ac.in/"
-              rel="noopener noreferrer"
+              href="https://pclub.in"
               target="_blank"
-            >
-              Students' Placement Office
-            </a>
-          </div>
+          >
+                Programming Club, IIT Kanpur
+          </a>
         </Col>
       </Row>
     </footer>

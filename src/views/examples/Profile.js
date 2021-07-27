@@ -30,7 +30,6 @@ import {
 import UserHeader from "components/Headers/UserHeader.js";
 import axios from 'axios';
 import Loader from "react-loader-spinner";
-import { Link } from "react-router-dom";
 
 const BASE_URL = "http://127.0.0.1:8000/"
 
@@ -41,29 +40,35 @@ const Profile = () => {
 
   const fetchProfile = async() => {
     axios.defaults.withCredentials = true;
-    const profileDetails= await axios.get(BASE_URL+'user/profile/')
-    setProfileData(profileDetails.data)
-    setMasterResumelink(profiledata.mastercv)
-    setResume1link(profiledata.resume1)
-    setResume2link(profiledata.resume1)
-    setGithublink(profiledata.github)
-    setLinkedinlink(profiledata.linkedin)
-    setIsLoading(false)
+    await axios.get(BASE_URL+'user/profile/')
+    .then((profile) =>{
+      setProfileData(profile.data)
+      setMasterResumelink(profile.data.mastercv)
+      setResume1link(profile.data.resume1)
+      setResume2link(profile.data.resume2)
+      setGithublink(profile.data.github)
+      setLinkedinlink(profile.data.linkedin)
+      setIsLoading(false)
+    })
+    .catch((err) => console.log(err))
      
   }
 
   const onUpdateProfile = async () => {
     axios.defaults.withCredentials = true;
-    await axios.post(BASE_URL+'user/edit/',{
-        mastercv: masterresumelink,
-        resume1: resume1link,
-        resume2: resume2link,
-        github: githublink,
-        linkedin: linkedinlink,
-
-    })
-    .then((res) => console.log(res))
-    .catch((err)=> console.log(err))
+    const data = {
+      mastercv: masterresumelink,
+      resume1: resume1link,
+      resume2: resume2link,
+      github: githublink,
+      linkedin: linkedinlink,
+    }
+    if (resume2link=="")
+      delete data.resume2
+    console.log(data)
+    await axios.post(BASE_URL+'user/edit/', data)
+    .then((res) => alert("Profile updated successfully!!"))
+    .catch((err)=> alert("Please enter valid links in their respective format!!"))
     fetchProfile();
     
     
@@ -82,11 +87,11 @@ const Profile = () => {
     .catch((err)=>{alert("No user logged in!!")});
   };
   
-  const [masterresumelink,setMasterResumelink]=useState(profiledata.mastercv);
-  const [resume1link,setResume1link]=useState(profiledata.resume1);
-  const [resume2link,setResume2link]=useState(profiledata.resume2);
-  const [githublink,setGithublink]=useState(profiledata.github);
-  const [linkedinlink,setLinkedinlink]=useState(profiledata.linkedin);
+  const [masterresumelink,setMasterResumelink]=useState("");
+  const [resume1link,setResume1link]=useState("");
+  const [resume2link,setResume2link]=useState("");
+  const [githublink,setGithublink]=useState("");
+  const [linkedinlink,setLinkedinlink]=useState("");
 
 
 
@@ -240,64 +245,7 @@ const Profile = () => {
                     Useful Links
                   </h6>
                   <div className="pl-lg-4">
-                    <Row>
-                      <Col md="12">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="MasterResume-Link"
-                          >
-                            Master Resume Link
-                          </label>
-                          <Input
-                            className="form-control-alternative"
-                            defaultValue={profiledata.mastercv}
-                            onChange={event => {setMasterResumelink(event.target.value)}}
-                            id="master_resume-link"
-                            type="url"
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col md="12">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="Resume1-Link"
-                          >
-                            Resume-1 Link
-                          </label>
-                          <Input
-                            className="form-control-alternative"
-                            defaultValue={profiledata.resume1}
-                            onChange={event => {setResume1link(event.target.value)}}
-                            id="resume1-link"
-                            type="url"
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col md="12">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="Resume2-Link"
-                          >
-                            Resume-2 Link
-                          </label>
-                          <Input
-                            className="form-control-alternative"
-                            defaultValue={profiledata.resume2}
-                            onChange={event => {setResume2link(event.target.value)}}
-                            id="resume2-link"
-                            type="url"
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <Row>
+                  <Row>
                       <Col md="12">
                         <FormGroup>
                           <label
@@ -307,9 +255,11 @@ const Profile = () => {
                             Github Profile Link
                           </label>
                           <Input
+                            required
                             className="form-control-alternative"
-                            defaultValue={profiledata.github}
-                            onChange={event => {setGithublink(event.target.value)}}
+                            defaultValue={githublink}
+                            placeholder="github.com/..."
+                            onChange={event => {event.preventDefault();setGithublink(event.target.value);}}
                             id="github-profile-link"
                             type="url"
                           />
@@ -326,10 +276,75 @@ const Profile = () => {
                             Linkedin Profile Link
                           </label>
                           <Input
+                            required
                             className="form-control-alternative"
-                            defaultValue={profiledata.linkedin}
-                            onChange={event => {setLinkedinlink(event.target.value)}}
+                            defaultValue={linkedinlink}
+                            placeholder="linkedin.com/in/..."
+                            onChange={event => {event.preventDefault();setLinkedinlink(event.target.value);}}
                             id="linkedin-profile-link"
+                            type="url"
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col md="12">
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="MasterResume-Link"
+                          >
+                            Master Resume Link
+                          </label>
+                          <Input
+                            required
+                            className="form-control-alternative"
+                            defaultValue={masterresumelink}
+                            placeholder="google.com/..."
+                            onChange={event => {event.preventDefault();setMasterResumelink(event.target.value);}}
+                            id="master_resume-link"
+                            type="url"
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col md="12">
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="Resume1-Link"
+                          >
+                            Resume-1 Link
+                          </label>
+                          <Input
+                            required
+                            className="form-control-alternative"
+                            defaultValue={resume1link}
+                            placeholder="google.com/..."
+                            onChange={event => {event.preventDefault();setResume1link(event.target.value);}}
+                            id="resume1-link"
+                            type="url"
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col md="12">
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="Resume2-Link"
+                          >
+                            Resume-2 Link
+                          </label>
+                          <Input
+                            blank="false"
+                            className="form-control-alternative"
+                            defaultValue={resume2link}
+                            placeholder="google.com/..."
+                            onChange={event => {event.preventDefault();setResume2link(event.target.value);}}
+                            id="resume2-link"
                             type="url"
                           />
                         </FormGroup>

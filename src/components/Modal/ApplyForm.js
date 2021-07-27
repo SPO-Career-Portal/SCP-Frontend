@@ -72,7 +72,10 @@ class Apply extends Component {
         })
         .then((res) => alert("Regsitered Successfully!!"))
         .catch((err) => {
-            alert(err.response.data.message)
+            if (err.response.data.message)
+                alert(err.response.data.message)
+            else
+                alert("Something went wrong \nPlease again try later!!")
         })
         this.props.toggle()
     }
