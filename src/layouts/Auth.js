@@ -25,7 +25,7 @@ import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import AuthFooter from "components/Footers/AuthFooter.js";
 
 import routes from "routes.js";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 const Auth = (props) => {
   const mainContent = React.useRef(null);
   const location = useLocation();
@@ -57,9 +57,15 @@ const Auth = (props) => {
     });
   };
   if (session.authenticated) {
-    // Change as per requirement 
+    // Change as per requirement
     // For now to check, if username is "Admin" in login then we can access Admin Dashboard
-    return <Redirect to={session.user.username === "Admin" ? "/admin/placement" : "/user/index"} />
+    return (
+      <Redirect
+        to={
+          session.user.username === "Admin" ? "/admin/placement" : "/user/index"
+        }
+      />
+    );
   }
   return (
     <>
@@ -71,6 +77,7 @@ const Auth = (props) => {
               <Row className="justify-content-center">
                 <Col lg="5" md="6">
 <<<<<<< HEAD
+<<<<<<< HEAD
                   <h1 className="text-white">Welcome!</h1>
                   <p className="text-lead text-light">
                     Use these awesome forms to login or create new account in
@@ -78,6 +85,8 @@ const Auth = (props) => {
                   </p>
 =======
 
+=======
+>>>>>>> cd87215dd29809ae810151092154674c957e9258
                   <h1 className="text-white">STUDENT CAREER PORTAL</h1>
 >>>>>>> b89a2e6791798a0df7361803a89c2285704f4e3f
                 </Col>

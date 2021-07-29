@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 
 // reactstrap components
-import { Button, Card, CardBody } from "reactstrap";
+import { Button } from "reactstrap";
 
 // import Header from "../components/Headers/Header"
 import TableContainer from "./TableContainer/InternshipTable";
@@ -15,8 +15,6 @@ import { useSelector } from "react-redux";
 import { fetchInternships } from "../../actions/userActions";
 
 const Internship = (props) => {
-  // to store the fetched data
-  const [fetchedData, setFetchedData] = useState([]);
   const dispatch = useDispatch();
 
   // fetch eligible Internships
@@ -38,12 +36,12 @@ const Internship = (props) => {
         },
       },
       {
-        Header: "Organisation",
-        accessor: "company",
-      },
-      {
         Header: "Internship Name",
         accessor: "intern_name",
+      },
+      {
+        Header: "Organisation",
+        accessor: "company",
       },
       {
         Header: "Profile",
@@ -79,9 +77,7 @@ const Internship = (props) => {
         <div>
           <TableContainer
             columns={columns}
-            data={
-              eligibleInternship == undefined ? fetchedData : eligibleInternship
-            }
+            data={eligibleInternship == undefined ? [] : eligibleInternship}
           />
         </div>
       </div>

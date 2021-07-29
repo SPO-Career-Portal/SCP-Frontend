@@ -34,9 +34,10 @@ const Login = () => {
                 <a
 =======
           <Row className="align-items-center justify-content-xl-center">
-              <div className="align-items-center justify-content-xl-center text-muted">
+            <div className="align-items-center justify-content-xl-center text-muted">
               Developed by
               <a
+<<<<<<< HEAD
 >>>>>>> b89a2e6791798a0df7361803a89c2285704f4e3f
                   className="font-weight-bold ml-1"
                   href="https://pclub.in"
@@ -90,6 +91,26 @@ const Login = () => {
                 </NavItem>
               </Nav>
             </Col>
+=======
+                className="font-weight-bold ml-1"
+                href="https://pclub.in"
+                target="_blank"
+              >
+                Programming Club, IIT Kanpur
+              </a>
+            </div>
+            <div>" "</div>
+            <div className="copyright text-center text-xl-left text-muted">
+              Bootstrapped with{" "}
+              <a
+                className="font-weight-bold ml-1"
+                href="https://www.creative-tim.com?ref=adr-auth-footer"
+                target="_blank"
+              >
+                Creative Tim
+              </a>
+            </div>
+>>>>>>> cd87215dd29809ae810151092154674c957e9258
           </Row>
         </Container>
       </footer>

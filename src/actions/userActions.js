@@ -2,10 +2,11 @@ import { sessionService } from "redux-react-session";
 import axios from "axios";
 
 // URLs
-const base_url = "http://localhost:5000";
-const EligibleInternships_url = "/interns";
-const EligiblePlacements_url = "/placements";
+const base_url = "http://127.0.0.1:8000/";
+const EligibleInternships_url = "user/interns/";
+const EligiblePlacements_url = "user/placements/";
 
+<<<<<<< HEAD
 const sendRequest = async (url, method, body, headers = {}) => {
   const response = await axios({
     method,
@@ -18,10 +19,18 @@ const sendRequest = async (url, method, body, headers = {}) => {
 };
 
 export const login = (email) => async () => {
+=======
+export const login = (username, admin) => async () => {
+>>>>>>> cd87215dd29809ae810151092154674c957e9258
   try {
     //const response = await sessionApi.login({ user }); LOGIN API
     const response = {
+<<<<<<< HEAD
       email: email,
+=======
+      username: username,
+      admin: admin,
+>>>>>>> cd87215dd29809ae810151092154674c957e9258
     };
 
     sessionService.saveSession();
@@ -32,6 +41,7 @@ export const login = (email) => async () => {
   }
 };
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 export const logout = () => async () => {
   try {
@@ -47,49 +57,51 @@ export const logout = () => async () => {
 export const register = (roll) => async () => {
   try {
     const roll_no = roll;
-
-    return sendRequest("/user/register", "POST", {
-      roll_no,
-    });
-  } catch (err) {
-    console.log("Error while registering!");
-  }
-};
-
+=======
 export const setPass = (password) => async () => {
-  try {
-    const pass = password;
-    const result = sendRequest(
-      "/user/register/verify/code=<str:token>/",
-      "POST",
-      {
-        pass,
-      }
-    );
-    if (result == "200_OK") {
-      sessionService.saveSession();
-      sessionService.saveUser(result);
-    } else {
-      alert("Error while registering");
-    }
-  } catch (err) {
-    console.log("Error while registering!");
-  }
+  const queryParams = new URLSearchParams(window.location.search);
+  const code = queryParams.get("code");
+>>>>>>> cd87215dd29809ae810151092154674c957e9258
+
+  await axios
+    .post(base_url + "user/register/verify/code=" + code + "/", {
+      password: password,
+    })
+    .then((res) => {
+      alert("Password set successfully\nProceed to login");
+    })
+    .catch((err) => {
+      console.log(err);
+      alert("Link expired");
+    });
 };
 
-
-export const logout = () =>
-  async () => {
-    try {
-      axios.defaults.withCredentials = true;
-      await axios.post(base_url+"/user/auth/logout/")
-      sessionService.deleteSession();
-      sessionService.deleteUser();
-    } catch (err) {
-      // error
-    }
-  };
-
+export const logout = (admin) => async () => {
+  axios.defaults.withCredentials = true;
+  if (admin) {
+    await axios
+      .post(base_url + "admin/logout/", {})
+      .then((response) => {
+        sessionService.deleteSession();
+        sessionService.deleteUser();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } else {
+    await axios
+      .post(base_url + "user/auth/logout/", {})
+      .then((response) => {
+        sessionService.deleteSession();
+        sessionService.deleteUser();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+  // sessionService.deleteSession();
+  //   sessionService.deleteUser();
+};
 
 // store eligible internships in redux
 export const storeInternshipData = (object) => ({
@@ -104,10 +116,11 @@ export const UserInternshipData = (object) => (dispatch) => {
 
 // fetch internship data
 export const fetchInternships = (url) => (dispatch) => {
-  fetch(base_url + EligibleInternships_url) // update url
-    .then((response) => response.json())
-    .then((data) => {
-      dispatch(UserInternshipData(data));
+  axios.defaults.withCredentials = true;
+  axios
+    .get(base_url + EligibleInternships_url) // update url
+    .then((response) => {
+      dispatch(UserInternshipData(response.data));
     })
     .catch((error) => console.log(error));
 };
@@ -125,12 +138,16 @@ export const UserPlacementData = (object) => (dispatch) => {
 
 // fetch placements data
 export const fetchPlacements = (url) => (dispatch) => {
-  fetch(base_url + EligiblePlacements_url) // update url
-    .then((response) => response.json())
-    .then((data) => {
-      dispatch(UserPlacementData(data));
+  axios.defaults.withCredentials = true;
+  axios
+    .get(base_url + EligiblePlacements_url) // update url
+    .then((response) => {
+      dispatch(UserPlacementData(response.data));
     })
     .catch((error) => console.log(error));
 };
+<<<<<<< HEAD
 
 >>>>>>> b89a2e6791798a0df7361803a89c2285704f4e3f
+=======
+>>>>>>> cd87215dd29809ae810151092154674c957e9258

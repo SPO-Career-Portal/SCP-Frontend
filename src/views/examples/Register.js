@@ -15,7 +15,12 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
+<<<<<<< HEAD
 import React from "react";
+=======
+import React, { useState } from "react";
+import axios from "axios";
+>>>>>>> cd87215dd29809ae810151092154674c957e9258
 
 // reactstrap components
 import {
@@ -34,44 +39,37 @@ import {
 } from "reactstrap";
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 const Register = () => {
 =======
 
 
 const Register=()=> {
 
+=======
+const Register = () => {
+>>>>>>> cd87215dd29809ae810151092154674c957e9258
   const [roll, setRoll] = useState("");
+  const base_url = "http://127.0.0.1:8000/";
 
+  const onSubmit = async (e) => {
+    e.preventDefault();
 
-
-  const onSubmit = async (e)=> {
-    
-    try{
-      const user ={
+    await axios
+      .post(base_url + "user/register/", {
         roll: roll,
-      };
-
-     const result= await dispatch(register(user.roll));
-     
-     if (result=="202_ACCEPTED"){
-      alert("check yor mail for link to set password");
-     }
-    else if(result=="403_FORBIDDEN"){
-      alert("roll no. already in use");
-    }
-    else{
-      alert("Something went wrong");
-    }
-    }catch (err) {
-      console.log("Error while registering");
-    }
-
-    };
-
-
-
-
-  const dispatch = useDispatch();
+      })
+      .then((res) => {
+        if (res.status == 202)
+          alert("Please check your mail for a link to set the password");
+      })
+      .catch((err) => {
+        if (err.response.status == 400) alert("Invalid Roll number");
+        else if (err.response.status == 403)
+          alert("Roll number already registered");
+        else alert("Something went wrong");
+      });
+  };
 
 >>>>>>> b89a2e6791798a0df7361803a89c2285704f4e3f
   return (
@@ -121,6 +119,7 @@ const Register=()=> {
           </CardHeader>
           <CardBody className="px-lg-5 py-lg-5">
 <<<<<<< HEAD
+<<<<<<< HEAD
             <div className="text-center text-muted mb-4">
               <small>Or sign up with credentials</small>
             </div>
@@ -140,6 +139,9 @@ const Register=()=> {
                   <Input placeholder="Name" type="text" />
                 </InputGroup>
               </FormGroup>
+=======
+            <Form role="form">
+>>>>>>> cd87215dd29809ae810151092154674c957e9258
               <FormGroup>
                 <InputGroup className="input-group-alternative mb-3">
                   <InputGroupAddon addonType="prepend">
@@ -203,21 +205,23 @@ const Register=()=> {
                       <i className="ni ni-circle-08" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input required valid
+                  <Input
+                    required
+                    valid
                     placeholder="IITK Roll no."
                     type="roll"
                     autoComplete="off"
-                    onChange ={(e) => setRoll(e.target.value)}
+                    onChange={(e) => setRoll(e.target.value)}
                   />
                 </InputGroup>
               </FormGroup>
               <div className="text-center">
-                <Button className="mt-4"
-                        id="submit"
-                        color="primary"
-                        type="submit"
-                        onClick={ (e) => onSubmit(e)}
-                        
+                <Button
+                  className="mt-4"
+                  id="submit"
+                  color="primary"
+                  type="submit"
+                  onClick={(e) => onSubmit(e)}
                 >
                   Submit
 >>>>>>> b89a2e6791798a0df7361803a89c2285704f4e3f
