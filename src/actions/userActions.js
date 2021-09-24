@@ -60,8 +60,8 @@ export const logout = (admin) => async () => {
         console.log(err);
       });
   }
-  sessionService.deleteSession();
-  sessionService.deleteUser();
+  // sessionService.deleteSession();
+  // sessionService.deleteUser();
 };
 
 // store eligible internships in redux
