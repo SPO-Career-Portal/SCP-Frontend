@@ -62,7 +62,7 @@ const Auth = (props) => {
     return (
       <Redirect
         to={
-          session.user.username === "Admin" ? "/admin/placement" : "/user/index"
+          session.user.username === "Admin" ? "/admin/placement" : "/user/placement"
         }
       />
     );

@@ -18,6 +18,7 @@ import {
 } from "reactstrap";
 
 import Add from "../../../components/Modal/AddForm";
+import { deadlineFormatter } from "actions/userActions";
 
 import { ReactComponent as DownloadIcon } from "../../../assets/img/icons/common/save_alt_white_24dp.svg";
 import { ReactComponent as DeleteIcon } from "../../../assets/img/icons/common/delete_white_24dp.svg";
@@ -263,13 +264,27 @@ const TableContainer = ({ columns, data, changeData }) => {
                       <>
                         {
                           // Starting 0-6 cells of a row
-                          index < 6 ? (
+                          (index < 6 && index != 4)? (
                             <td
                               key={index}
                               style={{ textAlign: "center" }}
                               {...cell.getCellProps()}
                             >
                               {cell.render("Cell")}
+                            </td>
+                          ) : (
+                            <></>
+                          )
+                        }
+                        {
+                          // Starting 0-6 cells of a row
+                          index == 4 ? (
+                            <td
+                              key={index}
+                              style={{ textAlign: "center" }}
+                              {...cell.getCellProps()}
+                            >
+                              {deadlineFormatter(cell['row']['values']['deadline'])}
                             </td>
                           ) : (
                             <></>

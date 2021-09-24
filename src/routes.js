@@ -1,4 +1,3 @@
-import Index from "views/Dashboard";
 import Placement from 'views/examples/Placement'
 import Internship from 'views/examples/Internship'
 import Profile from "views/examples/Profile.js";
@@ -10,13 +9,6 @@ import AdminInternship from 'views/AdminComponent/Internship'
 import AdminPlacement from 'views/AdminComponent/Placement'
 
 var routes = [
-  {
-    path: "/index",
-    name: "Dashboard",
-    icon: "ni ni-tv-2 text-primary",
-    component: Index,
-    layout: "/user",
-  },
   {
     path: "/placement",
     name: "Placement",

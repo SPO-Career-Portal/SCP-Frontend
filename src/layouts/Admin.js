@@ -69,7 +69,7 @@ const Admin = (props) => {
         {...props}
         routes={getAdmin(routes)}
         logo={{
-          innerLink: session.user.admin ? "/admin/placement" : "/user/index",
+          innerLink: session.user.admin ? "/admin/placement" : "/user/placement",
           imgSrc: require("../assets/img/brand/logo_spo.png").default,
           imgAlt: "...",
         }}
@@ -85,7 +85,7 @@ const Admin = (props) => {
             from="*"
             to={
               !session.user.admin && checkRedirect()
-                ? "/user/index"
+                ? "/user/placement"
                 : "/admin/placement"
             }
           />
