@@ -308,7 +308,7 @@ const Profile = () => {
                                 required
                                 className="form-control-alternative"
                                 defaultValue={masterresumelink}
-                                placeholder="google.com/..."
+                                placeholder="drive.google.com/..."
                                 onChange={(event) => {
                                   event.preventDefault();
                                   setMasterResumelink(event.target.value);
@@ -332,7 +332,7 @@ const Profile = () => {
                                 required
                                 className="form-control-alternative"
                                 defaultValue={resume1link}
-                                placeholder="google.com/..."
+                                placeholder="drive.google.com/..."
                                 onChange={(event) => {
                                   event.preventDefault();
                                   setResume1link(event.target.value);
@@ -356,7 +356,7 @@ const Profile = () => {
                                 blank="false"
                                 className="form-control-alternative"
                                 defaultValue={resume2link}
-                                placeholder="google.com/..."
+                                placeholder="drive.google.com/..."
                                 onChange={(event) => {
                                   event.preventDefault();
                                   setResume2link(event.target.value);

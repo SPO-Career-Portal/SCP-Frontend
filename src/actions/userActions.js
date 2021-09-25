@@ -15,7 +15,6 @@ export const login = (username, admin) => async () => {
 
     sessionService.saveSession();
     sessionService.saveUser(response);
-    console.log("response", response);
   } catch (err) {
     console.log("Error while logging in!");
   }
@@ -62,7 +61,7 @@ export const logout = (admin) => async () => {
       });
   }
   // sessionService.deleteSession();
-  //   sessionService.deleteUser();
+  // sessionService.deleteUser();
 };
 
 // store eligible internships in redux
@@ -107,4 +106,12 @@ export const fetchPlacements = (url) => (dispatch) => {
       dispatch(UserPlacementData(response.data));
     })
     .catch((error) => console.log(error));
+};
+
+export const deadlineFormatter = (deadline) => {
+  let index_T = deadline.indexOf("T");
+  let date = deadline.slice(0, index_T);
+  let time = deadline.slice(index_T + 1, deadline.indexOf('+'));
+  let new_deadline = date + "   ,   " + time;
+  return new_deadline;
 };

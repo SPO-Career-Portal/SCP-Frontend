@@ -16,6 +16,7 @@ import {
 } from "reactstrap";
 
 import Apply from "../../../components/Modal/ApplyForm";
+import { deadlineFormatter } from "actions/userActions";
 
 import {
   tablestyle,
@@ -119,7 +120,7 @@ const TableContainer = ({ columns, data }) => {
                       <>
                         {
                           // Starting 0-6 cells of a row
-                          index < 6 ? (
+                          (index != 4) ? (
                             <td
                               key={index}
                               style={{ textAlign: "center" }}
@@ -128,7 +129,13 @@ const TableContainer = ({ columns, data }) => {
                               {cell.render("Cell")}
                             </td>
                           ) : (
-                            <></>
+                            <td
+                              key={index}
+                              style={{ textAlign: "center" }}
+                              {...cell.getCellProps()}
+                            >
+                              {deadlineFormatter(cell['row']['values']['deadline'])}
+                            </td>
                           )
                         }
                       </>
